@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { login } from "../api/authApi";
 import { useNavigate } from "react-router-dom";
+import { saveToken } from "../utils/tokenStorage";
+
 
 const Login: React.FC = () => {
 
@@ -30,11 +32,11 @@ const Login: React.FC = () => {
      console.log("Login Result:", result);
       if (result?.status === "Success") {
         console.log("Login Result_1:", result.status);
-        localStorage.setItem("token", result.token);
-        navigate("/dashboard");
+          saveToken(result.token);
+        navigate("/dashboard",{ replace: true });
       } 
       else {
-        setError("Invalid credentials");
+        setError(result?.message || "Invalid email or password");
       }
 
     } 
@@ -61,7 +63,7 @@ const Login: React.FC = () => {
 
         <div style={styles.card}>
 
-          <h2 style={styles.title}>Sign In</h2>
+          <h2 style={{ ...styles.title, color: "#333" }}>Sign In</h2>
 
           {error && <div style={styles.error}>{error}</div>}
 
@@ -97,11 +99,15 @@ const Login: React.FC = () => {
             onClick={handleLogin}
             disabled={loading}
           >
-            {loading ? "Signing in..." : "Login"}
+            {loading ? "Signing in..." : "🔐 Login"}
           </button>
 
           <div style={styles.footer}>
-            © 2026 Enterprise Corp
+            
+              {"@" + new Date().getFullYear() + " My Society Enterprise App. All rights reserved"}
+               
+            
+           
           </div>
 
         </div>

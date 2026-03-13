@@ -1,6 +1,8 @@
 import Card from "../components/Card";
 import "../styles/dashboard.css";
 
+
+const Username = localStorage.getItem("token") || "User";
 const Dashboard = () => {
 
   const dashboardCards = [
@@ -14,7 +16,7 @@ const Dashboard = () => {
     <div className="dashboard-container">
 
       <h2 className="dashboard-title">Dashboard</h2>
-
+<h3>{Username}</h3>
       <div className="dashboard-grid">
 
         {dashboardCards.map((card, index) => (
