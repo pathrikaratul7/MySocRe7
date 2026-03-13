@@ -1,0 +1,18 @@
+.dashboard-container {
+  padding: 30px;
+  background: #f4f6f9;
+  min-height: 100vh;
+}
+
+.dashboard-title {
+  font-size: 26px;
+  font-weight: 600;
+  margin-bottom: 25px;
+  color: #111827;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+}

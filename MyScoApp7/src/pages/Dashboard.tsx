@@ -1,28 +1,34 @@
 import Card from "../components/Card";
-
+import "../styles/dashboard.css";
 
 const Dashboard = () => {
 
-const cards= [
+  const dashboardCards = [
+    { title: "Users", value: 120 },
+    { title: "Orders", value: 80 },
+    { title: "Revenue", value: "$5,000" },
+    { title: "Products", value: 500 }
+  ];
 
-{title: "Users", value:120},
-{title: "Orders", value: 80},
-{title: "Revenue", value: 5000},
-{title: "Products", value: 5000}
+  return (
+    <div className="dashboard-container">
 
+      <h2 className="dashboard-title">Dashboard</h2>
 
-];
+      <div className="dashboard-grid">
 
-return(
-<div style={{padding: "30px"}}>
-<h2>Dashboard</h2>
-<div style={{display: "flex", gap:"20px"}}>
-    {cards.map((card, index) => (
-        <Card key={index} title={card.title} value={card.value} />
-    ))}
-</div>
-</div>
-);
-}
+        {dashboardCards.map((card, index) => (
+          <Card
+            key={index}
+            title={card.title}
+            value={card.value}
+          />
+        ))}
+
+      </div>
+
+    </div>
+  );
+};
 
 export default Dashboard;

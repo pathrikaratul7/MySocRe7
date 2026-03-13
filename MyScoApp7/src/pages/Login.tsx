@@ -26,8 +26,10 @@ const Login: React.FC = () => {
       setLoading(true);
 
       const result = await login(email, password);
-
-      if (result?.success) {
+     console.log("Login Result:", result.status);
+     console.log("Login Result:", result);
+      if (result?.status === "Success") {
+        console.log("Login Result_1:", result.status);
         localStorage.setItem("token", result.token);
         navigate("/dashboard");
       } 
@@ -49,7 +51,7 @@ const Login: React.FC = () => {
     <div style={styles.container}>
 
       <div style={styles.leftPanel}>
-        <h1 style={styles.brand}>My Enterprise App</h1>
+        <h1 style={styles.brand}>My Society Enterprise App</h1>
         <p style={styles.subtitle}>
           Secure access to your dashboard and services.
         </p>
