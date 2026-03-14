@@ -10,3 +10,19 @@ const response = await axios.post(`${API_URL}/Token`,
     Flag:"LOG"});
 return response.data;
 }
+
+export const GetUserDetails = async(token:string,email:string,password:string) =>{
+const response = await axios.post(`${API_URL}/SocietyUser/GetLogin`,
+     {
+        uEmail : email,
+  uPass: password,
+    Flag:"LOG"},
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+return response.data;
+
+
+}
