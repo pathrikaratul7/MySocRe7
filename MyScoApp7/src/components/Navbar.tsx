@@ -1,16 +1,10 @@
-import { useState } from "react";
+import { useUser } from "../utils/useUser";
 
-interface User {
-  uName?: string;
-}
+
 
 const Navbar: React.FC = () => {
 
-  const [user] = useState<User>(() => {
-    const storedUser = sessionStorage.getItem("user");
-    return storedUser ? JSON.parse(storedUser) : {};
-  });
-
+  const user  = useUser();
   return (
     <div style={styles.navbar}>
 
@@ -18,8 +12,11 @@ const Navbar: React.FC = () => {
 
       <div style={styles.userContainer}>
         <span style={styles.userIcon}>👤</span>
-        <span style={styles.userText}>
-          Logged In: {user.uName || "User"}
+        <span style={styles.userText} color="purple">
+          Logged In: {user?.uName || "User"}
+        </span>
+        <span style={styles.userText} color="purple">
+         : ({user?.uEmail || " email not available"})
         </span>
       </div>
 
@@ -58,7 +55,7 @@ const styles: { [key: string]: React.CSSProperties } = {
 
   userText: {
     fontWeight: 500,
-    color: "#374151"
+    color: "purple"
   }
 
 };

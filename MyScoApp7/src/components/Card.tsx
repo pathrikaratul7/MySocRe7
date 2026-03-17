@@ -48,7 +48,7 @@ const Card: React.FC<Props> = ({ title, value, extra }) => {
       <div style={titleStyle}>{title}</div>
       <div style={valueStyle}>{value}</div>
 
-      {/* ✅ Extra content (View button etc.) */}
+      {}
       {extra && <div style={extraStyle}>{extra}</div>}
     </div>
   );
