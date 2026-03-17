@@ -1,6 +1,11 @@
 import { useUser } from "../utils/useUser";
 
 
+const logout = () => {
+ localStorage.clear();
+ sessionStorage.clear();
+  window.location.href = "/Login";
+};
 
 const Navbar: React.FC = () => {
 
@@ -18,6 +23,11 @@ const Navbar: React.FC = () => {
         <span style={styles.userText} color="purple">
          : ({user?.uEmail || " email not available"})
         </span>
+      </div>
+      <div>
+        <button onClick={logout} style={{ background: "transparent", border: "none", cursor: "pointer", fontSize: "16px", alignItems:"right" }}>
+          Logout
+        </button>
       </div>
 
     </div>

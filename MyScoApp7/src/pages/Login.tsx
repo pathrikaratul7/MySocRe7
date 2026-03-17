@@ -3,6 +3,8 @@ import { login } from "../api/authApi";
 // import { GetUserDetails } from "../api/authApi";
 import { useNavigate } from "react-router-dom";
 import { saveToken } from "../utils/tokenStorage";
+import "../styles/Login.css";
+import loginImage from "../assets/SocietyLogin.png";
 // import { StoreUserDetails } from "../utils/UserDetailsStore";
 
 
@@ -21,7 +23,7 @@ const Login: React.FC = () => {
     setError("");
 
     if (!email || !password) {
-      setError("Email and Password are required");
+      setError("📧🔒 Email and password are required");
       return;
     }
 
@@ -43,13 +45,13 @@ const Login: React.FC = () => {
         navigate("/dashboard",{ replace: true });
       } 
       else {
-        setError(result?.message || "Invalid email or password");
+        setError(result?.message || "❌ Invalid email or password");
       }
 
     } 
     catch (error) {
       console.error("Login Error:", error);
-      setError("Server error. Please try again.");
+      setError("⚠️ Unable to connect to server. Try again later");
     } 
     finally {
       setLoading(false);
@@ -57,177 +59,175 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div style={styles.container}>
+    <div className="login-container">
 
-      <div style={styles.leftPanel}>
-        <h1 style={styles.brand}>My Society Enterprise App</h1>
-        <p style={styles.subtitle}>
-          Secure access to your dashboard and services.
-        </p>
+  <div className="login-left">
+    <img src={loginImage} alt="Society Login" style={{ width: "100%" }} />
+  
+  </div>
+
+  <div className="login-right">
+
+    <div className="login-card">
+  
+   
+      <h2 className="login-title">Sign In: My Society Enterprise App</h2>
+
+      {error && <div className="login-error">{error}</div>}
+
+      <input
+        type="email"
+        placeholder="Email Address"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        className="login-input"
+      />
+
+      <div className="password-box">
+
+        <input
+          type={showPassword ? "text" : "password"}
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          className="password-input"
+        />
+
+        <span
+          className="eye-icon"
+          onClick={() => setShowPassword(!showPassword)}
+        >
+          {showPassword ? "🙈" : "👁️"}
+        </span>
+
       </div>
 
-      <div style={styles.loginPanel}>
+      <button
+        className="login-button"
+        onClick={handleLogin}
+        disabled={loading}
+      >
+        {loading ? "Signing in..." : "🔐 Login"}
+      </button>
 
-        <div style={styles.card}>
-
-          <h2 style={{ ...styles.title, color: "#333" }}>Sign In</h2>
-
-          {error && <div style={styles.error}>{error}</div>}
-
-          <input
-            type="email"
-            placeholder="Email Address"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            style={styles.input}
-          />
-
-          <div style={styles.passwordBox}>
-
-            <input
-              type={showPassword ? "text" : "password"}
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              style={styles.passwordInput}
-            />
-
-            <span
-              style={styles.eye}
-              onClick={() => setShowPassword(!showPassword)}
-            >
-              {showPassword ? "🙈" : "👁️"}
-            </span>
-
-          </div>
-
-          <button
-            style={styles.button}
-            onClick={handleLogin}
-            disabled={loading}
-          >
-            {loading ? "Signing in..." : "🔐 Login"}
-          </button>
-
-          <div style={styles.footer}>
-            
-              {"@" + new Date().getFullYear() + " My Society Enterprise App. All rights reserved"}
-               
-            
-           
-          </div>
-
-        </div>
-
+      <div className="login-footer">
+         <p className="login-subtitle">
+      Secure access to your dashboard and services.
+    </p>
+        {"@" + new Date().getFullYear() + " My Society Enterprise App. All rights reserved"}
       </div>
 
     </div>
+
+  </div>
+
+</div>
   );
 };
 
-const styles: { [key: string]: React.CSSProperties } = {
+// const styles: { [key: string]: React.CSSProperties } = {
 
-  container: {
-    display: "flex",
-    height: "100vh",
-    fontFamily: "Segoe UI"
-  },
+//   container: {
+//     display: "flex",
+//     height: "100vh",
+//     fontFamily: "Segoe UI"
+//   },
 
-  leftPanel: {
-    flex: 1,
-    background: "linear-gradient(135deg,#4F46E5,#9333EA)",
-    color: "white",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    padding: "80px"
-  },
+//   leftPanel: {
+//     flex: 1,
+//     background: "linear-gradient(135deg,#4F46E5,#9333EA)",
+//     color: "white",
+//     display: "flex",
+//     flexDirection: "column",
+//     justifyContent: "center",
+//     padding: "80px"
+//   },
 
-  brand: {
-    fontSize: "40px",
-    marginBottom: "10px"
-  },
+//   brand: {
+//     fontSize: "40px",
+//     marginBottom: "10px"
+//   },
 
-  subtitle: {
-    fontSize: "18px",
-    opacity: 0.9
-  },
+//   subtitle: {
+//     fontSize: "18px",
+//     opacity: 0.9
+//   },
 
-  loginPanel: {
-    flex: 1,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    background: "#f5f7fb"
-  },
+//   loginPanel: {
+//     flex: 1,
+//     display: "flex",
+//     justifyContent: "center",
+//     alignItems: "center",
+//     background: "#f5f7fb"
+//   },
 
-  card: {
-    width: "380px",
-    background: "white",
-    padding: "40px",
-    borderRadius: "12px",
-    boxShadow: "0 10px 30px rgba(0,0,0,0.15)"
-  },
+//   card: {
+//     width: "380px",
+//     background: "white",
+//     padding: "40px",
+//     borderRadius: "12px",
+//     boxShadow: "0 10px 30px rgba(0,0,0,0.15)"
+//   },
 
-  title: {
-    textAlign: "center",
-    marginBottom: "25px"
-  },
+//   title: {
+//     textAlign: "center",
+//     marginBottom: "25px"
+//   },
 
-  input: {
-    width: "100%",
-    padding: "12px",
-    marginBottom: "15px",
-    border: "1px solid #ccc",
-    borderRadius: "6px"
-  },
+//   input: {
+//     width: "100%",
+//     padding: "12px",
+//     marginBottom: "15px",
+//     border: "1px solid #ccc",
+//     borderRadius: "6px"
+//   },
 
-  passwordBox: {
-    display: "flex",
-    alignItems: "center",
-    border: "1px solid #ccc",
-    borderRadius: "6px",
-    marginBottom: "15px"
-  },
+//   passwordBox: {
+//     display: "flex",
+//     alignItems: "center",
+//     border: "1px solid #ccc",
+//     borderRadius: "6px",
+//     marginBottom: "15px"
+//   },
 
-  passwordInput: {
-    flex: 1,
-    padding: "12px",
-    border: "none",
-    outline: "none"
-  },
+//   passwordInput: {
+//     flex: 1,
+//     padding: "12px",
+//     border: "none",
+//     outline: "none"
+//   },
 
-  eye: {
-    padding: "0 10px",
-    cursor: "pointer"
-  },
+//   eye: {
+//     padding: "0 10px",
+//     cursor: "pointer"
+//   },
 
-  button: {
-    width: "100%",
-    padding: "12px",
-    border: "none",
-    background: "#4F46E5",
-    color: "white",
-    borderRadius: "6px",
-    fontSize: "16px",
-    cursor: "pointer"
-  },
+//   button: {
+//     width: "100%",
+//     padding: "12px",
+//     border: "none",
+//     background: "#4F46E5",
+//     color: "white",
+//     borderRadius: "6px",
+//     fontSize: "16px",
+//     cursor: "pointer"
+//   },
 
-  error: {
-    background: "#ffe5e5",
-    color: "#d8000c",
-    padding: "10px",
-    marginBottom: "15px",
-    borderRadius: "5px"
-  },
+//   error: {
+//     background: "#ffe5e5",
+//     color: "#d8000c",
+//     padding: "10px",
+//     marginBottom: "15px",
+//     borderRadius: "5px"
+//   },
 
-  footer: {
-    textAlign: "center",
-    marginTop: "20px",
-    fontSize: "12px",
-    color: "#888"
-  }
+//   footer: {
+//     textAlign: "center",
+//     marginTop: "20px",
+//     fontSize: "12px",
+//     color: "#888"
+//   }
 
-};
+// };
 
 export default Login;

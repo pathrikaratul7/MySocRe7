@@ -1,0 +1,128 @@
+/* Container */
+.login-container {
+  display: flex;
+  height: 100vh;
+  font-family: "Segoe UI";
+  background-color: #0f172a;
+}
+
+/* Left Panel */
+.login-left {
+  flex: 1;
+  background: linear-gradient(135deg, #1e293b, #0f172a);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 80px;
+}
+
+.login-brand {
+  font-size: 40px;
+  margin-bottom: 10px;
+  color: #e2e8f0;
+}
+
+.login-subtitle {
+  font-size: 18px;
+  color: #cbd5f5;
+}
+
+/* Right Panel */
+.login-right {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #020617;
+}
+
+/* Card */
+.login-card {
+  width: 380px;
+  background: #1e293b;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+}
+
+/* Title */
+.login-title {
+  text-align: center;
+  margin-bottom: 25px;
+  color: #f1f5f9;
+}
+
+/* Inputs */
+.login-input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border: 1px solid #334155;
+  border-radius: 6px;
+  background-color: #0f172a;
+  color: #e2e8f0;
+}
+
+.login-input::placeholder {
+  color: #94a3b8;
+}
+
+/* Password Box */
+.password-box {
+  display: flex;
+  align-items: center;
+  border: 1px solid #334155;
+  border-radius: 6px;
+  margin-bottom: 15px;
+  background-color: #0f172a;
+}
+
+.password-input {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: #e2e8f0;
+}
+
+.eye-icon {
+  padding: 0 10px;
+  cursor: pointer;
+  color: #cbd5f5;
+}
+
+/* Button */
+.login-button {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  background: #6366f1;
+  color: white;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.login-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Error */
+.login-error {
+  background: #7f1d1d;
+  color: #fecaca;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+}
+
+/* Footer */
+.login-footer {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 12px;
+  color: #94a3b8;
+}
