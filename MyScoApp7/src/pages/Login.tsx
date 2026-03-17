@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { login } from "../api/authApi";
-import { GetUserDetails } from "../api/authApi";
+// import { GetUserDetails } from "../api/authApi";
 import { useNavigate } from "react-router-dom";
 import { saveToken } from "../utils/tokenStorage";
-import { StoreUserDetails } from "../utils/UserDetailsStore";
+// import { StoreUserDetails } from "../utils/UserDetailsStore";
 
 
 const Login: React.FC = () => {
@@ -34,11 +34,11 @@ const Login: React.FC = () => {
      console.log("Login Result:", result);
       if (result?.status === "Success") {
         console.log("Login Result_1:", result.status);
-          saveToken(result.token);
+          saveToken(result.token,email,password);
 
-         const UserDetails = await GetUserDetails(result.token,email,password);
-         console.log("User Details:", UserDetails);
-         StoreUserDetails(UserDetails);
+        //  const UserDetails = await GetUserDetails(result.token,email,password);
+        //  console.log("User Details:", UserDetails);
+        //  StoreUserDetails(UserDetails);
 
         navigate("/dashboard",{ replace: true });
       } 

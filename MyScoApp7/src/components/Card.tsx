@@ -1,6 +1,9 @@
+import React from "react";
+
 type Props = {
   title: string;
   value: string | number;
+  extra?: React.ReactNode;
 };
 
 const cardStyle: React.CSSProperties = {
@@ -25,7 +28,11 @@ const valueStyle: React.CSSProperties = {
   color: "#111827"
 };
 
-const Card = ({ title, value }: Props) => {
+const extraStyle: React.CSSProperties = {
+  marginTop: "12px"
+};
+
+const Card: React.FC<Props> = ({ title, value, extra }) => {
   return (
     <div
       style={cardStyle}
@@ -40,6 +47,9 @@ const Card = ({ title, value }: Props) => {
     >
       <div style={titleStyle}>{title}</div>
       <div style={valueStyle}>{value}</div>
+
+      {/* ✅ Extra content (View button etc.) */}
+      {extra && <div style={extraStyle}>{extra}</div>}
     </div>
   );
 };
