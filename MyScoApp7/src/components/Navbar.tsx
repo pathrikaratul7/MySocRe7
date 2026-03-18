@@ -4,7 +4,7 @@ import { useUser } from "../utils/useUser";
 const logout = () => {
  localStorage.clear();
  sessionStorage.clear();
-  window.location.href = "/Login";
+  window.location.href = "/";
 };
 
 const Navbar: React.FC = () => {

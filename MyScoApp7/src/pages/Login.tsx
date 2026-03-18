@@ -61,8 +61,8 @@ const Login: React.FC = () => {
   return (
     <div className="login-container">
 
-  <div className="login-left">
-    <img src={loginImage} alt="Society Login" style={{ width: "100%" }} />
+  <div className="login-container">
+    <img src={loginImage} alt="Society Login" style={{ width: "100%" , height: "auto" }} />
   
   </div>
 
