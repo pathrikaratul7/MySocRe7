@@ -9,8 +9,8 @@ const Sidebar = () => {
       <nav>
         <Link style={styles.menu} to="/dashboard">🏠 Dashboard</Link>
         <Link style={styles.menu} to="/users">👥 Users</Link>
-        <Link style={styles.menu} to="/reports">📊 Reports</Link>
-        <Link style={styles.menu} to="/settings">⚙ Settings</Link>
+        {/* <Link style={styles.menu} to="/reports">📊 Reports</Link>
+        <Link style={styles.menu} to="/settings">⚙ Settings</Link> */}
       </nav>
 
     </div>

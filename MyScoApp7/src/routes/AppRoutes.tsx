@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Dashboard from "../pages/Dashboard";
 import Login from "../pages/Login";
 import Layout from "../components/Layout";
+import Users from "../pages/users";
 
 const AppRoutes = () => {
   return (
@@ -16,6 +17,7 @@ const AppRoutes = () => {
         <Route element={<Layout />}>
 
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/users" element={<Users />} />
 
         </Route>
 

@@ -2,7 +2,7 @@ import axios from "axios";
 
 const API_URL = "https://mysoc7.runasp.net/api";
 
-export const login = async(email:string, password:string) => {
+  export const login = async(email:string, password:string) => {
 const response = await axios.post(`${API_URL}/Token`,
      {
         uEmail : email,
@@ -24,5 +24,19 @@ const response = await axios.post(`${API_URL}/SocietyUser/GetLogin`,
     });
 return response.data;
 
+
+}
+
+export const GetAllUsersfromAPp= async(token: string,uid: string ) =>{
+const response = await axios.post(`${API_URL}/SocietyUser/GetAllUsers`,
+     {
+        uid : uid,
+    Flag:"Report"},
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+return response.data;
 
 }

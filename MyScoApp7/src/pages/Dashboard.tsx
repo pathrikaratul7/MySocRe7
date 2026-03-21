@@ -1,23 +1,17 @@
 import Card from "../components/Card";
 import "../styles/dashboard.css";
 import {formatCurrency} from "../utils/common";
+import { saveUID } from "../utils/tokenStorage";
 import { useUser } from "../utils/useUser";
 
 const gotto = () => {
   alert("View details functionality is not implemented yet.");
 }
   const Dashboard: React.FC = () =>{
-
-  
   const user  = useUser();
-
-     
-
-
-
-
-  console.log("User in Dashboard:", user);
-
+  console.log("User in Dashboard:", user?.uid);
+  saveUID(user?.uid|| 0);
+  
  
 const dashboardCards = [
   { title: "👥 Guest Visitor", value: user?.guestVisitor ?? 0, raw: Number(user?.guestVisitor ?? 0) },
