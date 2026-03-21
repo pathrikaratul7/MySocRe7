@@ -4,8 +4,9 @@ import "../styles/navbar.css";
 const logout = () => {
   localStorage.clear();
   sessionStorage.clear();
-  window.location.href = "/";
+  window.location.replace("/"); 
 };
+
 
 const Navbar: React.FC = () => {
   const user = useUser();
