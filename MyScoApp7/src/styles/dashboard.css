@@ -1,61 +1,75 @@
+/* Dark theme base */
 .dashboard-container {
-  padding: 30px;
-  background: #f4f6f9;
+  background: #0f172a;
   min-height: 100vh;
+  padding: 24px;
+  color: #e2e8f0;
 }
 
-.dashboard-title {
-  font-size: 26px;
-  font-weight: 600;
-  margin-bottom: 25px;
-  color: #111827;
-}
-
+/* Grid */
 .dashboard-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 20px;
-}
-/* Full page dark */
-.dashboard-container {
-  background-color: #121212;
-  min-height: 100vh;
-  padding: 20px;
-  color: #ffffff;
-}
-
-/* Grid layout */
-.dashboard-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 20px;
 }
 
-/* Card styling (if not already styled) */
+/* Card */
 .card {
-  background-color: #1e1e1e;
-  border-radius: 12px;
+  background: #1e293b;
+  border-radius: 14px;
   padding: 20px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-  transition: transform 0.2s ease;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+  transition: all 0.25s ease;
 }
 
 .card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-6px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
 }
 
-/* View button */
-.view-btn {
+/* Header */
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  color: #94a3b8;
+}
+
+/* Icon */
+.card-icon {
+  font-size: 20px;
+}
+
+/* Title */
+.card-title {
+  font-weight: 500;
+}
+
+/* Value */
+.card-value {
+  font-size: 28px;
+  font-weight: 700;
   margin-top: 10px;
-  padding: 6px 12px;
-  background-color: #333;
-  color: #fff;
+  color: #ffffff;
+}
+
+/* Footer */
+.card-footer {
+  margin-top: 15px;
+}
+
+/* Button */
+.view-btn {
+  background: #2563eb;
+  color: white;
   border: none;
+  padding: 6px 14px;
   border-radius: 8px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  font-size: 13px;
 }
 
 .view-btn:hover {
-  background-color: #555;
+  background: #1d4ed8;
 }

@@ -1,55 +1,26 @@
 import React from "react";
 
-type Props = {
+interface CardProps {
   title: string;
   value: string | number;
   extra?: React.ReactNode;
-};
+  color?: string;
+  icon?: string;
+}
 
-const cardStyle: React.CSSProperties = {
-  backgroundColor: "#ffffff",
-  borderRadius: "10px",
-  padding: "24px",
-  minWidth: "200px",
-  boxShadow: "0 2px 10px rgba(0,0,0,0.08)",
-  transition: "transform 0.2s ease, box-shadow 0.2s ease",
-  textAlign: "center"
-};
-
-const titleStyle: React.CSSProperties = {
-  fontSize: "14px",
-  color: "#6b7280",
-  marginBottom: "10px"
-};
-
-const valueStyle: React.CSSProperties = {
-  fontSize: "28px",
-  fontWeight: 600,
-  color: "#111827"
-};
-
-const extraStyle: React.CSSProperties = {
-  marginTop: "12px"
-};
-
-const Card: React.FC<Props> = ({ title, value, extra }) => {
+const Card: React.FC<CardProps> = ({ title, value, extra, color, icon }) => {
   return (
-    <div
-      style={cardStyle}
-      onMouseEnter={(e) => {
-        e.currentTarget.style.transform = "translateY(-4px)";
-        e.currentTarget.style.boxShadow = "0 10px 20px rgba(0,0,0,0.12)";
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.transform = "translateY(0)";
-        e.currentTarget.style.boxShadow = "0 2px 10px rgba(0,0,0,0.08)";
-      }}
-    >
-      <div style={titleStyle}>{title}</div>
-      <div style={valueStyle}>{value}</div>
+    <div className="card" style={{ borderLeft: `5px solid ${color}` }}>
+      
+      <div className="card-header">
+        <span className="card-icon">{icon}</span>
+        <span className="card-title">{title}</span>
+      </div>
 
-      {}
-      {extra && <div style={extraStyle}>{extra}</div>}
+      <div className="card-value">{value}</div>
+
+      <div className="card-footer">{extra}</div>
+
     </div>
   );
 };

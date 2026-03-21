@@ -1,24 +1,20 @@
 import React, { useState } from "react";
 import { GetAllUser } from "../utils/useUser";
+import "../styles/users.css";
 
 const Users: React.FC = () => {
   const users = GetAllUser();
 
-  // 🔍 Search state
   const [search, setSearch] = useState("");
-
-  // 📄 Pagination state
   const [currentPage, setCurrentPage] = useState(1);
   const usersPerPage = 5;
 
-  // 🔍 Filter logic
   const filteredUsers = users.filter((u) =>
     u.uName.toLowerCase().includes(search.toLowerCase()) ||
     u.uEmail.toLowerCase().includes(search.toLowerCase()) ||
     u.uMobile.includes(search)
   );
 
-  // 📄 Pagination logic
   const indexOfLast = currentPage * usersPerPage;
   const indexOfFirst = indexOfLast - usersPerPage;
   const currentUsers = filteredUsers.slice(indexOfFirst, indexOfLast);
@@ -36,79 +32,83 @@ const Users: React.FC = () => {
   };
 
   return (
-    <div>
-      <h2>👥 Users List</h2>
+    <div className="users-container">
+      <h2 className="users-title">👥 Users Management</h2>
 
-      {/* 🔍 Search Box */}
+      {/* 🔍 Search */}
       <input
         type="text"
-        placeholder="🔍 Search by name, email, mobile"
+        placeholder="Search users..."
+        className="search-box"
         value={search}
         onChange={(e) => {
           setSearch(e.target.value);
-          setCurrentPage(1); // reset page on search
-        }}
-        style={{
-          padding: "8px",
-          width: "300px",
-          marginBottom: "10px",
+          setCurrentPage(1);
         }}
       />
 
       {users.length === 0 ? (
-        <p>Loading...</p>
+        <p className="loading">Loading...</p>
       ) : (
         <>
-          {/* 📊 Table */}
-          <table
-            border={1}
-            cellPadding={10}
-            style={{
-              borderCollapse: "collapse",
-              width: "100%",
-            }}
-          >
-            <thead style={{ backgroundColor: "#f2f2f2" }}>
-              <tr>
-                <th>UID</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Mobile</th>
-                <th>User Type</th>
-                <th>Roles</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              {currentUsers.map((user) => (
-                <tr key={user.uid}>
-                  <td>{user.uid}</td>
-                  <td>{user.uName}</td>
-                  <td>{user.uEmail}</td>
-                  <td>{user.uMobile}</td>
-                  <td>{user.userType}</td>
-                  <td>{user.privList}</td>
-
-                  <td>
-                    <button onClick={() => handleEdit(user.uid)}>
-                      ✏️ Edit
-                    </button>
-
-                    <button
-                      onClick={() => handleDelete(user.uid)}
-                      style={{ marginLeft: "10px", color: "red" }}
-                    >
-                      🗑 Delete
-                    </button>
-                  </td>
+          {/* Table */}
+          <div className="table-wrapper">
+            <table className="users-table">
+              <thead>
+                <tr>
+                  <th>UID</th>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Mobile</th>
+                  <th>User Type</th>
+                  <th>Roles</th>
+                  <th>Actions</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
 
-          {/* 📄 Pagination Controls */}
-          <div style={{ marginTop: "10px" }}>
+              <tbody>
+                {currentUsers.map((user) => (
+                  <tr key={user.uid}>
+                    <td>{user.uid}</td>
+                    <td>{user.uName}</td>
+                    <td>{user.uEmail}</td>
+                    <td>{user.uMobile}</td>
+                    <td>{user.userType}</td>
+                    <td>
+                      <span className="role-badge">{user.privList}</span>
+                    </td>
+
+                    <td>
+                      <button
+                        className="btn edit-btn"
+                        onClick={() => handleEdit(user.uid)}
+                      >
+                        Edit
+                      </button>
+
+                      <button
+                        className="btn delete-btn"
+                        onClick={() => handleDelete(user.uid)}
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+
+                {currentUsers.length === 0 && (
+                  <tr>
+                    <td colSpan={7} className="no-data">
+                      No users found 😔
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Pagination */}
+          <div className="pagination">
             <button
               disabled={currentPage === 1}
               onClick={() => setCurrentPage(currentPage - 1)}
@@ -116,8 +116,8 @@ const Users: React.FC = () => {
               ⬅ Prev
             </button>
 
-            <span style={{ margin: "0 10px" }}>
-              Page {currentPage} of {totalPages}
+            <span>
+              Page {currentPage} / {totalPages}
             </span>
 
             <button

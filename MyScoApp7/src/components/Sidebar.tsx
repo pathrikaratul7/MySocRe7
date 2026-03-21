@@ -1,44 +1,22 @@
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
+import "../styles/sidebar.css";
 
 const Sidebar = () => {
   return (
-    <div style={styles.sidebar}>
-
-      <h2 style={styles.logo}>My Society App 7</h2>
+    <div className="sidebar">
+      <h2 className="logo">🏢 My Society</h2>
 
       <nav>
-        <Link style={styles.menu} to="/dashboard">🏠 Dashboard</Link>
-        <Link style={styles.menu} to="/users">👥 Users</Link>
-        {/* <Link style={styles.menu} to="/reports">📊 Reports</Link>
-        <Link style={styles.menu} to="/settings">⚙ Settings</Link> */}
-      </nav>
+        <NavLink to="/dashboard" className="menu">
+          🏠 Dashboard
+        </NavLink>
 
+        <NavLink to="/users" className="menu">
+          👥 Users
+        </NavLink>
+      </nav>
     </div>
   );
-};
-
-const styles = {
-  sidebar: {
-    width: "240px",
-    background: "#1e293b",
-    color: "white",
-    padding: "25px",
-    display: "flex",
-    flexDirection: "column" as const
-  },
-
-  logo: {
-    marginBottom: "40px"
-  },
-
-  menu: {
-    display: "block",
-    padding: "12px 15px",
-    marginBottom: "10px",
-    color: "#e2e8f0",
-    textDecoration: "none",
-    borderRadius: "6px"
-  }
 };
 
 export default Sidebar;
