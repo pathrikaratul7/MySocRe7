@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import { GetAllUser } from "../utils/useUser";
 import "../styles/users.css";
-
+import "../styles/Image.css";
+import { useNavigate } from "react-router-dom";
+import UserImage from "./UserImage";
 const Users: React.FC = () => {
-  const users = GetAllUser();
+  const navigate = useNavigate();
+  const users = GetAllUser("");
 
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -23,6 +26,7 @@ const Users: React.FC = () => {
 
   const handleEdit = (uid: number) => {
     console.log("Edit user:", uid);
+      navigate(`/user-edit/${uid}`);
   };
 
   const handleDelete = (uid: number) => {
@@ -62,6 +66,7 @@ const Users: React.FC = () => {
                   <th>Mobile</th>
                   <th>User Type</th>
                   <th>Roles</th>
+                  <th>Profile Pic</th>
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -76,6 +81,9 @@ const Users: React.FC = () => {
                     <td>{user.userType}</td>
                     <td>
                       <span className="role-badge">{user.privList}</span>
+                    </td>
+                    <td>
+                     <UserImage src={user.imagePath} />
                     </td>
 
                     <td>
@@ -130,7 +138,11 @@ const Users: React.FC = () => {
         </>
       )}
     </div>
-  );
+ 
+
+);
+  
 };
+
 
 export default Users;

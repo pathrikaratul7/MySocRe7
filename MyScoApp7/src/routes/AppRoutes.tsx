@@ -4,6 +4,7 @@ import Dashboard from "../pages/Dashboard";
 import Login from "../pages/Login";
 import Layout from "../components/Layout";
 import Users from "../pages/users";
+import UserEdit from "../pages/userEdit";
 
 const AppRoutes = () => {
   return (
@@ -18,6 +19,8 @@ const AppRoutes = () => {
 
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/users" element={<Users />} />
+          <Route path="/user-edit/:id" element={<UserEdit />} />
+          
 
         </Route>
 

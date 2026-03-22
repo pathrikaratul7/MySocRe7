@@ -1,0 +1,29 @@
+.image-container {
+  position: relative;
+  height: 100px;
+  width: 100px;
+}
+
+.user-img-circle {
+  height: 100px;
+  width: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* Loader Spinner */
+.loader {
+  height: 100px;
+  width: 100px;
+  border: 4px solid #eee;
+  border-top: 4px solid #3498db;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+/* Animation */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

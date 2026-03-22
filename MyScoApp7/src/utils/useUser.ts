@@ -66,7 +66,7 @@ export const useUser = () => {
 
   return user;
 };
-export const GetAllUser= () => {
+export const GetAllUser= (uid:string) => {
    const [getuser, setUser] = useState<GetALlUserDATA[]>([]);
 
   useEffect(() => {
@@ -74,7 +74,7 @@ export const GetAllUser= () => {
     {
       try{
       const data: GetALlUserDATA[] = await GetAllUsersfromAPp(
-        localStorage.getItem("token") || "",localStorage.getItem("uid") || ""
+        localStorage.getItem("token") || "",uid.length > 0 ? uid : localStorage.getItem("uid") || ""
     );
     setUser(data);
   }
@@ -83,7 +83,7 @@ export const GetAllUser= () => {
       }
   };
 fetchAllUserDetails();
-    },[]);
+    },[uid]);
 
     return getuser;
   };
