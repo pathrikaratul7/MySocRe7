@@ -13,6 +13,7 @@ interface UserData {
   uName?: string;
   uEmail?: string;
   uid?: number;
+  imagePath: string;
 
 }
 interface GetALlUserDATA {
@@ -41,6 +42,7 @@ interface GetALlUserDATA {
   overallTotalReconcile: number;
   overallFailedTotalReconcile: number;
   pendingTranCount: number;
+  
 }
 export const useUser = () => {
   const [user, setUser] = useState<UserData | null>(null);

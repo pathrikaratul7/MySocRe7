@@ -1,41 +1,69 @@
 import { useParams } from "react-router-dom";
 import { GetAllUser } from "../utils/useUser";
 import UserImage from "./UserImage";
-import "../styles/Image.css";
+import "../styles/UserEdit.css";
 
 const UserEdit: React.FC = () => {
   const { id } = useParams();
   const userId = id ? parseInt(id) : 0;
 
-  const users = GetAllUser(userId.toString()); // get all users
+  const users = GetAllUser("");
   const user = users.find((u) => u.uid === userId);
 
   return (
-    <div>
-      <h1>User Edit Page</h1>
-      <p>User ID: {userId}</p>
+    <div className="user-edit-container">
+      <div className="user-card">
+        <h2 className="title">👤 User Details</h2>
 
-      {user ? (
-        <>
-          <p>User Name: {user.uName}</p>
-          <p>Email: {user.uEmail}</p>
-          <p>Mobile: {user.uMobile}</p>
-          <p>Password: {user.uPass}</p>
-          <p>Last Updated By : {user.updatedBy || "ADMIN"}</p>
-          <p>Last updated Date Time : {user.updatedDateTime}</p>
-          <p>Flat ID : {user.fid}</p>
-          <p>Roles : {user.privList}</p>
-          <p> Profile Picture</p>
-            <p>
- 
-<UserImage src={user.imagePath} />
-</p>
-          <p>User Type : {user.userType}</p>
-         
-        </>
-      ) : (
-        <p>User not found 😔</p>
-      )}
+        {user ? (
+          <>
+            <div className="profile-section">
+              <UserImage src={user.imagePath} />
+              <h3>{user.uName}</h3>
+              <span className="badge">{user.userType}</span>
+            </div>
+
+            <div className="info-grid">
+              <div className="info-box">
+                <label>Email</label>
+                <p>{user.uEmail}</p>
+              </div>
+
+              <div className="info-box">
+                <label>Mobile</label>
+                <p>{user.uMobile}</p>
+              </div>
+
+              <div className="info-box">
+                <label>Password</label>
+                <p>••••••••</p>
+              </div>
+
+              <div className="info-box">
+                <label>Flat ID</label>
+                <p>{user.fid}</p>
+              </div>
+
+              <div className="info-box">
+                <label>Roles</label>
+                <p>{user.privList}</p>
+              </div>
+
+              <div className="info-box">
+                <label>Last Updated By</label>
+                <p>{user.updatedBy || "ADMIN"}</p>
+              </div>
+
+              <div className="info-box">
+                <label>Updated Date</label>
+                <p>{user.updatedDateTime}</p>
+              </div>
+            </div>
+          </>
+        ) : (
+          <p className="not-found">User not found 😔</p>
+        )}
+      </div>
     </div>
   );
 };

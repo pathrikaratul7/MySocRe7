@@ -1,0 +1,79 @@
+/* Page background */
+.user-edit-container {
+  min-height: 100vh;
+  background: #0f172a;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+/* Card */
+.user-card {
+  background: #1e293b;
+  padding: 25px;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 700px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+/* Title */
+.title {
+  text-align: center;
+  color: #38bdf8;
+  margin-bottom: 20px;
+}
+
+/* Profile Section */
+.profile-section {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.profile-section h3 {
+  color: #fff;
+  margin-top: 10px;
+}
+
+/* Badge */
+.badge {
+  background: #22c55e;
+  color: #000;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+}
+
+/* Grid Layout */
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+}
+
+/* Info box */
+.info-box {
+  background: #334155;
+  padding: 12px;
+  border-radius: 10px;
+}
+
+/* Labels */
+.info-box label {
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+/* Values */
+.info-box p {
+  margin: 5px 0 0;
+  color: #fff;
+  font-weight: 500;
+}
+
+/* Not found */
+.not-found {
+  text-align: center;
+  color: #f87171;
+}
