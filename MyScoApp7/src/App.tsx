@@ -8,6 +8,7 @@ import Users from "./pages/users";
 import UserEdit from "./pages/userEdit";
 import Guestlist from "./pages/guestlist";
 import GuestEdit from "./pages/guestedit";
+import Flatlist from "./pages/flatlist";
 
 
 function App() {
@@ -79,6 +80,16 @@ function App() {
     </ProtectedRoute>
     }
     />
+
+
+<Route path="/Flatlist" element={<ProtectedRoute>
+  <MainLayout>
+    <Flatlist/>
+  </MainLayout>
+</ProtectedRoute>
+}
+/>
+
       </Routes>
     </BrowserRouter>
   );
