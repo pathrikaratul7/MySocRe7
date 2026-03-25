@@ -4,6 +4,9 @@ import "../styles/users.css";
 import "../styles/Image.css";
 import { useNavigate } from "react-router-dom";
 import UserImage from "./UserImage";
+import { FaEdit } from "react-icons/fa";
+import { FaDeleteLeft } from "react-icons/fa6";
+import Swal from "sweetalert2";
 const Users: React.FC = () => {
   const navigate = useNavigate();
   const users = GetAllUser("");
@@ -24,16 +27,43 @@ const Users: React.FC = () => {
 
   const totalPages = Math.ceil(filteredUsers.length / usersPerPage);
 
-  const handleEdit = (uid: number) => {
-    console.log("Edit user:", uid);
-      navigate(`/user-edit/${uid}`);
-  };
-
-  const handleDelete = (uid: number) => {
-    if (window.confirm("Are you sure you want to delete this user?")) {
-      console.log("Delete user:", uid);
+  const handleEdit = (gid: number | string) => {
+      Swal.fire({
+    title: "Edit User Entry ✏️",
+    text: "Do you want to modify this User's details?",
+    icon: "question",
+      background: "#1e1e2f",
+    color: "#ffffff",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes, Edit",
+    cancelButtonText: "Cancel"
+  }).then((result) => {
+    if (result.isConfirmed) {
+      navigate(`/user-edit/${gid}`);
     }
-  };
+  });
+    };
+  
+    const handleDelete = (gid : number | string) => {
+      Swal.fire({
+    title: "Delete User Entry 🗑️",
+    text: "Do you want to delete this User's details?",
+    icon: "warning",
+    background: "#1e1e2f",
+    color: "#ffffff",
+    showCancelButton: true,
+    confirmButtonColor: "#e53935",
+    cancelButtonColor: "#6c757d",
+    confirmButtonText: "Yes, Delete",
+    cancelButtonText: "Cancel"
+  }).then((result) => {
+    if (result.isConfirmed) {
+      navigate(`/user-edit/${gid}`);
+    }
+  });
+    };
 
   return (
     <div className="users-container">
@@ -87,18 +117,19 @@ const Users: React.FC = () => {
                     </td>
 
                     <td>
-                      <button
-                        className="btn edit-btn"
-                        onClick={() => handleEdit(user.uid)}
-                      >
-                        Edit
-                      </button>
+                     <button
+  className="btn edit-btn"
+  onClick={() => handleEdit(user.uid)}
+  title="Edit"
+>
+  <FaEdit />
+</button>
 
                       <button
                         className="btn delete-btn"
-                        onClick={() => handleDelete(user.uid)}
+                        onClick={() => handleDelete(user.uid)} title="Delete"
                       >
-                        Delete
+                        <FaDeleteLeft/>
                       </button>
                     </td>
                   </tr>
