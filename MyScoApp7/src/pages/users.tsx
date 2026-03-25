@@ -69,7 +69,7 @@ const Users: React.FC = () => {
     <div className="users-container">
       <h2 className="users-title">👥 Users Management</h2>
 
-      {/* 🔍 Search */}
+      
       <input
         type="text"
         placeholder="Search users..."

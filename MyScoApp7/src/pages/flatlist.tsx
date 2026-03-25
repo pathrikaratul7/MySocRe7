@@ -67,7 +67,7 @@ const Flatlist: React.FC = () => {
     <div className="users-container">
       <h2 className="users-title">👥 Flat Management</h2>
 
-      {/* 🔍 Search */}
+      
       <input
         type="text"
         placeholder="Search Guest..."
