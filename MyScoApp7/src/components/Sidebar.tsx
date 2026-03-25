@@ -14,6 +14,10 @@ const Sidebar = () => {
         <NavLink to="/users" className="menu">
           👥 Users
         </NavLink>
+
+        <NavLink to="/Guestlist" className="menu">
+        🧑 Guest 
+        </NavLink>
       </nav>
     </div>
   );

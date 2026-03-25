@@ -6,6 +6,7 @@ import ProtectedRoute from "./routes/ProtectedRoute";
 import MainLayout from "./layout/MainLayout";
 import Users from "./pages/users";
 import UserEdit from "./pages/userEdit";
+import Guestlist from "./pages/guestlist";
 
 
 function App() {
@@ -57,6 +58,14 @@ function App() {
 <Route path="/user-edit/:id" element={<ProtectedRoute>
       <MainLayout>
         <UserEdit />
+      </MainLayout>
+    </ProtectedRoute>
+    }
+    />
+
+    <Route path="/guestlist" element={<ProtectedRoute>
+      <MainLayout>
+        <Guestlist/>
       </MainLayout>
     </ProtectedRoute>
     }

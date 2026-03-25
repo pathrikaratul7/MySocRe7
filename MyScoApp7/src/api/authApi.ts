@@ -31,12 +31,29 @@ export const GetAllUsersfromAPp= async(token: string,uid: string ) =>{
 const response = await axios.post(`${API_URL}/SocietyUser/GetAllUsers`,
      {
         uid : uid,
-    Flag:"Report"},
+    Flag:"Report"
+  },
     {
       headers: {
         Authorization: `Bearer ${token}`
       }
     });
+return response.data;
+
+}
+
+export const GetAllGuestListAPI= async(token: string, loginID:string) => {
+const response = await axios.post(`${API_URL}/Guest/GetAllGuestList`,
+{
+  loginID : loginID,
+  Flag :"Report"
+},
+{
+headers:
+{
+  Authorization: `Bearer ${token}`
+}
+});
 return response.data;
 
 }
