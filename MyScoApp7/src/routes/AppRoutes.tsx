@@ -6,6 +6,7 @@ import Layout from "../components/Layout";
 import Users from "../pages/users";
 import UserEdit from "../pages/userEdit";
 import Guestlist from "../pages/guestlist";
+import GuestEdit from "../pages/guestedit";
 
 const AppRoutes = () => {
   return (
@@ -22,6 +23,7 @@ const AppRoutes = () => {
           <Route path="/users" element={<Users />} />
           <Route path="/guestlist" element={<Guestlist/>}/>
           <Route path="/user-edit/:id" element={<UserEdit />} />
+          <Route path="/guest-edit/:id" element={<GuestEdit/>}/>
           
 
         </Route>
