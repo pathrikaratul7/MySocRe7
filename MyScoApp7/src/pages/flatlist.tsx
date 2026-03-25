@@ -26,8 +26,8 @@ const Flatlist: React.FC = () => {
 
   const handleEdit = (fid: number | string) => {
     Swal.fire({
-  title: "Edit Guest Entry ✏️",
-  text: "Do you want to modify this guest's details?",
+  title: "Edit Flat Entry ✏️",
+  text: "Do you want to modify this Flat details?",
   icon: "question",
     background: "#1e1e2f",
   color: "#ffffff",
@@ -45,8 +45,8 @@ const Flatlist: React.FC = () => {
 
   const handleDelete = (fid : number | string) => {
     Swal.fire({
-  title: "Delete Guest Entry 🗑️",
-  text: "Do you want to delete this guest's details?",
+  title: "Delete Flat Entry 🗑️",
+  text: "Do you want to delete this Flat details?",
   icon: "warning",
   background: "#1e1e2f",
   color: "#ffffff",
@@ -57,7 +57,7 @@ const Flatlist: React.FC = () => {
   cancelButtonText: "Cancel"
 }).then((result) => {
   if (result.isConfirmed) {
-    navigate(`/guest-edit/${fid}`);
+    navigate(`/flat-edit/${fid}`);
   }
 });
   };

@@ -9,6 +9,7 @@ import UserEdit from "./pages/userEdit";
 import Guestlist from "./pages/guestlist";
 import GuestEdit from "./pages/guestedit";
 import Flatlist from "./pages/flatlist";
+import FlatEdit from "./pages/FlatEdit";
 
 
 function App() {
@@ -89,6 +90,14 @@ function App() {
 </ProtectedRoute>
 }
 />
+ <Route path="/flat-edit/:id" element={<ProtectedRoute>
+      <MainLayout>
+        <FlatEdit/>
+      </MainLayout>
+    </ProtectedRoute>
+    }
+    />
+
 
       </Routes>
     </BrowserRouter>
