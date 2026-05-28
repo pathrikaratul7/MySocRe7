@@ -10,7 +10,7 @@ type TokenType = {
   exp: number;
 };
 
-// ✅ Pure function (allowed)
+// Pure function (allowed)
 function isTokenValid(token: string | null): boolean {
   if (!token) return false;
 
