@@ -1,40 +1,26 @@
-
 /* =========================================================
-   My Society Enterprise App
-   Pre Guest Registration
-   Dark Responsive UI
-   ========================================================= */
-
-* {
-  box-sizing: border-box;
-}
-
-html,
-body,
-#root {
-  margin: 0;
-  padding: 0;
-  min-height: 100%;
-}
-
-/* =========================================================
-   Main Page
+   PreGuest Page
    ========================================================= */
 
 .pre-guest-page {
-  min-height: 100vh;
-  width: 100%;
-  background: #0f172a;
-  color: #e2e8f0;
+    min-height: 100vh;
+    width: 100%;
+    padding: 24px;
+    background: #0f172a;
+    color: #e5e7eb;
+    box-sizing: border-box;
 }
 
 .pre-guest-container {
-  width: 100%;
-  min-height: 100vh;
-  padding: 35px 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    background: #111827;
+    border: 1px solid #1e293b;
+    border-radius: 16px;
+    padding: 24px;
+    box-sizing: border-box;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
 }
 
 /* =========================================================
@@ -42,25 +28,56 @@ body,
    ========================================================= */
 
 .pre-guest-header {
-  width: 100%;
-  max-width: 950px;
-  text-align: center;
-  margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #1e293b;
 }
 
 .pre-guest-header h1 {
-  margin: 0;
-  color: #f8fafc;
-  font-size: 30px;
-  font-weight: 700;
-  line-height: 1.3;
+    margin: 0;
+    font-size: 26px;
+    font-weight: 700;
+    color: #f8fafc;
 }
 
-.pre-guest-header p {
-  margin: 8px 0 0;
-  color: #94a3b8;
-  font-size: 14px;
-  line-height: 1.6;
+.pre-guest-flat-count {
+    padding: 6px 12px;
+    border-radius: 20px;
+    background: #1e293b;
+    color: #cbd5e1;
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+/* =========================================================
+   Alerts
+   ========================================================= */
+
+.pre-guest-alert {
+    width: 100%;
+    padding: 12px 14px;
+    margin-bottom: 18px;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.pre-guest-alert.error {
+    background: rgba(127, 29, 29, 0.35);
+    border: 1px solid #991b1b;
+    color: #fecaca;
+}
+
+.pre-guest-alert.success {
+    background: rgba(20, 83, 45, 0.35);
+    border: 1px solid #166534;
+    color: #bbf7d0;
 }
 
 /* =========================================================
@@ -68,62 +85,53 @@ body,
    ========================================================= */
 
 .pre-guest-form {
-  width: 100%;
-  max-width: 950px;
-  background: #121212;
-  border: 1px solid #334155;
-  border-radius: 18px;
-  padding: 30px;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+    width: 100%;
 }
 
-/* =========================================================
-   Sections
-   ========================================================= */
-
 .pre-guest-section {
-  width: 100%;
-  margin-bottom: 28px;
+    margin-bottom: 28px;
+}
+
+.pre-guest-section:last-child {
+    margin-bottom: 0;
 }
 
 .pre-guest-section h2 {
-  margin: 0 0 16px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid #334155;
-
-  color: #f8fafc;
-  font-size: 17px;
-  font-weight: 600;
-  line-height: 1.4;
+    margin: 0 0 16px 0;
+    font-size: 18px;
+    font-weight: 650;
+    color: #f1f5f9;
 }
 
 /* =========================================================
-   Form Grid
+   Grid
    ========================================================= */
 
 .pre-guest-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 18px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
 }
 
 /* =========================================================
-   Form Field
+   Fields
    ========================================================= */
 
 .pre-guest-field {
-  width: 100%;
-  min-width: 0;
+    position: relative;
+    width: 100%;
 }
 
 .pre-guest-field label {
-  display: block;
-  margin-bottom: 7px;
+    display: block;
+    margin-bottom: 7px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #cbd5e1;
+}
 
-  color: #cbd5e1;
-  font-size: 13px;
-  font-weight: 500;
-  line-height: 1.4;
+.pre-guest-field label span {
+    color: #f87171;
 }
 
 /* =========================================================
@@ -131,665 +139,469 @@ body,
    ========================================================= */
 
 .pre-guest-input {
-  width: 100%;
-  min-height: 46px;
-
-  padding: 11px 13px;
-
-  background: #1e293b;
-  color: #f8fafc;
-
-  border: 1px solid #475569;
-  border-radius: 9px;
-
-  outline: none;
-
-  font-family: inherit;
-  font-size: 14px;
-
-  transition:
-    border-color 0.2s ease,
-    background 0.2s ease,
-    box-shadow 0.2s ease;
+    width: 100%;
+    min-height: 44px;
+    padding: 10px 12px;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    background: #0f172a;
+    color: #f8fafc;
+    font-size: 14px;
+    outline: none;
+    box-sizing: border-box;
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
 }
 
 .pre-guest-input::placeholder {
-  color: #64748b;
+    color: #64748b;
 }
 
 .pre-guest-input:hover:not(:disabled) {
-  border-color: #64748b;
+    border-color: #475569;
 }
 
 .pre-guest-input:focus {
-  border-color: #6366f1;
-  background: #172033;
-
-  box-shadow:
-    0 0 0 3px rgba(99, 102, 241, 0.15);
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
 }
 
 .pre-guest-input:disabled {
-  opacity: 0.55;
-  cursor: not-allowed;
+    background: #1e293b;
+    color: #94a3b8;
+    cursor: not-allowed;
+    opacity: 0.8;
 }
 
-/* =========================================================
-   Date Time
-   ========================================================= */
+/* Date input */
 
 .pre-guest-input[type="datetime-local"] {
-  color-scheme: dark;
-}
-
-.pre-guest-input[type="datetime-local"]::-webkit-calendar-picker-indicator {
-  filter: invert(1);
-  cursor: pointer;
+    color-scheme: dark;
 }
 
 /* =========================================================
-   Error
+   Autocomplete
    ========================================================= */
 
-.pre-guest-error {
-  width: 100%;
-  max-width: 950px;
+.pre-guest-autocomplete {
+    position: relative;
+    width: 100%;
+}
 
-  margin-bottom: 20px;
-  padding: 13px 16px;
+.pre-guest-suggestions {
+    position: absolute;
+    top: calc(100% + 5px);
+    left: 0;
+    right: 0;
+    z-index: 1000;
 
-  background: rgba(220, 38, 38, 0.12);
-  border: 1px solid #dc2626;
-  border-radius: 9px;
+    max-height: 280px;
+    overflow-y: auto;
 
-  color: #fca5a5;
-  font-size: 14px;
-  line-height: 1.6;
+    background: #111827;
+    border: 1px solid #334155;
+    border-radius: 8px;
 
-  white-space: pre-line;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+}
+
+.pre-guest-suggestion-item {
+    padding: 11px 13px;
+    border-bottom: 1px solid #1e293b;
+    cursor: pointer;
+    transition: background 0.15s ease;
+}
+
+.pre-guest-suggestion-item:last-child {
+    border-bottom: none;
+}
+
+.pre-guest-suggestion-item:hover {
+    background: #1e293b;
+}
+
+.pre-guest-suggestion-main {
+    color: #f8fafc;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.pre-guest-suggestion-details {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 5px;
+
+    color: #94a3b8;
+    font-size: 12px;
+}
+
+.pre-guest-suggestion-loading {
+    padding: 14px;
+    text-align: center;
+    color: #94a3b8;
+    font-size: 13px;
+}
+
+.pre-guest-no-suggestions {
+    padding: 14px;
+    text-align: center;
+    color: #64748b;
+    font-size: 13px;
+}
+
+/* Scrollbar */
+
+.pre-guest-suggestions::-webkit-scrollbar {
+    width: 7px;
+}
+
+.pre-guest-suggestions::-webkit-scrollbar-track {
+    background: #0f172a;
+}
+
+.pre-guest-suggestions::-webkit-scrollbar-thumb {
+    background: #334155;
+    border-radius: 10px;
+}
+
+.pre-guest-suggestions::-webkit-scrollbar-thumb:hover {
+    background: #475569;
 }
 
 /* =========================================================
-   Guest Image
+   Selected Flat
    ========================================================= */
 
-.pre-guest-image-section {
-  width: 100%;
-
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-
-  gap: 12px;
+.pre-guest-selected-flat {
+    margin-top: 14px;
+    padding: 14px;
+    border: 1px solid #334155;
+    border-radius: 10px;
+    background: #0f172a;
 }
 
-.pre-guest-file-input {
-  display: none;
+.pre-guest-selected-flat-title {
+    margin-bottom: 10px;
+    color: #a5b4fc;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.pre-guest-selected-flat-details {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.pre-guest-selected-flat-details div {
+    padding: 8px 10px;
+    border-radius: 7px;
+    background: #1e293b;
+}
+
+.pre-guest-selected-flat-details span {
+    display: block;
+    margin-bottom: 3px;
+    color: #64748b;
+    font-size: 11px;
+}
+
+.pre-guest-selected-flat-details strong {
+    display: block;
+    color: #e2e8f0;
+    font-size: 13px;
 }
 
 /* =========================================================
-   Image Button
+   Image Upload
    ========================================================= */
 
-.pre-guest-image-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  min-height: 48px;
-  padding: 0 20px;
-
-  background: #1e293b;
-  border: 1px solid #475569;
-  border-radius: 10px;
-
-  color: #f8fafc;
-
-  font-size: 14px;
-  font-weight: 600;
-
-  cursor: pointer;
-
-  transition:
-    background 0.2s ease,
-    border-color 0.2s ease,
-    transform 0.15s ease;
+.pre-guest-image-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
 }
 
-.pre-guest-image-button:hover {
-  background: #334155;
-  border-color: #6366f1;
+.pre-guest-image-container input[type="file"] {
+    width: 100%;
+    padding: 9px;
+    border: 1px dashed #475569;
+    border-radius: 8px;
+    background: #0f172a;
+    color: #cbd5e1;
+    box-sizing: border-box;
+    cursor: pointer;
 }
 
-.pre-guest-image-button:active {
-  transform: scale(0.98);
-}
-
-/* =========================================================
-   Image Help
-   ========================================================= */
-
-.pre-guest-image-help {
-  margin: 0;
-
-  color: #94a3b8;
-  font-size: 12px;
-  line-height: 1.7;
-}
-
-/* =========================================================
-   Image Preview
-   ========================================================= */
-
-.pre-guest-image-preview-container {
-  width: 100%;
-  max-width: 320px;
-
-  padding: 14px;
-
-  background: #0f172a;
-  border: 1px solid #334155;
-  border-radius: 12px;
-
-  text-align: center;
+.pre-guest-image-container input[type="file"]:hover {
+    border-color: #6366f1;
 }
 
 .pre-guest-image-preview {
-  display: block;
+    width: 180px;
+    height: 180px;
+    overflow: hidden;
 
-  width: 100%;
-  max-width: 280px;
-  height: 280px;
-
-  margin: 0 auto;
-
-  object-fit: cover;
-
-  border-radius: 10px;
-  border: 1px solid #475569;
-
-  background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 12px;
+    background: #0f172a;
 }
 
-.pre-guest-image-name {
-  width: 100%;
-
-  margin-top: 10px;
-
-  color: #cbd5e1;
-  font-size: 12px;
-
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+.pre-guest-image-preview img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
 }
 
 /* =========================================================
-   Remove Image
+   Loading
    ========================================================= */
 
-.pre-guest-remove-image {
-  width: 100%;
+.pre-guest-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
 
-  min-height: 40px;
-
-  margin-top: 12px;
-  padding: 8px 14px;
-
-  background: rgba(220, 38, 38, 0.12);
-
-  border: 1px solid #7f1d1d;
-  border-radius: 8px;
-
-  color: #fecaca;
-
-  font-family: inherit;
-  font-size: 13px;
-  font-weight: 600;
-
-  cursor: pointer;
-
-  transition:
-    background 0.15s ease,
-    border-color 0.15s ease;
+    padding: 18px;
+    color: #94a3b8;
+    font-size: 14px;
 }
 
-.pre-guest-remove-image:hover:not(:disabled) {
-  background: rgba(220, 38, 38, 0.22);
-  border-color: #dc2626;
+.pre-guest-loading::before {
+    content: "";
+    width: 18px;
+    height: 18px;
+
+    border: 2px solid #334155;
+    border-top-color: #818cf8;
+    border-radius: 50%;
+
+    animation: preGuestSpin 0.8s linear infinite;
 }
 
-.pre-guest-remove-image:disabled {
-  opacity: 0.55;
-  cursor: not-allowed;
+@keyframes preGuestSpin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 /* =========================================================
    Buttons
    ========================================================= */
 
-.pre-guest-buttons {
-  width: 100%;
+.pre-guest-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 12px;
 
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
+    margin-top: 28px;
+    padding-top: 20px;
 
-  gap: 12px;
-
-  margin-top: 5px;
-  padding-top: 20px;
-
-  border-top: 1px solid #334155;
+    border-top: 1px solid #1e293b;
 }
 
-.pre-guest-buttons button {
-  min-height: 45px;
+.pre-guest-btn {
+    min-width: 120px;
+    min-height: 44px;
 
-  padding: 10px 22px;
+    padding: 10px 18px;
 
-  border-radius: 9px;
+    border: 1px solid transparent;
+    border-radius: 8px;
 
-  font-family: inherit;
-  font-size: 14px;
-  font-weight: 600;
+    font-size: 14px;
+    font-weight: 600;
 
-  cursor: pointer;
+    cursor: pointer;
 
-  transition:
-    background 0.15s ease,
-    border-color 0.15s ease,
-    transform 0.15s ease,
-    opacity 0.15s ease;
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.15s ease,
+        opacity 0.2s ease;
 }
 
-.pre-guest-buttons button:hover:not(:disabled) {
-  transform: translateY(-1px);
+.pre-guest-btn:hover:not(:disabled) {
+    transform: translateY(-1px);
 }
 
-.pre-guest-buttons button:active:not(:disabled) {
-  transform: translateY(0);
+.pre-guest-btn:active:not(:disabled) {
+    transform: translateY(0);
 }
 
-.pre-guest-buttons button:disabled {
-  opacity: 0.55;
-  cursor: not-allowed;
+.pre-guest-btn:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
 }
 
-/* =========================================================
-   Cancel
-   ========================================================= */
+/* Secondary button */
 
-.pre-guest-cancel-button {
-  background: transparent;
-
-  border: 1px solid #475569;
-
-  color: #cbd5e1;
+.pre-guest-btn.secondary {
+    background: #1e293b;
+    border-color: #334155;
+    color: #e2e8f0;
 }
 
-.pre-guest-cancel-button:hover:not(:disabled) {
-  background: #1e293b;
-  border-color: #64748b;
+.pre-guest-btn.secondary:hover:not(:disabled) {
+    background: #334155;
 }
 
-/* =========================================================
-   Primary Button
-   ========================================================= */
+/* Primary button */
 
-.pre-guest-primary-button {
-  background: #4f46e5;
-
-  border: 1px solid #6366f1;
-
-  color: #ffffff;
+.pre-guest-btn.primary {
+    background: #4f46e5;
+    border-color: #6366f1;
+    color: #ffffff;
 }
 
-.pre-guest-primary-button:hover:not(:disabled) {
-  background: #4338ca;
-  border-color: #818cf8;
+.pre-guest-btn.primary:hover:not(:disabled) {
+    background: #4338ca;
 }
 
 /* =========================================================
-   Success Card
+   Registered ID
    ========================================================= */
 
-.pre-guest-success-card {
-  width: 100%;
-  max-width: 700px;
+.pre-guest-registered-id {
+    margin-top: 18px;
+    padding: 14px 16px;
 
-  padding: 30px;
+    border: 1px solid #166534;
+    border-radius: 9px;
 
-  background: #121212;
+    background: rgba(20, 83, 45, 0.25);
+    color: #bbf7d0;
 
-  border: 1px solid #16a34a;
-  border-radius: 18px;
+    font-size: 14px;
+}
 
-  text-align: center;
-
-  box-shadow:
-    0 20px 50px rgba(0, 0, 0, 0.4),
-    0 0 25px rgba(22, 163, 74, 0.08);
+.pre-guest-registered-id strong {
+    color: #86efac;
 }
 
 /* =========================================================
-   Success Icon
+   Required / Error helper
    ========================================================= */
 
-.pre-guest-success-icon {
-  width: 64px;
-  height: 64px;
-
-  margin: 0 auto 16px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  background: rgba(22, 163, 74, 0.12);
-
-  border: 1px solid #16a34a;
-  border-radius: 50%;
-
-  font-size: 30px;
+.pre-guest-required {
+    color: #f87171;
 }
 
-/* =========================================================
-   Success Heading
-   ========================================================= */
-
-.pre-guest-success-card h2 {
-  margin: 0 0 22px;
-
-  color: #86efac;
-
-  font-size: 20px;
-  font-weight: 700;
-  line-height: 1.5;
-}
-
-/* =========================================================
-   Guest ID
-   ========================================================= */
-
-.pre-guest-gid {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  margin-bottom: 20px;
-}
-
-.pre-guest-gid span {
-  margin-bottom: 7px;
-
-  color: #94a3b8;
-
-  font-size: 12px;
-  font-weight: 600;
-
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-.pre-guest-gid strong {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  min-width: 120px;
-
-  padding: 10px 22px;
-
-  background: #052e16;
-
-  border: 1px solid #22c55e;
-  border-radius: 10px;
-
-  color: #4ade80;
-
-  font-size: 30px;
-  font-weight: 800;
-
-  letter-spacing: 2px;
-}
-
-/* =========================================================
-   Success Message
-   ========================================================= */
-
-.pre-guest-success-message {
-  margin-bottom: 24px;
-
-  padding: 15px;
-
-  background: rgba(15, 23, 42, 0.7);
-
-  border: 1px solid #334155;
-  border-radius: 10px;
-}
-
-.pre-guest-success-message p {
-  margin: 0 0 10px;
-
-  color: #cbd5e1;
-
-  font-size: 13px;
-  line-height: 1.7;
-}
-
-.pre-guest-success-message p:last-child {
-  margin-bottom: 0;
-}
-
-/* =========================================================
-   Loading Overlay
-   ========================================================= */
-
-.pre-guest-loading-overlay {
-  position: fixed;
-  inset: 0;
-
-  z-index: 9999;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  padding: 20px;
-
-  background: rgba(15, 23, 42, 0.82);
-
-  backdrop-filter: blur(5px);
-}
-
-/* =========================================================
-   Loader Box
-   ========================================================= */
-
-.pre-guest-loader-box {
-  width: 100%;
-  max-width: 330px;
-
-  padding: 30px 24px;
-
-  background: #121212;
-
-  border: 1px solid #334155;
-  border-radius: 16px;
-
-  text-align: center;
-
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55);
-}
-
-/* =========================================================
-   Spinner
-   ========================================================= */
-
-.pre-guest-spinner {
-  width: 48px;
-  height: 48px;
-
-  margin: 0 auto 18px;
-
-  border: 4px solid #334155;
-  border-top-color: #6366f1;
-
-  border-radius: 50%;
-
-  animation: preGuestSpin 0.8s linear infinite;
-}
-
-@keyframes preGuestSpin {
-  from {
-    transform: rotate(0deg);
-  }
-
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-/* =========================================================
-   Loading Text
-   ========================================================= */
-
-.pre-guest-loading-title {
-  margin-bottom: 8px;
-
-  color: #f8fafc;
-
-  font-size: 18px;
-  font-weight: 600;
-}
-
-.pre-guest-loading-message {
-  color: #94a3b8;
-
-  font-size: 13px;
-  line-height: 1.8;
+.pre-guest-field-error {
+    margin-top: 5px;
+    color: #fca5a5;
+    font-size: 12px;
 }
 
 /* =========================================================
    Tablet
    ========================================================= */
 
-@media (max-width: 768px) {
-  .pre-guest-container {
-    padding: 25px 14px;
-    align-items: flex-start;
-  }
+@media (max-width: 900px) {
+    .pre-guest-page {
+        padding: 18px;
+    }
 
-  .pre-guest-header h1 {
-    font-size: 25px;
-  }
+    .pre-guest-container {
+        padding: 20px;
+    }
 
-  .pre-guest-form {
-    padding: 24px 20px;
-    border-radius: 15px;
-  }
-
-  .pre-guest-grid {
-    grid-template-columns: 1fr;
-    gap: 15px;
-  }
-
-  .pre-guest-buttons {
-    flex-direction: column-reverse;
-  }
-
-  .pre-guest-buttons button {
-    width: 100%;
-  }
-
-  .pre-guest-success-card {
-    padding: 25px 20px;
-  }
+    .pre-guest-selected-flat-details {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
 }
 
 /* =========================================================
    Mobile
    ========================================================= */
 
-@media (max-width: 480px) {
-  .pre-guest-container {
-    padding: 15px 10px;
-  }
+@media (max-width: 650px) {
+    .pre-guest-page {
+        padding: 10px;
+    }
 
-  .pre-guest-header {
-    margin-bottom: 18px;
-  }
+    .pre-guest-container {
+        padding: 16px;
+        border-radius: 12px;
+    }
 
-  .pre-guest-header h1 {
-    font-size: 21px;
-  }
+    .pre-guest-header {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
 
-  .pre-guest-header p {
-    font-size: 12px;
-  }
+    .pre-guest-header h1 {
+        font-size: 22px;
+    }
 
-  .pre-guest-form {
-    padding: 20px 14px;
-    border-radius: 13px;
-  }
+    .pre-guest-flat-count {
+        font-size: 12px;
+    }
 
-  .pre-guest-section {
-    margin-bottom: 23px;
-  }
+    .pre-guest-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
 
-  .pre-guest-section h2 {
-    font-size: 15px;
-    margin-bottom: 13px;
-  }
+    .pre-guest-section h2 {
+        font-size: 17px;
+    }
 
-  .pre-guest-field label {
-    font-size: 12px;
-  }
+    .pre-guest-selected-flat-details {
+        grid-template-columns: 1fr;
+    }
 
-  .pre-guest-input {
-    min-height: 44px;
-    font-size: 14px;
-  }
+    .pre-guest-image-preview {
+        width: 150px;
+        height: 150px;
+    }
 
-  .pre-guest-image-button {
-    width: 100%;
-    min-height: 46px;
-  }
+    .pre-guest-actions {
+        flex-direction: column-reverse;
+        align-items: stretch;
+    }
 
-  .pre-guest-image-preview-container {
-    max-width: 100%;
-  }
+    .pre-guest-btn {
+        width: 100%;
+    }
+}
 
-  .pre-guest-image-preview {
-    width: 100%;
-    height: auto;
-    max-height: 360px;
-  }
+/* =========================================================
+   Small Mobile
+   ========================================================= */
 
-  .pre-guest-buttons {
-    margin-top: 0;
-    padding-top: 18px;
-  }
+@media (max-width: 400px) {
+    .pre-guest-page {
+        padding: 6px;
+    }
 
-  .pre-guest-success-card {
-    padding: 22px 15px;
-  }
+    .pre-guest-container {
+        padding: 12px;
+    }
 
-  .pre-guest-success-card h2 {
-    font-size: 17px;
-  }
+    .pre-guest-header h1 {
+        font-size: 20px;
+    }
 
-  .pre-guest-success-message p {
-    font-size: 12px;
-  }
+    .pre-guest-input {
+        min-height: 42px;
+        font-size: 13px;
+    }
 
-  .pre-guest-gid strong {
-    font-size: 26px;
-  }
-
-  .pre-guest-loader-box {
-    max-width: 280px;
-    padding: 25px 18px;
-  }
+    .pre-guest-suggestion-item {
+        padding: 10px;
+    }
 }
