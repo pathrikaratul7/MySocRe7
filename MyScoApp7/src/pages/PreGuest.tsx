@@ -1359,7 +1359,7 @@ const PreGuest: React.FC = () => {
                 <label>
                   Guest Image *
                 </label>
-
+{/* 
                 <input
                   type="file"
                   accept="image/*"
@@ -1368,8 +1368,15 @@ const PreGuest: React.FC = () => {
                   }
                   disabled={loading}
                   className="pre-guest-input"
-                />
-
+                /> */}
+<input
+  type="file"
+  accept="image/*"
+  capture="environment"
+  onChange={handleImageChange}
+  disabled={loading}
+  className="pre-guest-input"
+/>
               </div>
 
               {previewImage && (
