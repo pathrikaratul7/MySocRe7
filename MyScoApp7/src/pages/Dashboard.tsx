@@ -3,11 +3,12 @@ import "../styles/dashboard.css";
 import {formatCurrency} from "../utils/common";
 import { saveUID } from "../utils/tokenStorage";
 import { useUser } from "../utils/useUser";
+import { useNavigate } from "react-router-dom";
 
-const gotto = () => {
-  alert("View details functionality is not implemented yet.");
-}
-  const Dashboard: React.FC = () =>{
+
+
+      const Dashboard: React.FC = () =>{
+    const navigate = useNavigate();
   const user  = useUser();
   console.log("User in Dashboard:", user?.uid);
   saveUID(user?.uid|| 0);
@@ -57,6 +58,33 @@ const dashboardCards = [
     icon: "⚠️"
   }
 ];
+
+const routes: Record<string, string> = {
+  "Guest Visitors": "/guestlist",
+  "Incident Count": "/incidents",
+};
+
+const reconcileTitles = [
+  "Own Reconcile",
+  "Overall Reconcile",
+  "Own Failed",
+  "Overall Failed",
+];
+
+const gotto = (title: string): void => {
+  if (routes[title]) {
+    navigate(routes[title]);
+    return;
+  }
+
+  if (reconcileTitles.includes(title)) {
+    navigate(`/reconcile/${encodeURIComponent(title)}`);
+    return;
+  }
+
+  alert(`No data available for ${title}`);
+};
+
   return (
     <div className="dashboard-container">
 
@@ -70,8 +98,9 @@ const dashboardCards = [
     color={card.color}
     icon={card.icon}
     extra={
+      
       card.raw > 0 ? (
-        <button className="view-btn" onClick={gotto}>
+        <button className="view-btn" onClick={() => gotto(card.title)}>
          👁️ View Details 👁️
         </button>
       ) : (
