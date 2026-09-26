@@ -18,6 +18,7 @@ const AppRoutes = () => {
 
         {/* Login Page */}
         <Route path="/" element={<Login />} />
+        <Route path="/PreGuest" element={<PreGuest />} />
 
         {/* Master Layout */}
         <Route element={<Layout />}>
@@ -29,7 +30,7 @@ const AppRoutes = () => {
           <Route path="/guest-edit/:id" element={<GuestEdit/>}/>
           <Route path="/Flatlist" element={<Flatlist/>}/>
           <Route path="/flat-edit/:id" element={<FlatEdit/>}/>
-          <Route path="/PreGuest" element={<PreGuest/>}/>
+          
 
         </Route>
 

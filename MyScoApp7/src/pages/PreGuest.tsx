@@ -1,252 +1,481 @@
-import React, { useState } from "react";
+import React, {
+  useRef,
+  useState,
+} from "react";
+
 import { useNavigate } from "react-router-dom";
+
 import { isAxiosError } from "axios";
 
-import { PreGuestAddAPI } from "../api/authApi";
+import {
+  PreGuestAddAPI,
+  UploadGuestImageAPI,
+  type PreGuestRequest,
+} from "../api/authApi";
+
 import "../styles/PreGuest.css";
 
 const PreGuest: React.FC = () => {
   const navigate = useNavigate();
 
-  // =========================
-  // Guest Details
-  // =========================
-  const [gName, setGName] = useState<string>("");
-  const [gMobile, setGMobile] = useState<string>("");
-  const [gEmail, setGEmail] = useState<string>("");
+  // =====================================================
+  // Form Fields
+  // =====================================================
 
-  // =========================
-  // Visit Details
-  // =========================
-  const [inDateTime, setInDateTime] = useState<string>("");
-  const [outDateTime, setOutDateTime] = useState<string>("");
+  const [gName, setGName] = useState("");
+  const [gMobile, setGMobile] = useState("");
+  const [gEmail, setGEmail] = useState("");
 
-  // =========================
-  // Flat Details
-  // =========================
-  const [floorNumber, setFloorNumber] = useState<string>("");
-  const [flatNumber, setFlatNumber] = useState<string>("");
-  const [flatType, setFlatType] = useState<string>("");
+  const [inDateTime, setInDateTime] =
+    useState("");
 
-  // =========================
-  // Contact Details
-  // =========================
+  const [outDateTime, setOutDateTime] =
+    useState("");
+
+  const [floorNumber, setFloorNumber] =
+    useState("");
+
+  const [flatNumber, setFlatNumber] =
+    useState("");
+
+  const [flatType, setFlatType] =
+    useState("");
+
   const [flatOwnerMobile, setFlatOwnerMobile] =
-    useState<string>("");
+    useState("");
 
   const [creatorMobile, setCreatorMobile] =
-    useState<string>("");
+    useState("");
 
-  // =========================
+  // =====================================================
+  // Guest Image
+  // =====================================================
+
+  const [guestImage, setGuestImage] =
+    useState<File | null>(null);
+
+  const [guestImagePreview, setGuestImagePreview] =
+    useState("");
+
+  const guestImageInputRef =
+    useRef<HTMLInputElement | null>(null);
+
+  // =====================================================
   // UI State
-  // =========================
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string>("");
-  const [success, setSuccess] = useState<string>("");
+  // =====================================================
 
-  // =========================
-  // Convert datetime-local
-  // to ISO format
-  // =========================
+  const [loading, setLoading] =
+    useState(false);
+
+  const [loadingMessage, setLoadingMessage] =
+    useState("Saving Guest...");
+
+  const [error, setError] =
+    useState("");
+
+  const [success, setSuccess] =
+    useState("");
+
+  const [registeredGuestId, setRegisteredGuestId] =
+    useState<number | null>(null);
+
+  // =====================================================
+  // Convert datetime-local to ISO
+  // =====================================================
+
   const convertToISO = (
-    dateTime: string
-  ): string | null => {
-    if (!dateTime) {
-      return null;
+    value: string
+  ): string => {
+    if (!value) {
+      return "";
     }
 
-    return new Date(dateTime).toISOString();
+    const date = new Date(value);
+
+    return date.toISOString();
   };
 
-  // =========================
-  // Mobile Number Handler
-  // =========================
+  // =====================================================
+  // Mobile Number Change
+  // =====================================================
+
   const handleMobileChange = (
     value: string,
     setter: React.Dispatch<
       React.SetStateAction<string>
     >
   ) => {
-    const numericValue = value.replace(/\D/g, "");
+    const digitsOnly = value
+      .replace(/\D/g, "")
+      .slice(0, 10);
 
-    setter(numericValue.substring(0, 10));
+    setter(digitsOnly);
   };
 
-  // =========================
-  // Validate Form
-  // =========================
-  const validateForm = (): boolean => {
+  // =====================================================
+  // Guest Image Selection / Camera
+  // =====================================================
+
+  const handleGuestImageChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const file =
+      event.target.files?.[0];
+
+    if (!file) {
+      return;
+    }
+
+    // -------------------------------------------------
+    // Validate Image Type
+    // -------------------------------------------------
+
+    const extension =
+      "." +
+      (
+        file.name
+          .split(".")
+          .pop()
+          ?.toLowerCase() || ""
+      );
+
+    const allowedExtensions = [
+      ".jpg",
+      ".jpeg",
+      ".png",
+      ".webp",
+      ".heic",
+      ".heif",
+    ];
+
+    const isImage =
+      file.type.startsWith("image/") ||
+      allowedExtensions.includes(extension);
+
+    if (!isImage) {
+      setError(
+        "🖼️ Please select a valid image file."
+      );
+
+      event.target.value = "";
+
+      return;
+    }
+
+    // -------------------------------------------------
+    // Validate Image Size
+    // -------------------------------------------------
+
+    const maxSize =
+      5 * 1024 * 1024; // 5 MB
+
+    if (file.size > maxSize) {
+      setError(
+        "🖼️ Image size must be less than 5 MB."
+      );
+
+      event.target.value = "";
+
+      return;
+    }
+
+    // -------------------------------------------------
+    // Store File
+    // -------------------------------------------------
+
     setError("");
 
-    if (!gName.trim()) {
-      setError(
-        "👤 Guest name is required | पाहुण्याचे नाव आवश्यक आहे | अतिथि का नाम आवश्यक है"
+    setGuestImage(file);
+
+    // -------------------------------------------------
+    // Create Preview
+    // -------------------------------------------------
+
+    const reader =
+      new FileReader();
+
+    reader.onload = () => {
+      setGuestImagePreview(
+        String(reader.result)
       );
-      return false;
-    }
+    };
 
-    if (!gMobile.trim()) {
-      setError(
-        "📱 Guest mobile number is required | पाहुण्याचा मोबाईल क्रमांक आवश्यक आहे | अतिथि का मोबाइल नंबर आवश्यक है"
-      );
-      return false;
-    }
-
-    if (!/^[0-9]{10}$/.test(gMobile)) {
-      setError(
-        "📱 Please enter a valid 10 digit guest mobile number | कृपया 10 अंकी पाहुण्याचा मोबाईल क्रमांक टाका | कृपया 10 अंकों का अतिथि मोबाइल नंबर दर्ज करें"
-      );
-      return false;
-    }
-
-    // Email is optional
-    if (gEmail.trim()) {
-      const emailRegex =
-        /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-      if (!emailRegex.test(gEmail.trim())) {
-        setError(
-          "📧 Please enter a valid email address | कृपया योग्य ई-मेल पत्ता टाका | कृपया सही ईमेल पता दर्ज करें"
-        );
-        return false;
-      }
-    }
-
-    if (!floorNumber.trim()) {
-      setError(
-        "🏢 Floor number is required | मजला क्रमांक आवश्यक आहे | फ्लोर नंबर आवश्यक है"
-      );
-      return false;
-    }
-
-    if (!flatNumber.trim()) {
-      setError(
-        "🏠 Flat number is required | फ्लॅट क्रमांक आवश्यक आहे | फ्लैट नंबर आवश्यक है"
-      );
-      return false;
-    }
-
-    if (!flatOwnerMobile.trim()) {
-      setError(
-        "📱 Flat owner mobile number is required | फ्लॅट मालकाचा मोबाईल क्रमांक आवश्यक आहे | फ्लैट मालिक का मोबाइल नंबर आवश्यक है"
-      );
-      return false;
-    }
-
-    if (!/^[0-9]{10}$/.test(flatOwnerMobile)) {
-      setError(
-        "📱 Please enter a valid 10 digit flat owner mobile number | कृपया फ्लॅट मालकाचा 10 अंकी मोबाईल क्रमांक टाका | कृपया फ्लैट मालिक का 10 अंकों का मोबाइल नंबर दर्ज करें"
-      );
-      return false;
-    }
-
-    if (!creatorMobile.trim()) {
-      setError(
-        "📱 Creator mobile number is required | तयार करणाऱ्याचा मोबाईल क्रमांक आवश्यक आहे | क्रिएटर का मोबाइल नंबर आवश्यक है"
-      );
-      return false;
-    }
-
-    if (!/^[0-9]{10}$/.test(creatorMobile)) {
-      setError(
-        "📱 Please enter a valid 10 digit creator mobile number | कृपया तयार करणाऱ्याचा 10 अंकी मोबाईल क्रमांक टाका | कृपया क्रिएटर का 10 अंकों का मोबाइल नंबर दर्ज करें"
-      );
-      return false;
-    }
-
-    // Validate dates
-    if (inDateTime && outDateTime) {
-      const inDate = new Date(inDateTime);
-      const outDate = new Date(outDateTime);
-
-      if (outDate < inDate) {
-        setError(
-          "📅 Out date/time cannot be earlier than in date/time | बाहेर जाण्याची तारीख/वेळ येण्याच्या तारीख/वेळेपेक्षा आधी असू शकत नाही | बाहर जाने की तारीख/समय आने की तारीख/समय से पहले नहीं हो सकता"
-        );
-
-        return false;
-      }
-    }
-
-    return true;
+    reader.readAsDataURL(file);
   };
 
-  // =========================
-  // Clear Only Form Fields
-  // =========================
+  // =====================================================
+  // Remove Guest Image
+  // =====================================================
+
+  const clearGuestImage = () => {
+    setGuestImage(null);
+
+    setGuestImagePreview("");
+
+    if (guestImageInputRef.current) {
+      guestImageInputRef.current.value = "";
+    }
+  };
+
+  // =====================================================
+  // Clear Form
+  // =====================================================
+
   const clearFormFields = () => {
     setGName("");
     setGMobile("");
     setGEmail("");
+
     setInDateTime("");
     setOutDateTime("");
+
     setFloorNumber("");
     setFlatNumber("");
     setFlatType("");
+
     setFlatOwnerMobile("");
     setCreatorMobile("");
+
+    clearGuestImage();
+
+    setError("");
   };
 
-  // =========================
-  // Clear Everything
-  // =========================
-  const handleClear = () => {
-    clearFormFields();
+  // =====================================================
+  // Register Guest
+  // =====================================================
+
+  const handleRegister = async (
+    event: React.FormEvent
+  ) => {
+    event.preventDefault();
 
     setError("");
     setSuccess("");
-  };
+    setRegisteredGuestId(null);
 
-  // =========================
-  // Register Pre-Guest
-  // =========================
-  const handleRegister = async () => {
-    setError("");
-    setSuccess("");
+    // =================================================
+    // Validation
+    // =================================================
 
-    if (!validateForm()) {
+    if (!gName.trim()) {
+      setError(
+        "👤 Please enter guest name."
+      );
+
       return;
     }
+
+    if (
+      !gMobile.trim() ||
+      gMobile.length !== 10
+    ) {
+      setError(
+        "📱 Please enter a valid 10-digit guest mobile number."
+      );
+
+      return;
+    }
+
+    // -------------------------------------------------
+    // Email Validation
+    // -------------------------------------------------
+
+    const emailRegex =
+      /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (
+      gEmail.trim() &&
+      !emailRegex.test(gEmail.trim())
+    ) {
+      setError(
+        "📧 Please enter a valid email address."
+      );
+
+      return;
+    }
+
+    // -------------------------------------------------
+    // Entry Date
+    // -------------------------------------------------
+
+    if (!inDateTime) {
+      setError(
+        "📅 Please select expected entry date/time."
+      );
+
+      return;
+    }
+
+    // -------------------------------------------------
+    // Floor
+    // -------------------------------------------------
+
+    if (!floorNumber.trim()) {
+      setError(
+        "🏢 Please enter floor number."
+      );
+
+      return;
+    }
+
+    // -------------------------------------------------
+    // Flat
+    // -------------------------------------------------
+
+    if (!flatNumber.trim()) {
+      setError(
+        "🏠 Please enter flat number."
+      );
+
+      return;
+    }
+
+    // -------------------------------------------------
+    // Flat Owner Mobile
+    // -------------------------------------------------
+
+    if (
+      !flatOwnerMobile.trim() ||
+      flatOwnerMobile.length !== 10
+    ) {
+      setError(
+        "📱 Please enter a valid 10-digit flat owner mobile number."
+      );
+
+      return;
+    }
+
+    // -------------------------------------------------
+    // Creator Mobile
+    // -------------------------------------------------
+
+    if (
+      !creatorMobile.trim() ||
+      creatorMobile.length !== 10
+    ) {
+      setError(
+        "📱 Please enter a valid 10-digit creator mobile number."
+      );
+
+      return;
+    }
+
+    // -------------------------------------------------
+    // Guest Image
+    // -------------------------------------------------
+
+    if (!guestImage) {
+      setError(
+        "📷 Please capture or select the guest image."
+      );
+
+      return;
+    }
+
+    // =================================================
+    // API Process
+    // =================================================
 
     try {
       setLoading(true);
 
-      const currentDateTime =
-        new Date().toISOString();
+      // =================================================
+      // STEP 1
+      // Upload Guest Image
+      // =================================================
 
-      const finalInDateTime =
-        convertToISO(inDateTime) ??
-        currentDateTime;
+      setLoadingMessage(
+        "Uploading guest photo..."
+      );
 
-      const finalOutDateTime =
-        convertToISO(outDateTime);
+      /*
+       * UploadGuestImageAPI already converts the
+       * server response into:
+       *
+       * /images/GuestImg/filename.jpg
+       */
 
-      const requestData = {
+      const guestImagePath =
+        await UploadGuestImageAPI(
+          guestImage
+        );
+
+      if (!guestImagePath) {
+        throw new Error(
+          "Image upload failed. Server did not return file path."
+        );
+      }
+
+      console.log(
+        "✅ Guest Image Path:",
+        guestImagePath
+      );
+
+      // =================================================
+      // STEP 2
+      // Save Guest Registration
+      // =================================================
+
+      setLoadingMessage(
+        "Saving guest registration..."
+      );
+
+      const requestData: PreGuestRequest = {
         gid: 0,
-        gName: gName.trim(),
-        gMobile: gMobile.trim(),
-        gEmail: gEmail.trim(),
 
-        inDateTime: finalInDateTime,
-        outDateTime: finalOutDateTime,
+        gName:
+          gName.trim(),
+
+        gMobile:
+          gMobile.trim(),
+
+        gEmail:
+          gEmail.trim(),
+
+        inDateTime:
+          convertToISO(inDateTime),
+
+        outDateTime:
+          outDateTime
+            ? convertToISO(outDateTime)
+            : null,
 
         fid: 0,
 
-        status: "PENDING",
+        status:
+          "PENDING",
 
-        isDeleted: false,
+        isDeleted:
+          false,
 
-        createdBy: gName.trim(),
-        createdDateTime: currentDateTime,
+        createdBy:
+          gName.trim(),
 
-        updatedBy: null,
-        updatedDateTime: currentDateTime,
+        createdDateTime:
+          new Date().toISOString(),
 
-        floorNumber: floorNumber.trim(),
-        flatNumber: flatNumber.trim(),
-        flatType: flatType.trim(),
+        updatedBy:
+          null,
 
-        gImagePath: "string",
+        updatedDateTime:
+          new Date().toISOString(),
+
+        floorNumber:
+          floorNumber.trim(),
+
+        flatNumber:
+          flatNumber.trim(),
+
+        flatType:
+          flatType.trim(),
+
+        // -----------------------------------------------
+        // Uploaded image path
+        // -----------------------------------------------
+
+        gImagePath:
+          guestImagePath,
 
         flatOwnerMobile:
           flatOwnerMobile.trim(),
@@ -254,401 +483,675 @@ const PreGuest: React.FC = () => {
         creatorMobile:
           creatorMobile.trim(),
 
-        loginID: 0,
+        loginID:
+          0,
 
-        flag: "IN",
+        flag:
+          "IN",
       };
 
       console.log(
-        "PreGuest Registration Request:",
+        "📤 PreGuest Request:",
         requestData
       );
 
-      // No token required
+      // =================================================
+      // STEP 3
+      // Call PreGuest API
+      // =================================================
+
       const result =
-        await PreGuestAddAPI(requestData);
+        await PreGuestAddAPI(
+          requestData
+        );
 
       console.log(
-        "PreGuest Registration Response:",
+        "✅ Guest Registration Response:",
         result
       );
 
-      // =========================
+      // =================================================
       // SUCCESS
-      // =========================
-      if (result?.gid) {
-        const guestId = result.gid;
+      // =================================================
 
-        // Clear only form fields.
-        // DO NOT clear success message.
+      if (result?.gid) {
+        const guestId =
+          Number(result.gid);
+
+        setRegisteredGuestId(
+          guestId
+        );
+
         clearFormFields();
 
         setSuccess(
-          `✅ Registration successful / नोंदणी यशस्वी / पंजीकरण सफल\n\n` +
-          `👤 Guest ID: ${guestId}\n\n` +
-          `🇬🇧 Guest has been registered successfully.\n` +
-          `🇮🇳 पाहुण्याची नोंदणी यशस्वी झाली आहे.\n` +
-          `🇮🇳 अतिथि का पंजीकरण सफलतापूर्वक हो गया है।`
+          "Registration successful / नोंदणी यशस्वी / पंजीकरण सफल"
         );
 
         return;
       }
 
-      // =========================
-      // API returned no GID
-      // =========================
-      setError(
-        "❌ Registration failed / नोंदणी अयशस्वी / पंजीकरण असफल"
+      // =================================================
+      // API returned unexpected response
+      // =================================================
+
+      throw new Error(
+        "Guest registration failed."
       );
-    } catch (error: unknown) {
+    } catch (err) {
       console.error(
-        "PreGuest Registration Error:",
-        error
+        "❌ Guest registration failed:",
+        err
       );
 
-      // =========================
+      // =================================================
       // Axios Error
-      // =========================
-      if (isAxiosError(error)) {
-        console.error(
-          "API Error Response:",
-          error.response?.data
-        );
+      // =================================================
 
-        const apiMessage =
-          error.response?.data?.message;
+      if (isAxiosError(err)) {
+        const serverMessage =
+          err.response?.data?.message ||
+          err.response?.data?.title;
 
-        if (apiMessage) {
-          setError(
-            `❌ ${apiMessage}\n\n` +
-            `🇬🇧 Please try again.\n` +
-            `🇮🇳 कृपया पुन्हा प्रयत्न करा.\n` +
-            `🇮🇳 कृपया पुनः प्रयास करें।`
-          );
-        } else {
-          setError(
-            "❌ Unable to register guest / पाहुण्याची नोंदणी करता आली नाही / अतिथि का पंजीकरण नहीं हो सका"
-          );
-        }
-      }
-
-      // =========================
-      // Normal Error
-      // =========================
-      else if (error instanceof Error) {
         setError(
-          `⚠️ ${error.message}\n\n` +
-          `🇬🇧 Please try again later.\n` +
-          `🇮🇳 कृपया नंतर पुन्हा प्रयत्न करा.\n` +
-          `🇮🇳 कृपया बाद में पुनः प्रयास करें।`
+          serverMessage ||
+            "Unable to register guest. Please try again."
         );
       }
 
-      // =========================
+      // =================================================
+      // Normal Error
+      // =================================================
+
+      else if (
+        err instanceof Error
+      ) {
+        setError(
+          err.message
+        );
+      }
+
+      // =================================================
       // Unknown Error
-      // =========================
+      // =================================================
+
       else {
         setError(
-          "⚠️ Unable to connect to server / सर्व्हरशी कनेक्ट होता आले नाही / सर्वर से कनेक्ट नहीं हो सका"
+          "Unable to register guest. Please try again."
         );
       }
     } finally {
       setLoading(false);
+
+      setLoadingMessage(
+        "Saving Guest..."
+      );
     }
   };
 
-  // =========================
-  // UI
-  // =========================
-  return (
-    <div className="pre-guest-container">
+  // =====================================================
+  // Cancel
+  // =====================================================
 
-      {/* Saving Loader */}
+  const handleCancel = () => {
+    navigate("/");
+  };
+
+  // =====================================================
+  // JSX
+  // =====================================================
+
+  return (
+    <div className="pre-guest-page">
+
+      <div className="pre-guest-container">
+
+        {/* =========================================
+            Header
+        ========================================== */}
+
+        <div className="pre-guest-header">
+
+          <h1>
+            Guest Registration
+          </h1>
+
+          <p>
+            Pre-register your guest before arrival
+          </p>
+
+        </div>
+
+        {/* =========================================
+            Error Message
+        ========================================== */}
+
+        {error && (
+          <div className="pre-guest-error">
+            {error}
+          </div>
+        )}
+
+        {/* =========================================
+            Success Message
+        ========================================== */}
+
+        {success &&
+          registeredGuestId && (
+
+            <div className="pre-guest-success-card">
+
+              <div className="pre-guest-success-icon">
+                ✅
+              </div>
+
+              <h2>
+                {success}
+              </h2>
+
+              <div className="pre-guest-gid">
+
+                <span>
+                  Guest ID
+                </span>
+
+                <strong>
+                  {registeredGuestId}
+                </strong>
+
+              </div>
+
+              <div className="pre-guest-success-message">
+
+                <p>
+                  🔐 Keep this GID handy or take a
+                  screenshot and show it to the
+                  Security Guard.
+                </p>
+
+                <p>
+                  🔐 हा GID जवळ ठेवा किंवा स्क्रीनशॉट
+                  घेऊन Security Guard ला दाखवा.
+                </p>
+
+                <p>
+                  🔐 इस GID को संभालकर रखें या
+                  स्क्रीनशॉट लेकर Security Guard को
+                  दिखाएं।
+                </p>
+
+              </div>
+
+              <button
+                type="button"
+                className="pre-guest-primary-button"
+                onClick={() => {
+                  setSuccess("");
+                  setRegisteredGuestId(null);
+                }}
+              >
+                Register Another Guest
+              </button>
+
+            </div>
+          )}
+
+        {/* =========================================
+            Registration Form
+        ========================================== */}
+
+        {!registeredGuestId && (
+
+          <form
+            onSubmit={handleRegister}
+            className="pre-guest-form"
+          >
+
+            {/* =====================================
+                Guest Information
+            ====================================== */}
+
+            <div className="pre-guest-section">
+
+              <h2>
+                👤 Guest Information
+              </h2>
+
+              <div className="pre-guest-grid">
+
+                {/* Guest Name */}
+
+                <div className="pre-guest-field">
+
+                  <label>
+                    Guest Name *
+                  </label>
+
+                  <input
+                    type="text"
+                    value={gName}
+                    onChange={(e) =>
+                      setGName(
+                        e.target.value
+                      )
+                    }
+                    className="pre-guest-input"
+                    placeholder="Enter guest name"
+                    disabled={loading}
+                  />
+
+                </div>
+
+                {/* Guest Mobile */}
+
+                <div className="pre-guest-field">
+
+                  <label>
+                    Guest Mobile *
+                  </label>
+
+                  <input
+                    type="tel"
+                    inputMode="numeric"
+                    value={gMobile}
+                    onChange={(e) =>
+                      handleMobileChange(
+                        e.target.value,
+                        setGMobile
+                      )
+                    }
+                    className="pre-guest-input"
+                    placeholder="10 digit mobile number"
+                    maxLength={10}
+                    disabled={loading}
+                  />
+
+                </div>
+
+                {/* Email */}
+
+                <div className="pre-guest-field">
+
+                  <label>
+                    Email
+                  </label>
+
+                  <input
+                    type="email"
+                    value={gEmail}
+                    onChange={(e) =>
+                      setGEmail(
+                        e.target.value
+                      )
+                    }
+                    className="pre-guest-input"
+                    placeholder="guest@example.com"
+                    disabled={loading}
+                  />
+
+                </div>
+
+              </div>
+
+            </div>
+
+            {/* =====================================
+                Guest Photo
+            ====================================== */}
+
+            <div className="pre-guest-section">
+
+              <h2>
+                📷 Guest Photo
+              </h2>
+
+              <div className="pre-guest-image-section">
+
+                {/* Hidden File Input */}
+
+                <input
+                  ref={
+                    guestImageInputRef
+                  }
+                  id="guest-image"
+                  type="file"
+                  accept="image/*"
+                  capture="environment"
+                  onChange={
+                    handleGuestImageChange
+                  }
+                  disabled={loading}
+                  className="pre-guest-file-input"
+                />
+
+                {/* Camera / Gallery Button */}
+
+                <label
+                  htmlFor="guest-image"
+                  className="pre-guest-image-button"
+                >
+                  📷 Capture / Select Guest Photo
+                </label>
+
+                <p className="pre-guest-image-help">
+
+                  On mobile, your browser may open
+                  the camera. On desktop, you can
+                  select an image file.
+
+                  <br />
+
+                  Maximum size: 5 MB.
+
+                </p>
+
+                {/* Image Preview */}
+
+                {guestImagePreview && (
+
+                  <div className="pre-guest-image-preview-container">
+
+                    <img
+                      src={
+                        guestImagePreview
+                      }
+                      alt="Guest preview"
+                      className="pre-guest-image-preview"
+                    />
+
+                    <div className="pre-guest-image-name">
+
+                      {guestImage?.name}
+
+                    </div>
+
+                    <button
+                      type="button"
+                      className="pre-guest-remove-image"
+                      onClick={
+                        clearGuestImage
+                      }
+                      disabled={loading}
+                    >
+                      🗑️ Remove Photo
+                    </button>
+
+                  </div>
+
+                )}
+
+              </div>
+
+            </div>
+
+            {/* =====================================
+                Visit Details
+            ====================================== */}
+
+            <div className="pre-guest-section">
+
+              <h2>
+                📅 Visit Details
+              </h2>
+
+              <div className="pre-guest-grid">
+
+                {/* In Date */}
+
+                <div className="pre-guest-field">
+
+                  <label>
+                    Expected In Date & Time *
+                  </label>
+
+                  <input
+                    type="datetime-local"
+                    value={inDateTime}
+                    onChange={(e) =>
+                      setInDateTime(
+                        e.target.value
+                      )
+                    }
+                    className="pre-guest-input"
+                    disabled={loading}
+                  />
+
+                </div>
+
+                {/* Out Date */}
+
+                <div className="pre-guest-field">
+
+                  <label>
+                    Expected Out Date & Time
+                  </label>
+
+                  <input
+                    type="datetime-local"
+                    value={outDateTime}
+                    onChange={(e) =>
+                      setOutDateTime(
+                        e.target.value
+                      )
+                    }
+                    className="pre-guest-input"
+                    disabled={loading}
+                  />
+
+                </div>
+
+              </div>
+
+            </div>
+
+            {/* =====================================
+                Flat Details
+            ====================================== */}
+
+            <div className="pre-guest-section">
+
+              <h2>
+                🏠 Flat Details
+              </h2>
+
+              <div className="pre-guest-grid">
+
+                {/* Floor Number */}
+
+                <div className="pre-guest-field">
+
+                  <label>
+                    Floor Number *
+                  </label>
+
+                  <input
+                    type="text"
+                    value={floorNumber}
+                    onChange={(e) =>
+                      setFloorNumber(
+                        e.target.value
+                      )
+                    }
+                    className="pre-guest-input"
+                    placeholder="Example: 3"
+                    disabled={loading}
+                  />
+
+                </div>
+
+                {/* Flat Number */}
+
+                <div className="pre-guest-field">
+
+                  <label>
+                    Flat Number *
+                  </label>
+
+                  <input
+                    type="text"
+                    value={flatNumber}
+                    onChange={(e) =>
+                      setFlatNumber(
+                        e.target.value
+                      )
+                    }
+                    className="pre-guest-input"
+                    placeholder="Example: 302"
+                    disabled={loading}
+                  />
+
+                </div>
+
+                {/* Flat Type */}
+
+                <div className="pre-guest-field">
+
+                  <label>
+                    Flat Type
+                  </label>
+
+                  <input
+                    type="text"
+                    value={flatType}
+                    onChange={(e) =>
+                      setFlatType(
+                        e.target.value
+                      )
+                    }
+                    className="pre-guest-input"
+                    placeholder="Example: 2 BHK"
+                    disabled={loading}
+                  />
+
+                </div>
+
+                {/* Flat Owner Mobile */}
+
+                <div className="pre-guest-field">
+
+                  <label>
+                    Flat Owner Mobile *
+                  </label>
+
+                  <input
+                    type="tel"
+                    inputMode="numeric"
+                    value={flatOwnerMobile}
+                    onChange={(e) =>
+                      handleMobileChange(
+                        e.target.value,
+                        setFlatOwnerMobile
+                      )
+                    }
+                    className="pre-guest-input"
+                    placeholder="10 digit mobile number"
+                    maxLength={10}
+                    disabled={loading}
+                  />
+
+                </div>
+
+                {/* Creator Mobile */}
+
+                <div className="pre-guest-field">
+
+                  <label>
+                    Creator Mobile *
+                  </label>
+
+                  <input
+                    type="tel"
+                    inputMode="numeric"
+                    value={creatorMobile}
+                    onChange={(e) =>
+                      handleMobileChange(
+                        e.target.value,
+                        setCreatorMobile
+                      )
+                    }
+                    className="pre-guest-input"
+                    placeholder="10 digit mobile number"
+                    maxLength={10}
+                    disabled={loading}
+                  />
+
+                </div>
+
+              </div>
+
+            </div>
+
+            {/* =====================================
+                Buttons
+            ====================================== */}
+
+            <div className="pre-guest-buttons">
+
+              <button
+                type="button"
+                className="pre-guest-cancel-button"
+                onClick={handleCancel}
+                disabled={loading}
+              >
+                Cancel
+              </button>
+
+              <button
+                type="submit"
+                className="pre-guest-primary-button"
+                disabled={loading}
+              >
+                {loading
+                  ? "Please Wait..."
+                  : "Register Guest"}
+              </button>
+
+            </div>
+
+          </form>
+        )}
+
+      </div>
+
+      {/* =========================================
+          Loading Overlay
+      ========================================== */}
+
       {loading && (
+
         <div className="pre-guest-loading-overlay">
+
           <div className="pre-guest-loader-box">
 
-            <div className="pre-guest-spinner"></div>
+            <div className="pre-guest-spinner">
+            </div>
 
             <div className="pre-guest-loading-title">
-              Saving Guest...
+
+              {loadingMessage}
+
             </div>
 
             <div className="pre-guest-loading-message">
-              Please wait / कृपया प्रतीक्षा करा / कृपया प्रतीक्षा करें
+
+              Please wait...
+
+              <br />
+
+              कृपया प्रतीक्षा करा...
+
+              <br />
+
+              कृपया प्रतीक्षा करें...
+
             </div>
 
           </div>
+
         </div>
+
       )}
 
-      {/* Right Panel */}
-      <div className="pre-guest-right">
-
-        <div className="pre-guest-card">
-
-          {/* Header */}
-          <h2 className="pre-guest-title">
-            👤 Pre-Guest Registration
-          </h2>
-
-          <p className="pre-guest-subtitle">
-            Register your guest before their arrival
-            <br />
-            पाहुण्याच्या आगमनापूर्वी नोंदणी करा
-            <br />
-            अतिथि के आने से पहले पंजीकरण करें
-          </p>
-
-          {/* Error */}
-          {error && (
-            <div className="pre-guest-error">
-              {error}
-            </div>
-          )}
-
-          {/* Success */}
-          {success && (
-            <div className="pre-guest-success">
-              {success}
-            </div>
-          )}
-
-          {/* Guest Details */}
-          <div className="section-title">
-            👤 Guest Details / पाहुण्याची माहिती / अतिथि विवरण
-          </div>
-
-          <div className="form-row">
-
-            <input
-              type="text"
-              placeholder="Guest Name *"
-              value={gName}
-              onChange={(e) =>
-                setGName(e.target.value)
-              }
-              className="pre-guest-input"
-              disabled={loading}
-            />
-
-            <input
-              type="text"
-              placeholder="Guest Mobile *"
-              value={gMobile}
-              maxLength={10}
-              inputMode="numeric"
-              onChange={(e) =>
-                handleMobileChange(
-                  e.target.value,
-                  setGMobile
-                )
-              }
-              className="pre-guest-input"
-              disabled={loading}
-            />
-
-          </div>
-
-          <input
-            type="email"
-            placeholder="Guest Email"
-            value={gEmail}
-            onChange={(e) =>
-              setGEmail(e.target.value)
-            }
-            className="pre-guest-input full-width"
-            disabled={loading}
-          />
-
-          {/* Visit Details */}
-          <div className="section-title">
-            📅 Visit Details / भेटीची माहिती / यात्रा विवरण
-          </div>
-
-          <div className="form-row">
-
-            <div className="date-field">
-
-              <label>
-                In Date & Time
-                <br />
-                येण्याची तारीख व वेळ
-                <br />
-                आने की तारीख और समय
-              </label>
-
-              <input
-                type="datetime-local"
-                value={inDateTime}
-                onChange={(e) =>
-                  setInDateTime(
-                    e.target.value
-                  )
-                }
-                className="pre-guest-input"
-                disabled={loading}
-              />
-
-            </div>
-
-            <div className="date-field">
-
-              <label>
-                Out Date & Time
-                <br />
-                जाण्याची तारीख व वेळ
-                <br />
-                जाने की तारीख और समय
-              </label>
-
-              <input
-                type="datetime-local"
-                value={outDateTime}
-                onChange={(e) =>
-                  setOutDateTime(
-                    e.target.value
-                  )
-                }
-                className="pre-guest-input"
-                disabled={loading}
-              />
-
-            </div>
-
-          </div>
-
-          {/* Flat Details */}
-          <div className="section-title">
-            🏢 Flat Details / फ्लॅटची माहिती / फ्लैट विवरण
-          </div>
-
-          <div className="form-row">
-
-            <input
-              type="text"
-              placeholder="Floor Number *"
-              value={floorNumber}
-              onChange={(e) =>
-                setFloorNumber(
-                  e.target.value
-                )
-              }
-              className="pre-guest-input"
-              disabled={loading}
-            />
-
-            <input
-              type="text"
-              placeholder="Flat Number *"
-              value={flatNumber}
-              onChange={(e) =>
-                setFlatNumber(
-                  e.target.value
-                )
-              }
-              className="pre-guest-input"
-              disabled={loading}
-            />
-
-          </div>
-
-          <input
-            type="text"
-            placeholder="Flat Type"
-            value={flatType}
-            onChange={(e) =>
-              setFlatType(e.target.value)
-            }
-            className="pre-guest-input full-width"
-            disabled={loading}
-          />
-
-          {/* Contact Details */}
-          <div className="section-title">
-            📱 Contact Details / संपर्क माहिती / संपर्क विवरण
-          </div>
-
-          <div className="form-row">
-
-            <input
-              type="text"
-              placeholder="Flat Owner Mobile *"
-              value={flatOwnerMobile}
-              maxLength={10}
-              inputMode="numeric"
-              onChange={(e) =>
-                handleMobileChange(
-                  e.target.value,
-                  setFlatOwnerMobile
-                )
-              }
-              className="pre-guest-input"
-              disabled={loading}
-            />
-
-            <input
-              type="text"
-              placeholder="Creator Mobile *"
-              value={creatorMobile}
-              maxLength={10}
-              inputMode="numeric"
-              onChange={(e) =>
-                handleMobileChange(
-                  e.target.value,
-                  setCreatorMobile
-                )
-              }
-              className="pre-guest-input"
-              disabled={loading}
-            />
-
-          </div>
-
-          {/* Buttons */}
-          <div className="pre-guest-buttons">
-
-            <button
-              type="button"
-              className="pre-guest-cancel-button"
-              onClick={() =>
-                navigate("/dashboard")
-              }
-              disabled={loading}
-            >
-              ← Cancel
-            </button>
-
-            <button
-              type="button"
-              className="pre-guest-clear-button"
-              onClick={handleClear}
-              disabled={loading}
-            >
-              🧹 Clear
-            </button>
-
-            <button
-              type="button"
-              className="pre-guest-button"
-              onClick={handleRegister}
-              disabled={loading}
-            >
-              {loading
-                ? "Saving..."
-                : "👤 Register Guest"}
-            </button>
-
-          </div>
-
-          {/* Footer */}
-          <div className="pre-guest-footer">
-            Secure visitor registration · My Society
-            Enterprise App
-          </div>
-
-        </div>
-      </div>
     </div>
   );
 };

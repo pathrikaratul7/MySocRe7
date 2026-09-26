@@ -1,30 +1,75 @@
-/* =========================================
+
+/* =========================================================
    My Society Enterprise App
    Pre Guest Registration
-   ========================================= */
+   Dark Responsive UI
+   ========================================================= */
 
 * {
   box-sizing: border-box;
 }
 
-.pre-guest-container {
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+}
+
+/* =========================================================
+   Main Page
+   ========================================================= */
+
+.pre-guest-page {
   min-height: 100vh;
   width: 100%;
   background: #0f172a;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 30px 20px;
   color: #e2e8f0;
 }
 
-.pre-guest-right {
+.pre-guest-container {
   width: 100%;
-  max-width: 950px;
+  min-height: 100vh;
+  padding: 35px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.pre-guest-card {
+/* =========================================================
+   Header
+   ========================================================= */
+
+.pre-guest-header {
   width: 100%;
+  max-width: 950px;
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.pre-guest-header h1 {
+  margin: 0;
+  color: #f8fafc;
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.pre-guest-header p {
+  margin: 8px 0 0;
+  color: #94a3b8;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* =========================================================
+   Form
+   ========================================================= */
+
+.pre-guest-form {
+  width: 100%;
+  max-width: 950px;
   background: #121212;
   border: 1px solid #334155;
   border-radius: 18px;
@@ -32,51 +77,58 @@
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
 }
 
-/* =========================
-   Header
-   ========================= */
+/* =========================================================
+   Sections
+   ========================================================= */
 
-.pre-guest-title {
-  margin: 0;
-  text-align: center;
-  color: #f8fafc;
-  font-size: 28px;
-  font-weight: 700;
+.pre-guest-section {
+  width: 100%;
+  margin-bottom: 28px;
 }
 
-.pre-guest-subtitle {
-  margin: 8px 0 25px;
-  text-align: center;
-  color: #94a3b8;
-  font-size: 14px;
-}
-
-/* =========================
-   Section Titles
-   ========================= */
-
-.section-title {
-  margin-top: 24px;
-  margin-bottom: 12px;
-  padding-bottom: 8px;
-
-  color: #f8fafc;
-  font-size: 16px;
-  font-weight: 600;
-
+.pre-guest-section h2 {
+  margin: 0 0 16px;
+  padding-bottom: 10px;
   border-bottom: 1px solid #334155;
+
+  color: #f8fafc;
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.4;
 }
 
-/* =========================
-   Form
-   ========================= */
+/* =========================================================
+   Form Grid
+   ========================================================= */
 
-.form-row {
+.pre-guest-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 15px;
-  margin-bottom: 15px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
 }
+
+/* =========================================================
+   Form Field
+   ========================================================= */
+
+.pre-guest-field {
+  width: 100%;
+  min-width: 0;
+}
+
+.pre-guest-field label {
+  display: block;
+  margin-bottom: 7px;
+
+  color: #cbd5e1;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+/* =========================================================
+   Inputs
+   ========================================================= */
 
 .pre-guest-input {
   width: 100%;
@@ -92,109 +144,106 @@
 
   outline: none;
 
+  font-family: inherit;
   font-size: 14px;
 
   transition:
     border-color 0.2s ease,
-    box-shadow 0.2s ease,
-    background 0.2s ease;
+    background 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .pre-guest-input::placeholder {
-  color: #94a3b8;
+  color: #64748b;
+}
+
+.pre-guest-input:hover:not(:disabled) {
+  border-color: #64748b;
 }
 
 .pre-guest-input:focus {
   border-color: #6366f1;
   background: #172033;
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+
+  box-shadow:
+    0 0 0 3px rgba(99, 102, 241, 0.15);
 }
 
 .pre-guest-input:disabled {
-  opacity: 0.6;
+  opacity: 0.55;
   cursor: not-allowed;
 }
 
-.full-width {
-  margin-bottom: 15px;
+/* =========================================================
+   Date Time
+   ========================================================= */
+
+.pre-guest-input[type="datetime-local"] {
+  color-scheme: dark;
 }
-
-/* =========================
-   Date / Time
-   ========================= */
-
-.date-field {
-  width: 100%;
-}
-
-.date-field label {
-  display: block;
-  margin-bottom: 6px;
-
-  color: #cbd5e1;
-  font-size: 13px;
-  font-weight: 500;
-}
-
-.date-field .pre-guest-input {
-  margin-bottom: 0;
-}
-
-/* Chrome / Edge date input icon */
 
 .pre-guest-input[type="datetime-local"]::-webkit-calendar-picker-indicator {
   filter: invert(1);
   cursor: pointer;
 }
 
-/* =========================
-   Error / Success
-   ========================= */
-
-.pre-guest-error,
-.pre-guest-success {
-  width: 100%;
-  padding: 12px 14px;
-  margin-bottom: 18px;
-
-  border-radius: 8px;
-
-  font-size: 14px;
-  line-height: 1.5;
-}
+/* =========================================================
+   Error
+   ========================================================= */
 
 .pre-guest-error {
+  width: 100%;
+  max-width: 950px;
+
+  margin-bottom: 20px;
+  padding: 13px 16px;
+
   background: rgba(220, 38, 38, 0.12);
   border: 1px solid #dc2626;
+  border-radius: 9px;
+
   color: #fca5a5;
+  font-size: 14px;
+  line-height: 1.6;
+
+  white-space: pre-line;
 }
 
-.pre-guest-success {
-  background: rgba(22, 163, 74, 0.12);
-  border: 1px solid #16a34a;
-  color: #86efac;
-}
+/* =========================================================
+   Guest Image
+   ========================================================= */
 
-/* =========================
-   Buttons
-   ========================= */
+.pre-guest-image-section {
+  width: 100%;
 
-.pre-guest-buttons {
   display: flex;
-  justify-content: flex-end;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
 
   gap: 12px;
-
-  margin-top: 30px;
 }
 
-.pre-guest-buttons button {
-  min-height: 44px;
+.pre-guest-file-input {
+  display: none;
+}
 
-  padding: 10px 18px;
+/* =========================================================
+   Image Button
+   ========================================================= */
 
-  border-radius: 8px;
+.pre-guest-image-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 48px;
+  padding: 0 20px;
+
+  background: #1e293b;
+  border: 1px solid #475569;
+  border-radius: 10px;
+
+  color: #f8fafc;
 
   font-size: 14px;
   font-weight: 600;
@@ -202,9 +251,156 @@
   cursor: pointer;
 
   transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.15s ease;
+}
+
+.pre-guest-image-button:hover {
+  background: #334155;
+  border-color: #6366f1;
+}
+
+.pre-guest-image-button:active {
+  transform: scale(0.98);
+}
+
+/* =========================================================
+   Image Help
+   ========================================================= */
+
+.pre-guest-image-help {
+  margin: 0;
+
+  color: #94a3b8;
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+/* =========================================================
+   Image Preview
+   ========================================================= */
+
+.pre-guest-image-preview-container {
+  width: 100%;
+  max-width: 320px;
+
+  padding: 14px;
+
+  background: #0f172a;
+  border: 1px solid #334155;
+  border-radius: 12px;
+
+  text-align: center;
+}
+
+.pre-guest-image-preview {
+  display: block;
+
+  width: 100%;
+  max-width: 280px;
+  height: 280px;
+
+  margin: 0 auto;
+
+  object-fit: cover;
+
+  border-radius: 10px;
+  border: 1px solid #475569;
+
+  background: #1e293b;
+}
+
+.pre-guest-image-name {
+  width: 100%;
+
+  margin-top: 10px;
+
+  color: #cbd5e1;
+  font-size: 12px;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* =========================================================
+   Remove Image
+   ========================================================= */
+
+.pre-guest-remove-image {
+  width: 100%;
+
+  min-height: 40px;
+
+  margin-top: 12px;
+  padding: 8px 14px;
+
+  background: rgba(220, 38, 38, 0.12);
+
+  border: 1px solid #7f1d1d;
+  border-radius: 8px;
+
+  color: #fecaca;
+
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.pre-guest-remove-image:hover:not(:disabled) {
+  background: rgba(220, 38, 38, 0.22);
+  border-color: #dc2626;
+}
+
+.pre-guest-remove-image:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* =========================================================
+   Buttons
+   ========================================================= */
+
+.pre-guest-buttons {
+  width: 100%;
+
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+
+  gap: 12px;
+
+  margin-top: 5px;
+  padding-top: 20px;
+
+  border-top: 1px solid #334155;
+}
+
+.pre-guest-buttons button {
+  min-height: 45px;
+
+  padding: 10px 22px;
+
+  border-radius: 9px;
+
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
     transform 0.15s ease,
-    opacity 0.15s ease,
-    background 0.15s ease;
+    opacity 0.15s ease;
 }
 
 .pre-guest-buttons button:hover:not(:disabled) {
@@ -220,141 +416,175 @@
   cursor: not-allowed;
 }
 
-/* Cancel */
+/* =========================================================
+   Cancel
+   ========================================================= */
 
 .pre-guest-cancel-button {
   background: transparent;
-  color: #cbd5e1;
 
   border: 1px solid #475569;
+
+  color: #cbd5e1;
 }
 
 .pre-guest-cancel-button:hover:not(:disabled) {
   background: #1e293b;
+  border-color: #64748b;
 }
 
-/* Clear */
+/* =========================================================
+   Primary Button
+   ========================================================= */
 
-.pre-guest-clear-button {
-  background: #1e293b;
-  color: #e2e8f0;
-
-  border: 1px solid #475569;
-}
-
-.pre-guest-clear-button:hover:not(:disabled) {
-  background: #334155;
-}
-
-/* Register */
-
-.pre-guest-button {
+.pre-guest-primary-button {
   background: #4f46e5;
-  color: #ffffff;
 
   border: 1px solid #6366f1;
+
+  color: #ffffff;
 }
 
-.pre-guest-button:hover:not(:disabled) {
+.pre-guest-primary-button:hover:not(:disabled) {
   background: #4338ca;
+  border-color: #818cf8;
 }
 
-/* =========================
-   Footer
-   ========================= */
+/* =========================================================
+   Success Card
+   ========================================================= */
 
-.pre-guest-footer {
-  margin-top: 25px;
+.pre-guest-success-card {
+  width: 100%;
+  max-width: 700px;
+
+  padding: 30px;
+
+  background: #121212;
+
+  border: 1px solid #16a34a;
+  border-radius: 18px;
 
   text-align: center;
 
-  color: #64748b;
+  box-shadow:
+    0 20px 50px rgba(0, 0, 0, 0.4),
+    0 0 25px rgba(22, 163, 74, 0.08);
+}
+
+/* =========================================================
+   Success Icon
+   ========================================================= */
+
+.pre-guest-success-icon {
+  width: 64px;
+  height: 64px;
+
+  margin: 0 auto 16px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(22, 163, 74, 0.12);
+
+  border: 1px solid #16a34a;
+  border-radius: 50%;
+
+  font-size: 30px;
+}
+
+/* =========================================================
+   Success Heading
+   ========================================================= */
+
+.pre-guest-success-card h2 {
+  margin: 0 0 22px;
+
+  color: #86efac;
+
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+/* =========================================================
+   Guest ID
+   ========================================================= */
+
+.pre-guest-gid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  margin-bottom: 20px;
+}
+
+.pre-guest-gid span {
+  margin-bottom: 7px;
+
+  color: #94a3b8;
+
   font-size: 12px;
+  font-weight: 600;
+
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
-/* =========================
-   Tablet
-   ========================= */
+.pre-guest-gid strong {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 
-@media (max-width: 768px) {
-  .pre-guest-container {
-    padding: 20px 12px;
-    align-items: flex-start;
-  }
+  min-width: 120px;
 
-  .pre-guest-card {
-    padding: 22px 18px;
-    border-radius: 14px;
-  }
+  padding: 10px 22px;
 
-  .pre-guest-title {
-    font-size: 23px;
-  }
+  background: #052e16;
 
-  .form-row {
-    grid-template-columns: 1fr;
-    gap: 0;
-  }
+  border: 1px solid #22c55e;
+  border-radius: 10px;
 
-  .form-row .pre-guest-input {
-    margin-bottom: 15px;
-  }
+  color: #4ade80;
 
-  .date-field {
-    margin-bottom: 15px;
-  }
+  font-size: 30px;
+  font-weight: 800;
 
-  .pre-guest-buttons {
-    flex-direction: column-reverse;
-    width: 100%;
-  }
-
-  .pre-guest-buttons button {
-    width: 100%;
-  }
+  letter-spacing: 2px;
 }
 
-/* =========================
-   Mobile
-   ========================= */
+/* =========================================================
+   Success Message
+   ========================================================= */
 
-@media (max-width: 480px) {
-  .pre-guest-container {
-    padding: 10px;
-  }
+.pre-guest-success-message {
+  margin-bottom: 24px;
 
-  .pre-guest-card {
-    padding: 18px 14px;
-    border-radius: 12px;
-  }
+  padding: 15px;
 
-  .pre-guest-title {
-    font-size: 20px;
-  }
+  background: rgba(15, 23, 42, 0.7);
 
-  .pre-guest-subtitle {
-    font-size: 13px;
-    margin-bottom: 20px;
-  }
+  border: 1px solid #334155;
+  border-radius: 10px;
+}
 
-  .section-title {
-    font-size: 15px;
-    margin-top: 20px;
-  }
+.pre-guest-success-message p {
+  margin: 0 0 10px;
 
-  .pre-guest-input {
-    min-height: 44px;
-    font-size: 14px;
-  }
+  color: #cbd5e1;
 
-  .pre-guest-buttons {
-    margin-top: 22px;
-  }
+  font-size: 13px;
+  line-height: 1.7;
+}
 
+.pre-guest-success-message p:last-child {
+  margin-bottom: 0;
+}
 
-/* =========================================
-   Saving Loader Overlay
-   ========================================= */
+/* =========================================================
+   Loading Overlay
+   ========================================================= */
 
 .pre-guest-loading-overlay {
   position: fixed;
@@ -366,57 +596,49 @@
   justify-content: center;
   align-items: center;
 
+  padding: 20px;
+
   background: rgba(15, 23, 42, 0.82);
 
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(5px);
 }
 
+/* =========================================================
+   Loader Box
+   ========================================================= */
+
 .pre-guest-loader-box {
-  min-width: 280px;
+  width: 100%;
+  max-width: 330px;
 
-  padding: 28px;
-
-  text-align: center;
+  padding: 30px 24px;
 
   background: #121212;
 
   border: 1px solid #334155;
+  border-radius: 16px;
 
-  border-radius: 14px;
+  text-align: center;
 
-  box-shadow:
-    0 20px 50px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55);
 }
 
+/* =========================================================
+   Spinner
+   ========================================================= */
+
 .pre-guest-spinner {
-  width: 46px;
-  height: 46px;
+  width: 48px;
+  height: 48px;
 
   margin: 0 auto 18px;
 
   border: 4px solid #334155;
-  border-top: 4px solid #6366f1;
+  border-top-color: #6366f1;
 
   border-radius: 50%;
 
   animation: preGuestSpin 0.8s linear infinite;
-}
-
-.pre-guest-loading-title {
-  color: #f8fafc;
-
-  font-size: 18px;
-  font-weight: 600;
-
-  margin-bottom: 8px;
-}
-
-.pre-guest-loading-message {
-  color: #94a3b8;
-
-  font-size: 13px;
-
-  line-height: 1.6;
 }
 
 @keyframes preGuestSpin {
@@ -429,4 +651,145 @@
   }
 }
 
+/* =========================================================
+   Loading Text
+   ========================================================= */
+
+.pre-guest-loading-title {
+  margin-bottom: 8px;
+
+  color: #f8fafc;
+
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.pre-guest-loading-message {
+  color: #94a3b8;
+
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+/* =========================================================
+   Tablet
+   ========================================================= */
+
+@media (max-width: 768px) {
+  .pre-guest-container {
+    padding: 25px 14px;
+    align-items: flex-start;
+  }
+
+  .pre-guest-header h1 {
+    font-size: 25px;
+  }
+
+  .pre-guest-form {
+    padding: 24px 20px;
+    border-radius: 15px;
+  }
+
+  .pre-guest-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .pre-guest-buttons {
+    flex-direction: column-reverse;
+  }
+
+  .pre-guest-buttons button {
+    width: 100%;
+  }
+
+  .pre-guest-success-card {
+    padding: 25px 20px;
+  }
+}
+
+/* =========================================================
+   Mobile
+   ========================================================= */
+
+@media (max-width: 480px) {
+  .pre-guest-container {
+    padding: 15px 10px;
+  }
+
+  .pre-guest-header {
+    margin-bottom: 18px;
+  }
+
+  .pre-guest-header h1 {
+    font-size: 21px;
+  }
+
+  .pre-guest-header p {
+    font-size: 12px;
+  }
+
+  .pre-guest-form {
+    padding: 20px 14px;
+    border-radius: 13px;
+  }
+
+  .pre-guest-section {
+    margin-bottom: 23px;
+  }
+
+  .pre-guest-section h2 {
+    font-size: 15px;
+    margin-bottom: 13px;
+  }
+
+  .pre-guest-field label {
+    font-size: 12px;
+  }
+
+  .pre-guest-input {
+    min-height: 44px;
+    font-size: 14px;
+  }
+
+  .pre-guest-image-button {
+    width: 100%;
+    min-height: 46px;
+  }
+
+  .pre-guest-image-preview-container {
+    max-width: 100%;
+  }
+
+  .pre-guest-image-preview {
+    width: 100%;
+    height: auto;
+    max-height: 360px;
+  }
+
+  .pre-guest-buttons {
+    margin-top: 0;
+    padding-top: 18px;
+  }
+
+  .pre-guest-success-card {
+    padding: 22px 15px;
+  }
+
+  .pre-guest-success-card h2 {
+    font-size: 17px;
+  }
+
+  .pre-guest-success-message p {
+    font-size: 12px;
+  }
+
+  .pre-guest-gid strong {
+    font-size: 26px;
+  }
+
+  .pre-guest-loader-box {
+    max-width: 280px;
+    padding: 25px 18px;
+  }
 }
