@@ -70,3 +70,43 @@ headers: {Authorization: `Bearer ${token}`}});
 return response.data;
 
 }
+
+export interface PreGuestRequest {
+  gid: number;
+  gName: string;
+  gMobile: string;
+  gEmail: string;
+  inDateTime: string;
+  outDateTime: string | null;
+  fid: number;
+  status: string;
+  isDeleted: boolean;
+  createdBy: string;
+  createdDateTime: string;
+  updatedBy: string | null;
+  updatedDateTime: string;
+  floorNumber: string;
+  flatNumber: string;
+  flatType: string;
+  gImagePath: string;
+  flatOwnerMobile: string;
+  creatorMobile: string;
+  loginID: number;
+  flag: string;
+}
+
+export const PreGuestAddAPI = async (
+  preGuestData: PreGuestRequest
+) => {
+  const response = await axios.post(
+    `${API_URL}/PreGuest/PreGuestAdd`,
+    preGuestData,
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+
+  return response.data;
+};

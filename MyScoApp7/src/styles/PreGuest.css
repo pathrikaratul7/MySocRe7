@@ -1,0 +1,432 @@
+/* =========================================
+   My Society Enterprise App
+   Pre Guest Registration
+   ========================================= */
+
+* {
+  box-sizing: border-box;
+}
+
+.pre-guest-container {
+  min-height: 100vh;
+  width: 100%;
+  background: #0f172a;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 30px 20px;
+  color: #e2e8f0;
+}
+
+.pre-guest-right {
+  width: 100%;
+  max-width: 950px;
+}
+
+.pre-guest-card {
+  width: 100%;
+  background: #121212;
+  border: 1px solid #334155;
+  border-radius: 18px;
+  padding: 30px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+}
+
+/* =========================
+   Header
+   ========================= */
+
+.pre-guest-title {
+  margin: 0;
+  text-align: center;
+  color: #f8fafc;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.pre-guest-subtitle {
+  margin: 8px 0 25px;
+  text-align: center;
+  color: #94a3b8;
+  font-size: 14px;
+}
+
+/* =========================
+   Section Titles
+   ========================= */
+
+.section-title {
+  margin-top: 24px;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+
+  color: #f8fafc;
+  font-size: 16px;
+  font-weight: 600;
+
+  border-bottom: 1px solid #334155;
+}
+
+/* =========================
+   Form
+   ========================= */
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.pre-guest-input {
+  width: 100%;
+  min-height: 46px;
+
+  padding: 11px 13px;
+
+  background: #1e293b;
+  color: #f8fafc;
+
+  border: 1px solid #475569;
+  border-radius: 9px;
+
+  outline: none;
+
+  font-size: 14px;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.pre-guest-input::placeholder {
+  color: #94a3b8;
+}
+
+.pre-guest-input:focus {
+  border-color: #6366f1;
+  background: #172033;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+}
+
+.pre-guest-input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.full-width {
+  margin-bottom: 15px;
+}
+
+/* =========================
+   Date / Time
+   ========================= */
+
+.date-field {
+  width: 100%;
+}
+
+.date-field label {
+  display: block;
+  margin-bottom: 6px;
+
+  color: #cbd5e1;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.date-field .pre-guest-input {
+  margin-bottom: 0;
+}
+
+/* Chrome / Edge date input icon */
+
+.pre-guest-input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  cursor: pointer;
+}
+
+/* =========================
+   Error / Success
+   ========================= */
+
+.pre-guest-error,
+.pre-guest-success {
+  width: 100%;
+  padding: 12px 14px;
+  margin-bottom: 18px;
+
+  border-radius: 8px;
+
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.pre-guest-error {
+  background: rgba(220, 38, 38, 0.12);
+  border: 1px solid #dc2626;
+  color: #fca5a5;
+}
+
+.pre-guest-success {
+  background: rgba(22, 163, 74, 0.12);
+  border: 1px solid #16a34a;
+  color: #86efac;
+}
+
+/* =========================
+   Buttons
+   ========================= */
+
+.pre-guest-buttons {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+
+  gap: 12px;
+
+  margin-top: 30px;
+}
+
+.pre-guest-buttons button {
+  min-height: 44px;
+
+  padding: 10px 18px;
+
+  border-radius: 8px;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.15s ease,
+    opacity 0.15s ease,
+    background 0.15s ease;
+}
+
+.pre-guest-buttons button:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.pre-guest-buttons button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.pre-guest-buttons button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* Cancel */
+
+.pre-guest-cancel-button {
+  background: transparent;
+  color: #cbd5e1;
+
+  border: 1px solid #475569;
+}
+
+.pre-guest-cancel-button:hover:not(:disabled) {
+  background: #1e293b;
+}
+
+/* Clear */
+
+.pre-guest-clear-button {
+  background: #1e293b;
+  color: #e2e8f0;
+
+  border: 1px solid #475569;
+}
+
+.pre-guest-clear-button:hover:not(:disabled) {
+  background: #334155;
+}
+
+/* Register */
+
+.pre-guest-button {
+  background: #4f46e5;
+  color: #ffffff;
+
+  border: 1px solid #6366f1;
+}
+
+.pre-guest-button:hover:not(:disabled) {
+  background: #4338ca;
+}
+
+/* =========================
+   Footer
+   ========================= */
+
+.pre-guest-footer {
+  margin-top: 25px;
+
+  text-align: center;
+
+  color: #64748b;
+  font-size: 12px;
+}
+
+/* =========================
+   Tablet
+   ========================= */
+
+@media (max-width: 768px) {
+  .pre-guest-container {
+    padding: 20px 12px;
+    align-items: flex-start;
+  }
+
+  .pre-guest-card {
+    padding: 22px 18px;
+    border-radius: 14px;
+  }
+
+  .pre-guest-title {
+    font-size: 23px;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .form-row .pre-guest-input {
+    margin-bottom: 15px;
+  }
+
+  .date-field {
+    margin-bottom: 15px;
+  }
+
+  .pre-guest-buttons {
+    flex-direction: column-reverse;
+    width: 100%;
+  }
+
+  .pre-guest-buttons button {
+    width: 100%;
+  }
+}
+
+/* =========================
+   Mobile
+   ========================= */
+
+@media (max-width: 480px) {
+  .pre-guest-container {
+    padding: 10px;
+  }
+
+  .pre-guest-card {
+    padding: 18px 14px;
+    border-radius: 12px;
+  }
+
+  .pre-guest-title {
+    font-size: 20px;
+  }
+
+  .pre-guest-subtitle {
+    font-size: 13px;
+    margin-bottom: 20px;
+  }
+
+  .section-title {
+    font-size: 15px;
+    margin-top: 20px;
+  }
+
+  .pre-guest-input {
+    min-height: 44px;
+    font-size: 14px;
+  }
+
+  .pre-guest-buttons {
+    margin-top: 22px;
+  }
+
+
+/* =========================================
+   Saving Loader Overlay
+   ========================================= */
+
+.pre-guest-loading-overlay {
+  position: fixed;
+  inset: 0;
+
+  z-index: 9999;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background: rgba(15, 23, 42, 0.82);
+
+  backdrop-filter: blur(4px);
+}
+
+.pre-guest-loader-box {
+  min-width: 280px;
+
+  padding: 28px;
+
+  text-align: center;
+
+  background: #121212;
+
+  border: 1px solid #334155;
+
+  border-radius: 14px;
+
+  box-shadow:
+    0 20px 50px rgba(0, 0, 0, 0.5);
+}
+
+.pre-guest-spinner {
+  width: 46px;
+  height: 46px;
+
+  margin: 0 auto 18px;
+
+  border: 4px solid #334155;
+  border-top: 4px solid #6366f1;
+
+  border-radius: 50%;
+
+  animation: preGuestSpin 0.8s linear infinite;
+}
+
+.pre-guest-loading-title {
+  color: #f8fafc;
+
+  font-size: 18px;
+  font-weight: 600;
+
+  margin-bottom: 8px;
+}
+
+.pre-guest-loading-message {
+  color: #94a3b8;
+
+  font-size: 13px;
+
+  line-height: 1.6;
+}
+
+@keyframes preGuestSpin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+}

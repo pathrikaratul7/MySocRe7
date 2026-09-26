@@ -9,6 +9,7 @@ import Guestlist from "../pages/guestlist";
 import GuestEdit from "../pages/guestedit";
 import Flatlist from "../pages/flatlist";
 import FlatEdit from "../pages/FlatEdit";
+import PreGuest from "../pages/PreGuest";
 
 const AppRoutes = () => {
   return (
@@ -28,6 +29,7 @@ const AppRoutes = () => {
           <Route path="/guest-edit/:id" element={<GuestEdit/>}/>
           <Route path="/Flatlist" element={<Flatlist/>}/>
           <Route path="/flat-edit/:id" element={<FlatEdit/>}/>
+          <Route path="/PreGuest" element={<PreGuest/>}/>
 
         </Route>
 
