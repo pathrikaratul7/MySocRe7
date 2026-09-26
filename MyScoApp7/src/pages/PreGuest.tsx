@@ -5,6 +5,8 @@ import React, {
   useState,
 } from "react";
 
+import html2canvas from "html2canvas";
+
 import {
   type PreFlat,
   PreGuestAddAPI,
@@ -69,8 +71,19 @@ const PreGuest: React.FC = () => {
     useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+
   const [registeredGuestId, setRegisteredGuestId] =
     useState<number | null>(null);
+
+  /* =========================================================
+     SECURITY PASS STATE
+  ========================================================= */
+
+  const [showSecurityPass, setShowSecurityPass] =
+    useState(false);
+
+  const securityPassRef =
+    useRef<HTMLDivElement | null>(null);
 
   /* =========================================================
      REF
@@ -172,12 +185,6 @@ const PreGuest: React.FC = () => {
 
   /* =========================================================
      EXTRACT MOBILE FROM OWNER NAME
-
-     Example:
-     Atul Pathrikar-51-9673178777
-
-     Result:
-     9673178777
   ========================================================= */
 
   const extractMobileFromOwnerName = (
@@ -223,9 +230,6 @@ const PreGuest: React.FC = () => {
 
   /* =========================================================
      GET FLAT OWNER EMAIL
-
-     Current API response doesn't contain email,
-     but this supports email if API returns it.
   ========================================================= */
 
   const getFlatOwnerEmail = (
@@ -300,11 +304,6 @@ const PreGuest: React.FC = () => {
     value: string
   ) => {
     setFlatSearchText(value);
-
-    /*
-     * If user changes search after selecting
-     * a flat, remove previous selection.
-     */
 
     if (selectedFlat) {
       setSelectedFlat(null);
@@ -426,6 +425,35 @@ const PreGuest: React.FC = () => {
   };
 
   /* =========================================================
+     DISPLAY DATE
+  ========================================================= */
+
+  const formatDateTime = (
+    value: string
+  ): string => {
+    if (!value) {
+      return "";
+    }
+
+    const date = new Date(value);
+
+    if (Number.isNaN(date.getTime())) {
+      return value;
+    }
+
+    return date.toLocaleString(
+      "en-IN",
+      {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+      }
+    );
+  };
+
+  /* =========================================================
      VALIDATE MOBILE
   ========================================================= */
 
@@ -478,6 +506,75 @@ const PreGuest: React.FC = () => {
     setSuccess("");
     setRegisteredGuestId(null);
     setLoadingMessage("");
+
+    setShowSecurityPass(false);
+  };
+
+  /* =========================================================
+     TAKE SECURITY PASS SCREENSHOT
+  ========================================================= */
+
+  const handleTakeScreenshot = async () => {
+    if (!securityPassRef.current) {
+      return;
+    }
+
+    try {
+      setLoading(true);
+      setLoadingMessage(
+        "📸 Preparing visitor pass..."
+      );
+
+      const canvas =
+        await html2canvas(
+          securityPassRef.current,
+          {
+            backgroundColor: "#0f172a",
+            scale: 2,
+            useCORS: true,
+            allowTaint: false,
+          }
+        );
+
+      const image =
+        canvas.toDataURL(
+          "image/png"
+        );
+
+      const link =
+        document.createElement("a");
+
+      link.href = image;
+
+      link.download =
+        `Visitor_Pass_${registeredGuestId || "Guest"}.png`;
+
+      document.body.appendChild(link);
+
+      link.click();
+
+      document.body.removeChild(link);
+    } catch (err) {
+      console.error(
+        "Screenshot Error:",
+        err
+      );
+
+      setError(
+        "📸 Unable to take screenshot. Please try again."
+      );
+    } finally {
+      setLoading(false);
+      setLoadingMessage("");
+    }
+  };
+
+  /* =========================================================
+     PRINT SECURITY PASS
+  ========================================================= */
+
+  const handlePrintPass = () => {
+    window.print();
   };
 
   /* =========================================================
@@ -493,9 +590,7 @@ const PreGuest: React.FC = () => {
     setSuccess("");
     setRegisteredGuestId(null);
 
-    /* =========================================
-       GUEST NAME
-    ========================================= */
+    /* Guest Name */
 
     if (!gName.trim()) {
       setError(
@@ -504,9 +599,7 @@ const PreGuest: React.FC = () => {
       return;
     }
 
-    /* =========================================
-       GUEST MOBILE
-    ========================================= */
+    /* Guest Mobile */
 
     if (!isValidMobile(gMobile)) {
       setError(
@@ -515,9 +608,7 @@ const PreGuest: React.FC = () => {
       return;
     }
 
-    /* =========================================
-       EMAIL
-    ========================================= */
+    /* Email */
 
     if (
       gEmail.trim() &&
@@ -529,9 +620,7 @@ const PreGuest: React.FC = () => {
       return;
     }
 
-    /* =========================================
-       IN DATE
-    ========================================= */
+    /* In Date */
 
     if (!inDateTime) {
       setError(
@@ -540,9 +629,7 @@ const PreGuest: React.FC = () => {
       return;
     }
 
-    /* =========================================
-       FLAT
-    ========================================= */
+    /* Flat */
 
     if (
       !selectedFlat ||
@@ -554,9 +641,7 @@ const PreGuest: React.FC = () => {
       return;
     }
 
-    /* =========================================
-       FLOOR
-    ========================================= */
+    /* Floor */
 
     if (!floorNumber.trim()) {
       setError(
@@ -565,9 +650,7 @@ const PreGuest: React.FC = () => {
       return;
     }
 
-    /* =========================================
-       FLAT NUMBER
-    ========================================= */
+    /* Flat Number */
 
     if (!flatNumber.trim()) {
       setError(
@@ -576,9 +659,7 @@ const PreGuest: React.FC = () => {
       return;
     }
 
-    /* =========================================
-       FLAT OWNER MOBILE
-    ========================================= */
+    /* Owner Mobile */
 
     if (
       !isValidMobile(flatOwnerMobile)
@@ -589,12 +670,7 @@ const PreGuest: React.FC = () => {
       return;
     }
 
-    /* =========================================
-       CREATOR MOBILE - OPTIONAL
-       
-       Empty = valid
-       Entered = must be valid 10 digit number
-    ========================================= */
+    /* Creator Mobile - OPTIONAL */
 
     if (
       creatorMobile.trim() &&
@@ -606,9 +682,7 @@ const PreGuest: React.FC = () => {
       return;
     }
 
-    /* =========================================
-       IMAGE
-    ========================================= */
+    /* Image */
 
     if (!guestImage) {
       setError(
@@ -620,9 +694,7 @@ const PreGuest: React.FC = () => {
     try {
       setLoading(true);
 
-      /* =======================================
-         UPLOAD IMAGE
-      ======================================= */
+      /* Upload Image */
 
       setLoadingMessage(
         "📷 Uploading guest image..."
@@ -633,9 +705,7 @@ const PreGuest: React.FC = () => {
           guestImage
         );
 
-      /* =======================================
-         PRE GUEST REQUEST
-      ======================================= */
+      /* Request */
 
       const preGuestData: PreGuestRequest = {
         gid: 0,
@@ -693,10 +763,6 @@ const PreGuest: React.FC = () => {
         flatOwnerMobile:
           flatOwnerMobile.trim(),
 
-        /*
-         * Creator Mobile is optional.
-         * Empty value will be sent if not entered.
-         */
         creatorMobile:
           creatorMobile.trim(),
 
@@ -707,9 +773,7 @@ const PreGuest: React.FC = () => {
           "IN",
       };
 
-      /* =======================================
-         ADD PRE GUEST
-      ======================================= */
+      /* Add Pre Guest */
 
       setLoadingMessage(
         "🚪 Registering guest..."
@@ -720,9 +784,7 @@ const PreGuest: React.FC = () => {
           preGuestData
         );
 
-      /* =======================================
-         SUCCESS
-      ======================================= */
+      /* Success */
 
       if (result?.gid) {
         setRegisteredGuestId(
@@ -733,29 +795,13 @@ const PreGuest: React.FC = () => {
           `✅ Guest registered successfully. Guest ID: ${result.gid}`
         );
 
-        /* =====================================
-           CLEAR FORM
-        ===================================== */
+        /*
+         * IMPORTANT:
+         * Do not clear the guest/flat details here.
+         * They are required for the Security Pass.
+         */
 
-        setGName("");
-        setGMobile("");
-        setGEmail("");
-        setInDateTime("");
-        setOutDateTime("");
-
-        setFid(0);
-        setFloorNumber("");
-        setFlatNumber("");
-        setFlatType("");
-        setFlatOwnerMobile("");
-        setCreatorMobile("");
-
-        setFlatSearchText("");
-        setSelectedFlat(null);
-        setShowFlatSuggestions(false);
-
-        setGuestImage(null);
-        setPreviewImage(null);
+        setShowSecurityPass(true);
       } else {
         setError(
           result?.message ||
@@ -786,6 +832,7 @@ const PreGuest: React.FC = () => {
 
   return (
     <div className="pre-guest-page">
+
       <div className="pre-guest-container">
 
         {/* =================================================
@@ -793,6 +840,7 @@ const PreGuest: React.FC = () => {
         ================================================= */}
 
         <div className="pre-guest-header">
+
           <div>
             <h1>
               🚪 Pre Guest Registration
@@ -807,11 +855,10 @@ const PreGuest: React.FC = () => {
           <div className="pre-guest-flat-count">
             🏠 {preFlatData.length} Flats
           </div>
+
         </div>
 
-        {/* =================================================
-            ERROR
-        ================================================= */}
+        {/* ERROR */}
 
         {error && (
           <div className="pre-guest-alert error">
@@ -819,9 +866,7 @@ const PreGuest: React.FC = () => {
           </div>
         )}
 
-        {/* =================================================
-            SUCCESS
-        ================================================= */}
+        {/* SUCCESS */}
 
         {success && (
           <div className="pre-guest-alert success">
@@ -838,20 +883,20 @@ const PreGuest: React.FC = () => {
           className="pre-guest-form"
         >
 
-          {/* ===============================================
+          {/* =================================================
               GUEST INFORMATION
-          =============================================== */}
+          ================================================= */}
 
           <div className="pre-guest-section">
+
             <h2>
               👤 Guest Information
             </h2>
 
             <div className="pre-guest-grid">
 
-              {/* Guest Name */}
-
               <div className="pre-guest-field">
+
                 <label>
                   Guest Name *
                 </label>
@@ -868,11 +913,11 @@ const PreGuest: React.FC = () => {
                   disabled={loading}
                   className="pre-guest-input"
                 />
+
               </div>
 
-              {/* Guest Mobile */}
-
               <div className="pre-guest-field">
+
                 <label>
                   Guest Mobile *
                 </label>
@@ -895,11 +940,11 @@ const PreGuest: React.FC = () => {
                   disabled={loading}
                   className="pre-guest-input"
                 />
+
               </div>
 
-              {/* Guest Email */}
-
               <div className="pre-guest-field">
+
                 <label>
                   Guest Email
                 </label>
@@ -916,16 +961,19 @@ const PreGuest: React.FC = () => {
                   disabled={loading}
                   className="pre-guest-input"
                 />
+
               </div>
 
             </div>
+
           </div>
 
-          {/* ===============================================
+          {/* =================================================
               VISIT INFORMATION
-          =============================================== */}
+          ================================================= */}
 
           <div className="pre-guest-section">
+
             <h2>
               📅 Visit Information
             </h2>
@@ -933,6 +981,7 @@ const PreGuest: React.FC = () => {
             <div className="pre-guest-grid">
 
               <div className="pre-guest-field">
+
                 <label>
                   In Date & Time *
                 </label>
@@ -948,9 +997,11 @@ const PreGuest: React.FC = () => {
                   disabled={loading}
                   className="pre-guest-input"
                 />
+
               </div>
 
               <div className="pre-guest-field">
+
                 <label>
                   Out Date & Time
                 </label>
@@ -966,14 +1017,16 @@ const PreGuest: React.FC = () => {
                   disabled={loading}
                   className="pre-guest-input"
                 />
+
               </div>
 
             </div>
+
           </div>
 
-          {/* ===============================================
+          {/* =================================================
               FLAT INFORMATION
-          =============================================== */}
+          ================================================= */}
 
           <div className="pre-guest-section">
 
@@ -983,14 +1036,13 @@ const PreGuest: React.FC = () => {
 
             <div className="pre-guest-grid">
 
-              {/* ===========================================
-                  FLAT AUTOCOMPLETE
-              =========================================== */}
+              {/* Flat Search */}
 
               <div
                 className="pre-guest-field pre-guest-autocomplete"
                 ref={flatAutocompleteRef}
               >
+
                 <label>
                   Flat Number *
                 </label>
@@ -1025,24 +1077,22 @@ const PreGuest: React.FC = () => {
                   autoComplete="off"
                 />
 
-                {/* Loading */}
-
                 {loadingPreFlat && (
                   <div className="pre-guest-suggestion-loading">
                     ⏳ Loading flat details...
                   </div>
                 )}
 
-                {/* Suggestions */}
-
                 {showFlatSuggestions &&
                   !loadingPreFlat &&
                   flatSearchText.trim() &&
                   filteredFlatSuggestions.length > 0 && (
+
                     <div className="pre-guest-suggestions">
 
                       {filteredFlatSuggestions.map(
                         (flat) => {
+
                           const mobile =
                             getFlatOwnerMobile(
                               flat
@@ -1114,22 +1164,20 @@ const PreGuest: React.FC = () => {
                     </div>
                   )}
 
-                {/* No Result */}
-
                 {showFlatSuggestions &&
                   !loadingPreFlat &&
                   flatSearchText.trim() &&
                   filteredFlatSuggestions.length === 0 && (
+
                     <div className="pre-guest-no-suggestions">
                       🔍 No matching flat found.
                     </div>
+
                   )}
 
               </div>
 
-              {/* ===========================================
-                  FLOOR
-              =========================================== */}
+              {/* Floor */}
 
               <div className="pre-guest-field">
 
@@ -1155,9 +1203,7 @@ const PreGuest: React.FC = () => {
 
               </div>
 
-              {/* ===========================================
-                  FLAT TYPE
-              =========================================== */}
+              {/* Flat Type */}
 
               <div className="pre-guest-field">
 
@@ -1183,9 +1229,7 @@ const PreGuest: React.FC = () => {
 
               </div>
 
-              {/* ===========================================
-                  FLAT OWNER MOBILE
-              =========================================== */}
+              {/* Owner Mobile */}
 
               <div className="pre-guest-field">
 
@@ -1217,9 +1261,7 @@ const PreGuest: React.FC = () => {
 
               </div>
 
-              {/* ===========================================
-                  CREATOR MOBILE - OPTIONAL
-              =========================================== */}
+              {/* Creator Mobile */}
 
               <div className="pre-guest-field">
 
@@ -1242,10 +1284,7 @@ const PreGuest: React.FC = () => {
                   }
                   placeholder="Enter creator mobile (optional)"
                   maxLength={10}
-                  disabled={
-                    loading ||
-                    !!selectedFlat
-                  }
+                  disabled={loading}
                   className="pre-guest-input"
                 />
 
@@ -1253,11 +1292,10 @@ const PreGuest: React.FC = () => {
 
             </div>
 
-            {/* =============================================
-                SELECTED FLAT
-            ============================================= */}
+            {/* Selected Flat */}
 
             {selectedFlat && (
+
               <div className="pre-guest-selected-flat">
 
                 <div className="pre-guest-selected-flat-title">
@@ -1297,14 +1335,16 @@ const PreGuest: React.FC = () => {
                   </span>
 
                 </div>
+
               </div>
+
             )}
 
           </div>
 
-          {/* ===============================================
+          {/* =================================================
               GUEST IMAGE
-          =============================================== */}
+          ================================================= */}
 
           <div className="pre-guest-section">
 
@@ -1344,22 +1384,21 @@ const PreGuest: React.FC = () => {
               )}
 
             </div>
+
           </div>
 
-          {/* ===============================================
-              LOADING MESSAGE
-          =============================================== */}
+          {/* Loading */}
 
           {loading &&
             loadingMessage && (
+
               <div className="pre-guest-loading">
                 {loadingMessage}
               </div>
+
             )}
 
-          {/* ===============================================
-              BUTTONS
-          =============================================== */}
+          {/* Buttons */}
 
           <div className="pre-guest-actions">
 
@@ -1387,24 +1426,267 @@ const PreGuest: React.FC = () => {
 
           </div>
 
-          {/* ===============================================
-              REGISTERED ID
-          =============================================== */}
+        </form>
 
-          {registeredGuestId && (
-            <div className="pre-guest-registered-id">
+        {/* =================================================
+            SECURITY PASS
+        ================================================= */}
 
-              🎉 Registered Guest ID:
+        {showSecurityPass &&
+          registeredGuestId && (
 
-              <strong>
-                {" "}
-                {registeredGuestId}
-              </strong>
+            <div className="security-pass-wrapper">
+
+              <div
+                ref={securityPassRef}
+                className="security-pass"
+              >
+
+                {/* Pass Header */}
+
+                <div className="security-pass-header">
+
+                  <div className="security-pass-icon">
+                    🏠
+                  </div>
+
+                  <div>
+                    <h2>
+                      My Society 7
+                    </h2>
+
+                    <div className="security-pass-title">
+                      PRE-GUEST VISITOR PASS
+                    </div>
+                  </div>
+
+                </div>
+
+                {/* Status */}
+
+                <div className="security-pass-status">
+                  ✅ PRE-REGISTERED VISITOR
+                </div>
+
+                {/* Guest Information */}
+
+                <div className="security-pass-body">
+
+                  <div className="security-pass-photo">
+
+                    {previewImage ? (
+                      <img
+                        src={previewImage}
+                        alt="Guest"
+                      />
+                    ) : (
+                      <div className="security-pass-no-photo">
+                        👤
+                      </div>
+                    )}
+
+                  </div>
+
+                  <div className="security-pass-details">
+
+                    <div className="security-pass-row">
+                      <span>
+                        Guest Name
+                      </span>
+
+                      <strong>
+                        {gName}
+                      </strong>
+                    </div>
+
+                    <div className="security-pass-row">
+                      <span>
+                        Guest Mobile
+                      </span>
+
+                      <strong>
+                        {gMobile}
+                      </strong>
+                    </div>
+
+                    <div className="security-pass-row">
+                      <span>
+                        Flat
+                      </span>
+
+                      <strong>
+                        {flatNumber}
+                      </strong>
+                    </div>
+
+                    <div className="security-pass-row">
+                      <span>
+                        Flat Owner
+                      </span>
+
+                      <strong>
+                        {selectedFlat?.ownerName}
+                      </strong>
+                    </div>
+
+                    <div className="security-pass-row">
+                      <span>
+                        Entry
+                      </span>
+
+                      <strong>
+                        {formatDateTime(
+                          inDateTime
+                        )}
+                      </strong>
+                    </div>
+
+                    <div className="security-pass-row">
+                      <span>
+                        Guest ID
+                      </span>
+
+                      <strong>
+                        #{registeredGuestId}
+                      </strong>
+                    </div>
+
+                  </div>
+
+                </div>
+
+                {/* =================================================
+                    MULTILINGUAL SECURITY MESSAGE
+                ================================================= */}
+
+                <div className="security-pass-messages">
+
+                  {/* English */}
+
+                  <div className="security-message english">
+
+                    <div className="security-message-language">
+                      English
+                    </div>
+
+                    <div>
+                      Guest <strong>{gName}</strong> is
+                      pre-registered for Flat{" "}
+                      <strong>{flatNumber}</strong>.
+                      Please verify the guest's identity
+                      and allow entry as per society rules.
+                    </div>
+
+                  </div>
+
+                  {/* Marathi */}
+
+                  <div className="security-message marathi">
+
+                    <div className="security-message-language">
+                      मराठी
+                    </div>
+
+                    <div>
+                      पाहुणे <strong>{gName}</strong> यांची
+                      फ्लॅट क्रमांक{" "}
+                      <strong>{flatNumber}</strong> साठी
+                      पूर्व नोंदणी करण्यात आली आहे.
+                      कृपया पाहुण्याची ओळख तपासून
+                      सोसायटीच्या नियमांनुसार प्रवेश द्यावा.
+                    </div>
+
+                  </div>
+
+                  {/* Hindi */}
+
+                  <div className="security-message hindi">
+
+                    <div className="security-message-language">
+                      हिंदी
+                    </div>
+
+                    <div>
+                      अतिथि <strong>{gName}</strong> का
+                      फ्लैट नंबर{" "}
+                      <strong>{flatNumber}</strong> के लिए
+                      पूर्व-पंजीकरण किया गया है।
+                      कृपया अतिथि की पहचान सत्यापित करके
+                      सोसायटी के नियमों के अनुसार प्रवेश दें।
+                    </div>
+
+                  </div>
+
+                </div>
+
+                {/* Footer */}
+
+                <div className="security-pass-footer">
+
+                  <div>
+                    Guest ID: #{registeredGuestId}
+                  </div>
+
+                  <div>
+                    Please show this pass to Security
+                  </div>
+                  <div>
+                    Support HelpDesk :- Pathrikaratul7@gmail.com/+91-9673178777
+                    </div>
+
+                </div>
+
+              </div>
+
+              {/* =================================================
+                  PASS ACTIONS
+              ================================================= */}
+
+              <div className="security-pass-actions">
+
+                <button
+                  type="button"
+                  className="security-pass-btn screenshot"
+                  onClick={
+                    handleTakeScreenshot
+                  }
+                  disabled={loading}
+                >
+                  📸 Take Screenshot
+                </button>
+
+                <button
+                  type="button"
+                  className="security-pass-btn print"
+                  onClick={
+                    handlePrintPass
+                  }
+                >
+                  🖨️ Print
+                </button>
+
+                <button
+                  type="button"
+                  className="security-pass-btn close"
+                  onClick={() =>
+                    setShowSecurityPass(false)
+                  }
+                >
+                  ✕ Close Pass
+                </button>
+
+                
+
+              </div>
+
+              <div className="security-pass-help">
+                📱 Take a screenshot and show this
+                visitor pass to the security guard
+                when the guest arrives.
+              </div>
 
             </div>
           )}
-
-        </form>
 
       </div>
     </div>
