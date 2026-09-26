@@ -547,7 +547,7 @@ const PreGuest: React.FC = () => {
       link.href = image;
 
       link.download =
-        `Visitor_Pass_${registeredGuestId || "Guest"}.png`;
+        `MySocietyApp7_Visitor_Pass_${registeredGuestId || "Guest"}.png`;
 
       document.body.appendChild(link);
 
