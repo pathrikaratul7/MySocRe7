@@ -792,16 +792,17 @@ const PreGuest: React.FC = () => {
         );
 
         setSuccess(
-          `✅ Guest registered successfully. Guest ID: ${result.gid}`
+          `Guest registered successfully. Guest ID: ${result.gid}`
         );
 
         /*
          * IMPORTANT:
          * Do not clear the guest/flat details here.
          * They are required for the Security Pass.
+         *
+         * Security Pass is opened from the success popup
+         * after the user clicks OK.
          */
-
-        setShowSecurityPass(true);
       } else {
         setError(
           result?.message ||
@@ -866,11 +867,50 @@ const PreGuest: React.FC = () => {
           </div>
         )}
 
-        {/* SUCCESS */}
+        {/* SUCCESS POPUP */}
 
         {success && (
-          <div className="pre-guest-alert success">
-            {success}
+          <div
+            className="success-modal-overlay"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="success-modal-title"
+          >
+            <div className="success-modal">
+              <button
+                type="button"
+                className="success-modal-close"
+                aria-label="Close success popup"
+                onClick={() => setSuccess("")}
+              >
+                ✕
+              </button>
+
+              <div className="success-modal-icon">
+                ✅
+              </div>
+
+              <h2 id="success-modal-title">
+                Guest Registered Successfully
+              </h2>
+
+              <p className="success-modal-message">
+                {success}
+              </p>
+
+              <div className="success-modal-actions">
+                <button
+                  type="button"
+                  className="success-modal-btn"
+                  onClick={() => {
+                    setSuccess("");
+                    setShowSecurityPass(true);
+                  }}
+                >
+                  👁️ View Security Pass
+                </button>
+              </div>
+            </div>
           </div>
         )}
 
@@ -1628,20 +1668,23 @@ const PreGuest: React.FC = () => {
 
                 {/* Footer */}
 
-                <div className="security-pass-footer">
+              <div className="security-pass-footer">
 
-                  <div>
-                    Guest ID: #{registeredGuestId}
-                  </div>
+  <div>
+    🆔 <strong>Guest ID:</strong> #{registeredGuestId}
+  </div>
 
-                  <div>
-                    Please show this pass to Security
-                  </div>
-                  <div>
-                    Support HelpDesk :- Pathrikaratul7@gmail.com/+91-9673178777
-                    </div>
+  <div>
+    🛡️ <strong>Please show this pass to Security</strong>
+  </div>
 
-                </div>
+  <div>
+    🆘 <strong>Support HelpDesk:</strong> 📧 Pathrikaratul7@gmail.com
+    <br />
+    📞 +91-9673178777
+  </div>
+
+</div>
 
               </div>
 
