@@ -1,33 +1,30 @@
 import { NavLink } from "react-router-dom";
 import "../styles/sidebar.css";
 
+interface SidebarProps {
+  isOpen?: boolean;
+  onNavigate?: () => void;
+}
 
-const Sidebar = () => {
-
-  //const user = useUser();
-  
+const Sidebar = ({ isOpen = false, onNavigate }: SidebarProps) => {
   return (
-    <div className="sidebar">
+    <aside className={`sidebar${isOpen ? " open" : ""}`}>
       <h2 className="logo">🏢 My Society</h2>
-  
       <nav>
-        <NavLink to="/dashboard" className="menu">
+        <NavLink to="/dashboard" className="menu" onClick={onNavigate}>
           🏠 Dashboard
         </NavLink>
-
-        <NavLink to="/users" className="menu">
+        <NavLink to="/users" className="menu" onClick={onNavigate}>
           👥 Users
         </NavLink>
-
-        <NavLink to="/Guestlist" className="menu">
-        🧑 Guest 
+        <NavLink to="/Guestlist" className="menu" onClick={onNavigate}>
+          🧑 Guest
         </NavLink>
-
-        <NavLink to="/Flatlist" className="menu">
-        🏘️ Flat
+        <NavLink to="/Flatlist" className="menu" onClick={onNavigate}>
+          🏘️ Flat
         </NavLink>
       </nav>
-    </div>
+    </aside>
   );
 };
 

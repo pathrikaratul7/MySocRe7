@@ -1,17 +1,53 @@
+.app-layout,
 .layout {
   display: flex;
-}
-
-/* Right side */
-.main {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
-
-/* Page content */
-.content {
-  padding: 20px;
+  width: 100%;
+  min-height: 100vh;
   background: #0f172a;
-  min-height: calc(100vh - 60px);
+  font-family: "Segoe UI", sans-serif;
+}
+
+.app-main,
+.main {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 100vh;
+}
+
+.app-content,
+.content {
+  flex: 1;
+  min-width: 0;
+  padding: 16px;
+  overflow: auto;
+  background: #0f172a;
+}
+
+.sidebar-backdrop {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .app-content,
+  .content {
+    padding: 12px;
+  }
+
+  .sidebar-backdrop {
+    position: fixed;
+    z-index: 19;
+    inset: 0;
+    display: block;
+    border: 0;
+    background: rgb(2 6 23 / 65%);
+  }
+}
+
+@media (max-width: 420px) {
+  .app-content,
+  .content {
+    padding: 8px;
+  }
 }

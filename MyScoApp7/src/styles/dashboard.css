@@ -1,16 +1,16 @@
 /* Dark theme base */
 .dashboard-container {
   background: #0f172a;
-  min-height: 100vh;
-  padding: 24px;
+  min-height: 100%;
+  padding: 16px;
   color: #e2e8f0;
 }
 
 /* Grid */
 .dashboard-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+  gap: 14px;
 }
 
 /* Card */
@@ -72,4 +72,22 @@
 
 .view-btn:hover {
   background: #1d4ed8;
+}
+
+@media (max-width: 600px) {
+  .dashboard-container {
+    padding: 10px;
+  }
+
+  .dashboard-grid {
+    gap: 10px;
+  }
+
+  .card {
+    padding: 16px;
+  }
+
+  .card:hover {
+    transform: none;
+  }
 }

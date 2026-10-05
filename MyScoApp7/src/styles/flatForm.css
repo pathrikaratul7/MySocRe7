@@ -14,13 +14,13 @@
   min-height: 100%;
   display: grid;
   place-items: start center;
-  padding: 24px;
+  padding: 16px;
   color: #e2e8f0;
 }
 
 .flat-form-card {
   width: min(100%, 620px);
-  padding: 30px;
+  padding: clamp(18px, 3vw, 28px);
   border: 1px solid #334155;
   border-radius: 14px;
   background: #1e293b;

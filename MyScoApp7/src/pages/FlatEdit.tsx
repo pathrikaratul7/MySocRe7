@@ -67,13 +67,9 @@ const FlatEdit: React.FC = () => {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
   const isCreate = !id;
+  const needsOwnerLookup = isCreate || !Number(flat?.loginID);
 
   useEffect(() => {
-    if (!isCreate) {
-      setLoadingOwners(false);
-      return;
-    }
-
     let active = true;
     const loadOwners = async () => {
       try {
@@ -99,7 +95,7 @@ const FlatEdit: React.FC = () => {
     return () => {
       active = false;
     };
-  }, [isCreate]);
+  }, []);
 
   useEffect(() => {
     if (!id) {
@@ -162,7 +158,7 @@ const FlatEdit: React.FC = () => {
       setError("Please complete all flat details.");
       return;
     }
-    if (isCreate && !selectedOwner) {
+    if (needsOwnerLookup && !selectedOwner) {
       setError("Search for and select an owner from the suggestions.");
       return;
     }
@@ -173,12 +169,10 @@ const FlatEdit: React.FC = () => {
       localStorage.getItem("uEmail") ||
       "string";
     const uid = Number(localStorage.getItem("uid") || 0);
-    const loginID = isCreate
-      ? Number(selectedOwner?.uid || 0)
-      : Number(flat?.loginID || 0);
+    const loginID = Number(flat?.loginID || selectedOwner?.uid || 0);
     if (!Number.isInteger(loginID) || loginID <= 0) {
       setError(
-        isCreate
+        needsOwnerLookup
           ? "The selected owner has an invalid user ID. Select a valid user and try again."
           : "A valid login ID was not returned for this flat."
       );
@@ -269,7 +263,7 @@ const FlatEdit: React.FC = () => {
 
         {error && <div className="flat-form-error" role="alert">{error}</div>}
 
-        {isCreate ? (
+        {needsOwnerLookup ? (
         <div className="flat-owner-autocomplete">
           <label htmlFor="flat-owner-search">Owner</label>
           <input

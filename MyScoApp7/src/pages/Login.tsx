@@ -60,11 +60,9 @@ const Login: React.FC = () => {
 
   return (
     <div className="login-container">
-
-  <div className="login-container">
-    <img src={loginImage} alt="Society Login" style={{ width: "100%" , height: "auto" }} />
-  
-  </div>
+    <div className="login-image-panel">
+      <img src={loginImage} alt="Society Login" className="login-image" />
+    </div>
 
   <div className="login-right">
 

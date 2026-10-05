@@ -184,7 +184,7 @@ export interface FlatRequest {
   updatedDateTime: string | null;
   loginID: number;
   uid: number;
-  flag: "IN" | "UP";
+  flag: "IN" | "UP" | "DE";
 }
 
 export interface FlatResponse extends Omit<FlatRequest, "flag" | "uid"> {
@@ -236,6 +236,29 @@ export const UpdateFlatAPI = async (
   );
 
   return response.data;
+};
+
+export const DeleteFlatAPI = async (
+  flatData: FlatRequest
+): Promise<FlatResponse | null> => {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    throw new Error("Your session has expired. Please sign in again.");
+  }
+
+  const response = await axios.delete<FlatResponse | null>(
+    `${API_URL}/Flat/DeleteFlat`,
+    {
+      data: flatData,
+      headers: {
+        Accept: "*/*",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  return response.data ?? null;
 };
 
 /* =========================================================

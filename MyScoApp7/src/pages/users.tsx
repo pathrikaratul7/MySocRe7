@@ -16,9 +16,9 @@ const Users: React.FC = () => {
   const usersPerPage = 5;
 
   const filteredUsers = users.filter((u) =>
-    u.uName.toLowerCase().includes(search.toLowerCase()) ||
-    u.uEmail.toLowerCase().includes(search.toLowerCase()) ||
-    u.uMobile.includes(search)
+    (u.uName || "").toLowerCase().includes(search.toLowerCase()) ||
+    (u.uEmail || "").toLowerCase().includes(search.toLowerCase()) ||
+    (u.uMobile || "").includes(search)
   );
 
   const indexOfLast = currentPage * usersPerPage;

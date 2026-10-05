@@ -3,7 +3,12 @@ import { useNavigate } from "react-router-dom";
 import { FaEdit } from "react-icons/fa";
 import { FaDeleteLeft } from "react-icons/fa6";
 import Swal from "sweetalert2";
-import { GetAllFlatAPI, UpdateFlatAPI, type FlatRequest, type FlatResponse } from "../api/authApi";
+import {
+  DeleteFlatAPI,
+  GetAllFlatAPI,
+  type FlatRequest,
+  type FlatResponse,
+} from "../api/authApi";
 import "../styles/flatForm.css";
 const Flatlist: React.FC = () => {
   const navigate = useNavigate();
@@ -124,7 +129,7 @@ const Flatlist: React.FC = () => {
     };
 
     try {
-      await UpdateFlatAPI(request);
+      await DeleteFlatAPI({ ...request, flag: "DE" });
       setRefreshKey((key) => key + 1);
       await Swal.fire({
         title: "Flat deleted",
@@ -179,7 +184,7 @@ const Flatlist: React.FC = () => {
         <>
           {/* Table */}
           <div className="table-wrapper">
-            <table className="users-table">
+            <table className="users-table flat-table">
               <thead>
                 <tr>
                   <th>FID</th>
@@ -199,21 +204,29 @@ const Flatlist: React.FC = () => {
                     <td>{flist.floorNumber}</td>
                     <td>{flist.flatNumber}</td>
                     <td>{flist.flatType}</td>
-                    <td>
-                         <button
-                      className="btn edit-btn"
-                      onClick={() => handleEdit(flist.fid)}
-                      title="Edit"
-                    >
-                      <FaEdit />
-                    </button>
-
-                      <button
-                        className="btn delete-btn"
-                        onClick={() => void handleDelete(flist)} title="Delete"
-                      >
-                        <FaDeleteLeft/>
-                      </button>
+                    <td className="flat-actions-cell">
+                      <div className="flat-actions">
+                        <button
+                          type="button"
+                          className="btn edit-btn"
+                          onClick={() => handleEdit(flist.fid)}
+                          title="Edit flat"
+                          aria-label={`Edit flat ${flist.flatNumber}`}
+                        >
+                          <FaEdit />
+                          <span>Edit</span>
+                        </button>
+                        <button
+                          type="button"
+                          className="btn delete-btn"
+                          onClick={() => void handleDelete(flist)}
+                          title="Delete flat"
+                          aria-label={`Delete flat ${flist.flatNumber}`}
+                        >
+                          <FaDeleteLeft />
+                          <span>Delete</span>
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))}
