@@ -13,6 +13,7 @@ interface UserData {
   uName?: string;
   uEmail?: string;
   uid?: number;
+  loginID?: number | null;
   imagePath: string;
 
 }

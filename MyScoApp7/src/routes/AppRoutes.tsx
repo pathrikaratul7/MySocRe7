@@ -29,6 +29,7 @@ const AppRoutes = () => {
           <Route path="/user-edit/:id" element={<UserEdit />} />
           <Route path="/guest-edit/:id" element={<GuestEdit/>}/>
           <Route path="/Flatlist" element={<Flatlist/>}/>
+          <Route path="/flat-add" element={<FlatEdit />} />
           <Route path="/flat-edit/:id" element={<FlatEdit/>}/>
           
 

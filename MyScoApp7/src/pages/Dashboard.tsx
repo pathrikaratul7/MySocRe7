@@ -12,6 +12,12 @@ import { useNavigate } from "react-router-dom";
   const user  = useUser();
   console.log("User in Dashboard:", user?.uid);
   saveUID(user?.uid|| 0);
+  if (user?.loginID != null) {
+    localStorage.setItem("loginID", String(user.loginID));
+  }
+  if (user?.uName) {
+    localStorage.setItem("uName", user.uName);
+  }
   
 
 const dashboardCards = [

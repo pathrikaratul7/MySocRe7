@@ -66,6 +66,63 @@ export const GetAllUsersfromAPp = async (
   return response.data;
 };
 
+export interface FlatOwnerOption {
+  uid: number;
+  uName: string;
+  uEmail: string | null;
+  uMobile: string | null;
+  isDeleted: boolean;
+  userType: string | null;
+}
+
+export const GetFlatOwnerOptionsAPI = async (
+  token: string
+): Promise<FlatOwnerOption[]> => {
+  const response = await axios.post<FlatOwnerOption[]>(
+    `${API_URL}/SocietyUser/GetAllUsers`,
+    {
+      uid: 0,
+      uName: "string",
+      uEmail: "user@example.com",
+      uPass: "string",
+      uMobile: "string",
+      isDeleted: true,
+      createdBy: "string",
+      createdDateTime: new Date().toISOString(),
+      updatedBy: "string",
+      updatedDateTime: new Date().toISOString(),
+      fid: 0,
+      flatNumber: "string",
+      flatType: "string",
+      deviceID: "string",
+      privList: "string",
+      flag: "AUTO",
+      guestVisitor: 0,
+      incidentCount: 0,
+      imagePath: "string",
+      userType: "string",
+      ownReconcileAmt: 0,
+      ownFailedReconcile: 0,
+      overallTotalReconcile: 0,
+      overallFailedTotalReconcile: 0,
+      pendingTranCount: 0,
+    },
+    {
+      headers: {
+        Accept: "*/*",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  if (!Array.isArray(response.data)) {
+    throw new Error("The user autocomplete API returned an invalid response.");
+  }
+
+  return response.data;
+};
+
 /* =========================================================
    GET ALL GUEST LIST
 ========================================================= */
@@ -106,6 +163,73 @@ export const GetAllFlatAPI = async (
     },
     {
       headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  return response.data;
+};
+
+export interface FlatRequest {
+  fid: number;
+  ownerName: string;
+  floorNumber: string;
+  flatNumber: string;
+  flatType: string;
+  isDeleted: boolean;
+  createdBy: string;
+  createdDateTime: string;
+  updatedBy: string | null;
+  updatedDateTime: string | null;
+  loginID: number;
+  uid: number;
+  flag: "IN" | "UP";
+}
+
+export interface FlatResponse extends Omit<FlatRequest, "flag" | "uid"> {
+  uid: number | null;
+  flag: string | null;
+}
+
+export const AddFlatAPI = async (
+  flatData: FlatRequest
+): Promise<FlatResponse> => {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    throw new Error("Your session has expired. Please sign in again.");
+  }
+
+  const response = await axios.post<FlatResponse>(
+    `${API_URL}/Flat/AddFlat`,
+    flatData,
+    {
+      headers: {
+        Accept: "*/*",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  return response.data;
+};
+
+export const UpdateFlatAPI = async (
+  flatData: FlatRequest
+): Promise<FlatResponse> => {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    throw new Error("Your session has expired. Please sign in again.");
+  }
+
+  const response = await axios.post<FlatResponse>(
+    `${API_URL}/Flat/UpdateFlat`,
+    flatData,
+    {
+      headers: {
+        Accept: "*/*",
+        "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
     }
