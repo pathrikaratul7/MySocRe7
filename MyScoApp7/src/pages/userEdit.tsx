@@ -201,6 +201,10 @@ const UserEdit: React.FC = () => {
       setError("Password is required when adding a user.");
       return;
     }
+    if (!isCreate && !uPass) {
+      setError("Password is required when updating a user.");
+      return;
+    }
     if (canManageUsers && values.privileges.length === 0) {
       setError("Select at least one privilege.");
       return;
@@ -215,7 +219,7 @@ const UserEdit: React.FC = () => {
       uid: user?.uid ?? 0,
       uName,
       uEmail,
-      ...(uPass ? { uPass } : {}),
+      uPass,
       uMobile,
       isDeleted: user?.isDeleted ?? false,
       createdBy: user?.createdBy || actor,
@@ -299,7 +303,7 @@ const UserEdit: React.FC = () => {
         <p className="user-form-intro">
           {isCreate
             ? "Enter account details and choose the user's privileges."
-            : "Update account details and privileges. Leave password blank to keep it unchanged."}
+            : "Update account details and privileges. Enter the existing password to keep it unchanged."}
         </p>
 
         {error && <p className="user-form-error" role="alert">{error}</p>}
@@ -341,9 +345,8 @@ const UserEdit: React.FC = () => {
               value={values.uPass}
               onChange={(event) => setValues({ ...values, uPass: event.target.value })}
               autoComplete="new-password"
-              required={isCreate}
-              disabled={!isCreate}
-              placeholder={isCreate ? "" : "Existing password will be kept"}
+              required
+              placeholder={isCreate ? "" : "Enter existing password"}
             />
           </label>
           <label>

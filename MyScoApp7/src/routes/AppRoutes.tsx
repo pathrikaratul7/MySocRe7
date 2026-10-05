@@ -27,6 +27,7 @@ const AppRoutes = () => {
           <Route path="/users" element={<Users />} />
           <Route path="/user-add" element={<UserEdit />} />
           <Route path="/guestlist" element={<Guestlist/>}/>
+          <Route path="/guest-add" element={<GuestEdit/>}/>
           <Route path="/user-edit/:id" element={<UserEdit />} />
           <Route path="/guest-edit/:id" element={<GuestEdit/>}/>
           <Route path="/Flatlist" element={<Flatlist/>}/>

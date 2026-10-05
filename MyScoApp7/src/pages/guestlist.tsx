@@ -68,7 +68,16 @@ const Guestlist: React.FC = () => {
 
   return (
     <div className="users-container">
-      <h2 className="users-title">👥 Guest Management</h2>
+      <div className="flat-list-heading">
+        <h2 className="users-title">👥 Guest Management</h2>
+        <button
+          type="button"
+          className="flat-form-primary flat-add-button"
+          onClick={() => navigate("/guest-add")}
+        >
+          + Add Guest
+        </button>
+      </div>
 
       
       <input

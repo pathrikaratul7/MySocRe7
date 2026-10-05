@@ -74,6 +74,14 @@ function App() {
     }
     />
 
+    <Route path="/guest-add" element={<ProtectedRoute>
+      <MainLayout>
+        <GuestEdit/>
+      </MainLayout>
+    </ProtectedRoute>
+    }
+    />
+
     <Route path="/guest-edit/:id" element={<ProtectedRoute>
       <MainLayout>
         <GuestEdit/>

@@ -70,7 +70,7 @@ export interface SocietyUserRequest {
   uid: number;
   uName: string;
   uEmail: string;
-  uPass?: string;
+  uPass: string | null;
   uMobile: string;
   isDeleted: boolean;
   createdBy: string;
@@ -241,8 +241,8 @@ export const GetFlatOwnerOptionsAPI = async (
 export const GetAllGuestListAPI = async (
   token: string,
   loginID: string
-) => {
-  const response = await axios.post(
+) : Promise<GuestRecord[]> => {
+  const response = await axios.post<GuestRecord[]>(
     `${API_URL}/Guest/GetAllGuestList`,
     {
       loginID,
@@ -256,6 +256,84 @@ export const GetAllGuestListAPI = async (
   );
 
   return response.data;
+};
+
+export interface GuestRequest {
+  gid: number;
+  gName: string;
+  gMobile: string;
+  gEmail: string;
+  inDateTime: string;
+  outDateTime: string | null;
+  fid: number;
+  status: string;
+  isDeleted: boolean;
+  createdBy: string;
+  createdDateTime: string;
+  updatedBy: string | null;
+  updatedDateTime: string | null;
+  floorNumber: string;
+  flatNumber: string;
+  flatType: string;
+  gImagePath: string;
+  flatOwnerMobile: string;
+  creatorMobile: string;
+  loginID: number;
+  flag: "IN" | "UP";
+}
+
+export interface GuestRecord
+  extends Omit<GuestRequest, "flag" | "gid" | "fid" | "loginID"> {
+  gid: number | string;
+  fid: number | string;
+  loginID: number | string | null;
+  flag: string | null;
+}
+
+export const AddGuestAPI = async (
+  guestData: GuestRequest
+): Promise<GuestRecord> => {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    throw new Error("Your session has expired. Please sign in again.");
+  }
+
+  const response = await axios.post<GuestRecord>(
+    `${API_URL}/Guest/AddGuest`,
+    guestData,
+    {
+      headers: {
+        Accept: "*/*",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  return response.data;
+};
+
+export const UpdateGuestAPI = async (
+  guestData: GuestRequest
+): Promise<GuestRecord | null> => {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    throw new Error("Your session has expired. Please sign in again.");
+  }
+
+  const response = await axios.post<GuestRecord | null>(
+    `${API_URL}/Guest/UpdateGuest`,
+    guestData,
+    {
+      headers: {
+        Accept: "*/*",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  return response.data ?? null;
 };
 
 /* =========================================================
