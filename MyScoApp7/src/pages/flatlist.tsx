@@ -9,9 +9,11 @@ import {
   type FlatRequest,
   type FlatResponse,
 } from "../api/authApi";
+import { useCanManageUsers } from "../utils/useUser";
 import "../styles/flatForm.css";
 const Flatlist: React.FC = () => {
   const navigate = useNavigate();
+  const canManageUsers = useCanManageUsers();
   const [flist, setFlist] = useState<FlatResponse[]>([]);
   const [refreshKey, setRefreshKey] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -216,16 +218,18 @@ const Flatlist: React.FC = () => {
                           <FaEdit />
                           <span>Edit</span>
                         </button>
-                        <button
-                          type="button"
-                          className="btn delete-btn"
-                          onClick={() => void handleDelete(flist)}
-                          title="Delete flat"
-                          aria-label={`Delete flat ${flist.flatNumber}`}
-                        >
-                          <FaDeleteLeft />
-                          <span>Delete</span>
-                        </button>
+                        {canManageUsers && (
+                          <button
+                            type="button"
+                            className="btn delete-btn"
+                            onClick={() => void handleDelete(flist)}
+                            title="Delete flat"
+                            aria-label={`Delete flat ${flist.flatNumber}`}
+                          >
+                            <FaDeleteLeft />
+                            <span>Delete</span>
+                          </button>
+                        )}
                       </div>
                     </td>
                   </tr>

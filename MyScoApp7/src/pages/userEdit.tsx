@@ -10,6 +10,7 @@ import {
   type SocietyUserRequest,
 } from "../api/authApi";
 import "../styles/UserEdit.css";
+import { useCanManageUsers } from "../utils/useUser";
 
 const PRIVILEGES = ["User", "Security", "Admin", "SuperAdmin", "Developer"];
 const USER_TYPES = ["Flat Owner/Tenant", "Security", "Cleaning staff"];
@@ -62,6 +63,7 @@ const errorMessage = (error: unknown): string => {
 const UserEdit: React.FC = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const canManageUsers = useCanManageUsers();
   const isCreate = !id;
   const [user, setUser] = useState<SocietyUserRecord | null>(null);
   const [values, setValues] = useState<UserFormValues>(initialValues);
@@ -199,7 +201,7 @@ const UserEdit: React.FC = () => {
       setError("Password is required when adding a user.");
       return;
     }
-    if (values.privileges.length === 0) {
+    if (canManageUsers && values.privileges.length === 0) {
       setError("Select at least one privilege.");
       return;
     }
@@ -224,7 +226,9 @@ const UserEdit: React.FC = () => {
       flatNumber: user?.flatNumber || "",
       flatType: user?.flatType || "",
       deviceID: user?.deviceID || "string",
-      privList: values.privileges.join("|"),
+      privList: canManageUsers
+        ? values.privileges.join("|")
+        : user?.privList || values.privileges.join("|"),
       flag: isCreate ? "IN" : "UP",
       guestVisitor: user?.guestVisitor ?? 0,
       incidentCount: user?.incidentCount ?? 0,
@@ -397,21 +401,23 @@ const UserEdit: React.FC = () => {
           </div>
         </section>
 
-        <fieldset className="privilege-fieldset">
-          <legend>Privileges</legend>
-          <div className="privilege-options">
-            {PRIVILEGES.map((privilege) => (
-              <label className="privilege-option" key={privilege}>
-                <input
-                  type="checkbox"
-                  checked={values.privileges.includes(privilege)}
-                  onChange={() => togglePrivilege(privilege)}
-                />
-                <span>{privilege}</span>
-              </label>
-            ))}
-          </div>
-        </fieldset>
+        {canManageUsers && (
+          <fieldset className="privilege-fieldset">
+            <legend>Privileges</legend>
+            <div className="privilege-options">
+              {PRIVILEGES.map((privilege) => (
+                <label className="privilege-option" key={privilege}>
+                  <input
+                    type="checkbox"
+                    checked={values.privileges.includes(privilege)}
+                    onChange={() => togglePrivilege(privilege)}
+                  />
+                  <span>{privilege}</span>
+                </label>
+              ))}
+            </div>
+          </fieldset>
+        )}
 
         <div className="user-form-actions">
           <button

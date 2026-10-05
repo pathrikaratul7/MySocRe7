@@ -15,6 +15,7 @@ interface UserData {
   uid?: number;
   loginID?: number | null;
   imagePath: string;
+  privList?: string | null;
 
 }
 interface GetALlUserDATA {
@@ -69,6 +70,17 @@ export const useUser = () => {
 
   return user;
 };
+
+export const useCanManageUsers = (): boolean => {
+  const user = useUser();
+  const managementRoles = new Set(["admin", "superadmin", "developer"]);
+
+  return (user?.privList || "")
+    .split("|")
+    .map((privilege) => privilege.trim().toLowerCase())
+    .some((privilege) => managementRoles.has(privilege));
+};
+
 export const GetAllUser= (uid:string) => {
    const [getuser, setUser] = useState<GetALlUserDATA[]>([]);
 

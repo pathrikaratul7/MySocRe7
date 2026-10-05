@@ -5,8 +5,10 @@ import UserImage from "./UserImage";
 import { FaEdit } from "react-icons/fa";
 import { FaDeleteLeft } from "react-icons/fa6";
 import Swal from "sweetalert2";
+import { useCanManageUsers } from "../utils/useUser";
 const Guestlist: React.FC = () => {
   const navigate = useNavigate();
+  const canManageUsers = useCanManageUsers();
   const glist = GetAllGuestList("");
 
   const [search, setSearch] = useState("");
@@ -137,12 +139,15 @@ const Guestlist: React.FC = () => {
                       <FaEdit />
                     </button>
 
-                      <button
-                        className="btn delete-btn"
-                        onClick={() => handleDelete(glist.gid)} title="Delete"
-                      >
-                        <FaDeleteLeft/>
-                      </button>
+                      {canManageUsers && (
+                        <button
+                          className="btn delete-btn"
+                          onClick={() => handleDelete(glist.gid)}
+                          title="Delete"
+                        >
+                          <FaDeleteLeft/>
+                        </button>
+                      )}
                     </td>
                   </tr>
                 ))}
