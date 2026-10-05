@@ -49,8 +49,8 @@ export const GetUserDetails = async (
 export const GetAllUsersfromAPp = async (
   token: string,
   uid: string
-) => {
-  const response = await axios.post(
+): Promise<SocietyUserRecord[]> => {
+  const response = await axios.post<SocietyUserRecord[]>(
     `${API_URL}/SocietyUser/GetAllUsers`,
     {
       uid,
@@ -65,6 +65,94 @@ export const GetAllUsersfromAPp = async (
 
   return response.data;
 };
+
+export interface SocietyUserRequest {
+  uid: number;
+  uName: string;
+  uEmail: string;
+  uPass?: string;
+  uMobile: string;
+  isDeleted: boolean;
+  createdBy: string;
+  createdDateTime: string;
+  updatedBy: string | null;
+  updatedDateTime: string | null;
+  fid: number;
+  flatNumber: string;
+  flatType: string;
+  deviceID: string | null;
+  privList: string;
+  flag: "IN" | "UP";
+  guestVisitor: number;
+  incidentCount: number;
+  imagePath: string;
+  userType: string;
+  ownReconcileAmt: number;
+  ownFailedReconcile: number;
+  overallTotalReconcile: number;
+  overallFailedTotalReconcile: number;
+  pendingTranCount: number;
+}
+
+export interface SocietyUserRecord {
+  uid: number;
+  uName: string | null;
+  uEmail: string | null;
+  uPass: string | null;
+  uMobile: string | null;
+  isDeleted: boolean;
+  createdBy: string | null;
+  createdDateTime: string | null;
+  updatedBy: string | null;
+  updatedDateTime: string | null;
+  fid: number | null;
+  flatNumber: string | null;
+  flatType: string | null;
+  deviceID: string | null;
+  privList: string | null;
+  flag: string | null;
+  guestVisitor: number;
+  incidentCount: number;
+  imagePath: string | null;
+  userType: string | null;
+  ownReconcileAmt: number;
+  ownFailedReconcile: number;
+  overallTotalReconcile: number;
+  overallFailedTotalReconcile: number;
+  pendingTranCount: number;
+}
+
+const saveSocietyUser = async (
+  endpoint: "AddUser" | "UpdateUser",
+  userData: SocietyUserRequest
+): Promise<SocietyUserRecord> => {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    throw new Error("Your session has expired. Please sign in again.");
+  }
+
+  const response = await axios.post<SocietyUserRecord>(
+    `${API_URL}/SocietyUser/${endpoint}`,
+    userData,
+    {
+      headers: {
+        Accept: "*/*",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  return response.data;
+};
+
+export const AddUserAPI = async (
+  userData: SocietyUserRequest
+): Promise<SocietyUserRecord> => saveSocietyUser("AddUser", userData);
+
+export const UpdateUserAPI = async (
+  userData: SocietyUserRequest
+): Promise<SocietyUserRecord> => saveSocietyUser("UpdateUser", userData);
 
 export interface FlatOwnerOption {
   uid: number;

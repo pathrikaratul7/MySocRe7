@@ -67,7 +67,16 @@ const Users: React.FC = () => {
 
   return (
     <div className="users-container">
-      <h2 className="users-title">👥 Users Management</h2>
+      <div className="flat-list-heading">
+        <h2 className="users-title">👥 Users Management</h2>
+        <button
+          type="button"
+          className="flat-form-primary flat-add-button"
+          onClick={() => navigate("/user-add")}
+        >
+          + Add New User
+        </button>
+      </div>
 
       
       <input
@@ -113,7 +122,7 @@ const Users: React.FC = () => {
                       <span className="role-badge">{user.privList}</span>
                     </td>
                     <td>
-                     <UserImage src={user.imagePath} />
+                     <UserImage src={user.imagePath || ""} />
                     </td>
 
                     <td>

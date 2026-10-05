@@ -19,25 +19,25 @@ interface UserData {
 }
 interface GetALlUserDATA {
   uid: number;
-  uName: string;
-  uEmail: string;
-  uPass: string;
-  uMobile: string;
+  uName: string | null;
+  uEmail: string | null;
+  uPass: string | null;
+  uMobile: string | null;
   isDeleted: boolean;
-  createdBy: string;
-  createdDateTime: string; //  string, not Date
+  createdBy: string | null;
+  createdDateTime: string | null;
   updatedBy: string | null; //  nullable
   updatedDateTime: string | null; //  nullable
-  fid: number; // was string → fix
-  flatNumber: string;
-  flatType: string;
+  fid: number | null;
+  flatNumber: string | null;
+  flatType: string | null;
   deviceID: string | null; //  nullable
-  privList: string;
+  privList: string | null;
   flag: string | null; //  nullable
   guestVisitor: number;
   incidentCount: number;
-  imagePath: string;
-  userType: string;
+  imagePath: string | null;
+  userType: string | null;
   ownReconcileAmt: number;
   ownFailedReconcile: number;
   overallTotalReconcile: number;
