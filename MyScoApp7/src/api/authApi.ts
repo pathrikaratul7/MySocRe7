@@ -154,6 +154,29 @@ export const UpdateUserAPI = async (
   userData: SocietyUserRequest
 ): Promise<SocietyUserRecord> => saveSocietyUser("UpdateUser", userData);
 
+export const UploadUserImageAPI = async (file: File): Promise<string> => {
+  if (!file || !file.type.startsWith("image/")) {
+    throw new Error("Please select a valid image file.");
+  }
+
+  const token = localStorage.getItem("token");
+  if (!token) {
+    throw new Error("Your session has expired. Please sign in again.");
+  }
+
+  const formData = new FormData();
+  formData.append("file", file, file.name);
+
+  await axios.post(`${API_URL}/SocietyUser/userimg`, formData, {
+    headers: {
+      Accept: "*/*",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return `/images/UserImg/${file.name}`;
+};
+
 export interface FlatOwnerOption {
   uid: number;
   uName: string;

@@ -1,9 +1,10 @@
-import { useEffect, useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type ChangeEvent, type FormEvent } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 import {
   AddUserAPI,
   GetAllUsersfromAPp,
+  UploadUserImageAPI,
   UpdateUserAPI,
   type SocietyUserRecord,
   type SocietyUserRequest,
@@ -66,7 +67,13 @@ const UserEdit: React.FC = () => {
   const [values, setValues] = useState<UserFormValues>(initialValues);
   const [loading, setLoading] = useState(Boolean(id));
   const [saving, setSaving] = useState(false);
+  const [uploadingImage, setUploadingImage] = useState(false);
+  const [imageUploadFailed, setImageUploadFailed] = useState(false);
+  const [imagePath, setImagePath] = useState("");
+  const [imagePreview, setImagePreview] = useState("");
+  const [previewFailed, setPreviewFailed] = useState(false);
   const [error, setError] = useState("");
+  const imageInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (!id) {
@@ -91,6 +98,8 @@ const UserEdit: React.FC = () => {
         }
 
         setUser(match);
+        setImagePath(match.imagePath || "");
+        setImagePreview(match.imagePath || "");
         setValues({
           uName: match.uName || "",
           uEmail: match.uEmail || "",
@@ -125,9 +134,58 @@ const UserEdit: React.FC = () => {
     }));
   };
 
+  const handleImageSelected = async (
+    event: ChangeEvent<HTMLInputElement>
+  ) => {
+    const file = event.target.files?.[0];
+    event.target.value = "";
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      setError("Please select a valid image file.");
+      return;
+    }
+
+    const localPreview = URL.createObjectURL(file);
+    const previousPreview = imagePreview;
+    setImagePreview(localPreview);
+    setPreviewFailed(false);
+    setImageUploadFailed(false);
+    setError("");
+
+    try {
+      setUploadingImage(true);
+      const uploadedPath = await UploadUserImageAPI(file);
+      setImagePath(uploadedPath);
+      setImagePreview(uploadedPath);
+    } catch (uploadError: unknown) {
+      console.error("Upload user image error:", uploadError);
+      setImageUploadFailed(true);
+      setImagePreview(previousPreview);
+      setError(errorMessage(uploadError));
+    } finally {
+      URL.revokeObjectURL(localPreview);
+      setUploadingImage(false);
+    }
+  };
+
+  const getImageSource = (path: string): string => {
+    if (/^(https?:|blob:|data:)/i.test(path)) return path;
+    return `https://mysoc7.runasp.net${path.startsWith("/") ? path : `/${path}`}`;
+  };
+
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setError("");
+
+    if (uploadingImage) {
+      setError("Please wait for the image upload to finish.");
+      return;
+    }
+    if (imageUploadFailed) {
+      setError("The image upload failed. Please select and upload the image again.");
+      return;
+    }
 
     const uName = values.uName.trim();
     const uEmail = values.uEmail.trim();
@@ -170,7 +228,7 @@ const UserEdit: React.FC = () => {
       flag: isCreate ? "IN" : "UP",
       guestVisitor: user?.guestVisitor ?? 0,
       incidentCount: user?.incidentCount ?? 0,
-      imagePath: user?.imagePath || "string",
+      imagePath: imagePath || user?.imagePath || "string",
       userType: values.userType,
       ownReconcileAmt: user?.ownReconcileAmt ?? 0,
       ownFailedReconcile: user?.ownFailedReconcile ?? 0,
@@ -302,6 +360,43 @@ const UserEdit: React.FC = () => {
           </label>
         </div>
 
+        <section className="user-image-upload" aria-label="Profile image">
+          <div className="user-image-preview">
+            {imagePreview && !previewFailed ? (
+              <img
+                src={getImageSource(imagePreview)}
+                alt="User profile preview"
+                onError={() => setPreviewFailed(true)}
+              />
+            ) : (
+              <span>{previewFailed ? "Image unavailable" : "No profile image"}</span>
+            )}
+          </div>
+          <div className="user-image-controls">
+            <p className="user-image-label">Profile image</p>
+            <p className="user-image-help">
+              Take a photo with your camera or choose an image from your device.
+            </p>
+            <input
+              ref={imageInputRef}
+              className="user-image-input"
+              type="file"
+              accept="image/*"
+              capture="user"
+              onChange={(event) => void handleImageSelected(event)}
+              disabled={uploadingImage || saving}
+            />
+            <button
+              type="button"
+              className="user-form-secondary"
+              onClick={() => imageInputRef.current?.click()}
+              disabled={uploadingImage || saving}
+            >
+              {uploadingImage ? "Uploading image..." : "Capture or choose image"}
+            </button>
+          </div>
+        </section>
+
         <fieldset className="privilege-fieldset">
           <legend>Privileges</legend>
           <div className="privilege-options">
@@ -327,8 +422,8 @@ const UserEdit: React.FC = () => {
           >
             Cancel
           </button>
-          <button type="submit" className="user-form-primary" disabled={saving}>
-            {saving ? "Saving..." : isCreate ? "Add user" : "Save changes"}
+          <button type="submit" className="user-form-primary" disabled={saving || uploadingImage}>
+            {uploadingImage ? "Uploading image..." : saving ? "Saving..." : isCreate ? "Add user" : "Save changes"}
           </button>
         </div>
       </form>
