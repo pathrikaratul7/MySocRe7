@@ -218,6 +218,37 @@
     transform: translateY(0);
 }
 
+@media (prefers-color-scheme: light) {
+    .success-modal-overlay {
+        background: rgba(15, 23, 42, 0.45);
+    }
+
+    .success-modal {
+        background: #ffffff;
+        border-color: #cbd5e1;
+        box-shadow: 0 24px 70px rgba(15, 23, 42, 0.24);
+    }
+
+    .success-modal-close {
+        background: #f1f5f9;
+        border-color: #cbd5e1;
+        color: #334155;
+    }
+
+    .success-modal-close:hover {
+        background: #e2e8f0;
+        color: #0f172a;
+    }
+
+    .success-modal h2 {
+        color: #0f172a;
+    }
+
+    .success-modal-message {
+        color: #475569;
+    }
+}
+
 @keyframes successModalIn {
     from {
         opacity: 0;

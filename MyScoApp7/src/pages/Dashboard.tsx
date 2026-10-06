@@ -4,6 +4,7 @@ import {formatCurrency} from "../utils/common";
 import { saveUID } from "../utils/tokenStorage";
 import { useUser } from "../utils/useUser";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 
 
@@ -88,7 +89,11 @@ const gotto = (title: string): void => {
     return;
   }
 
-  alert(`No data available for ${title}`);
+  void Swal.fire({
+    title: "No data available",
+    text: `There is no data available for ${title}.`,
+    icon: "info",
+  });
 };
 
   return (
