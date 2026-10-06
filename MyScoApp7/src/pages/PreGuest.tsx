@@ -91,6 +91,8 @@ const PreGuest: React.FC = () => {
 
   const flatAutocompleteRef =
     useRef<HTMLDivElement | null>(null);
+  const imageInputRef =
+    useRef<HTMLInputElement | null>(null);
 
   /* =========================================================
      ERROR MESSAGE HELPER
@@ -1393,43 +1395,42 @@ const PreGuest: React.FC = () => {
             </h2>
 
             <div className="pre-guest-image-container">
-
-              <div className="pre-guest-field">
-
-                <label>
-                  Guest Image *
-                </label>
-{/* 
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={
-                    handleImageChange
-                  }
-                  disabled={loading}
-                  className="pre-guest-input"
-                /> */}
-<input
-  type="file"
-  accept="image/*"
-  capture="environment"
-  onChange={handleImageChange}
-  disabled={loading}
-  className="pre-guest-input"
-/>
-              </div>
-
-              {previewImage && (
-                <div className="pre-guest-image-preview">
-
-                  <img
-                    src={previewImage}
-                    alt="Guest preview"
-                  />
-
+              <div
+                className="user-image-upload"
+                role="group"
+                aria-label="Guest image"
+              >
+                <div className="user-image-preview">
+                  {previewImage ? (
+                    <img src={previewImage} alt="Guest preview" />
+                  ) : (
+                    <span>No guest image</span>
+                  )}
                 </div>
-              )}
-
+                <div className="user-image-controls">
+                  <p className="user-image-label">Guest image</p>
+                  <p className="user-image-help">
+                    Take a photo with your camera or choose an image from your device.
+                  </p>
+                  <input
+                    ref={imageInputRef}
+                    className="user-image-input"
+                    type="file"
+                    accept="image/*"
+                    capture="user"
+                    onChange={handleImageChange}
+                    disabled={loading}
+                  />
+                  <button
+                    type="button"
+                    className="user-image-button"
+                    onClick={() => imageInputRef.current?.click()}
+                    disabled={loading}
+                  >
+                    Capture or choose image
+                  </button>
+                </div>
+              </div>
             </div>
 
           </div>

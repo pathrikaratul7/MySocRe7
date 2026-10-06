@@ -98,6 +98,7 @@ const GuestEdit: React.FC = () => {
   });
   const [guestImage, setGuestImage] = useState<File | null>(null);
   const [previewImage, setPreviewImage] = useState("");
+  const [previewFailed, setPreviewFailed] = useState(false);
   const flatAutocompleteRef = useRef<HTMLDivElement>(null);
   const imageInputRef = useRef<HTMLInputElement>(null);
   const [loading, setLoading] = useState(Boolean(id));
@@ -278,6 +279,7 @@ const GuestEdit: React.FC = () => {
     const nextPreview = URL.createObjectURL(file);
     setGuestImage(file);
     setPreviewImage(nextPreview);
+    setPreviewFailed(false);
     setError("");
   };
 
@@ -586,28 +588,50 @@ const GuestEdit: React.FC = () => {
 
         <section className="pre-guest-section guest-image-section">
           <h2>Guest Photo{isCreate ? " *" : ""}</h2>
-          <div className="pre-guest-image-container">
-            <input
-              ref={imageInputRef}
-              type="file"
-              accept="image/*"
-              capture="environment"
-              onChange={handleImageChange}
-              disabled={saving}
-              className="pre-guest-input"
-              aria-label="Capture or select guest photo"
-            />
-            {previewImage && (
-              <div className="pre-guest-image-preview">
+          <div
+            className="user-image-upload"
+            role="group"
+            aria-label="Guest image"
+          >
+            <div className="user-image-preview">
+              {previewImage && !previewFailed ? (
                 <img
                   src={getImageSource(previewImage)}
                   alt="Guest preview"
+                  onError={() => setPreviewFailed(true)}
                 />
-              </div>
-            )}
-            {!previewImage && !isCreate && (
-              <p className="user-image-help">No guest image uploaded.</p>
-            )}
+              ) : (
+                <span>
+                  {previewFailed ? "Image unavailable" : "No guest image"}
+                </span>
+              )}
+            </div>
+            <div className="user-image-controls">
+              <p className="user-image-label">Guest image</p>
+              <p className="user-image-help">
+                Take a photo with your camera or choose an image from your device.
+              </p>
+              {!previewImage && !isCreate && (
+                <p className="user-image-help">No guest image uploaded.</p>
+              )}
+              <input
+                ref={imageInputRef}
+                className="user-image-input"
+                type="file"
+                accept="image/*"
+                capture="user"
+                onChange={handleImageChange}
+                disabled={saving}
+              />
+              <button
+                type="button"
+                className="user-form-secondary"
+                onClick={() => imageInputRef.current?.click()}
+                disabled={saving}
+              >
+                Capture or choose image
+              </button>
+            </div>
           </div>
         </section>
 
