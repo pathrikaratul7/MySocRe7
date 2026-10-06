@@ -18,7 +18,7 @@ import {
   type GuestRequest,
   type PreFlat,
 } from "../api/authApi";
-import { useUser } from "../utils/useUser";
+import { hasAnyPrivilege, useUser } from "../utils/useUser";
 import "../styles/UserEdit.css";
 import "../styles/PreGuest.css";
 
@@ -76,6 +76,12 @@ const GuestEdit: React.FC = () => {
   const navigate = useNavigate();
   const currentUser = useUser();
   const isCreate = !id;
+  const canAddGuest = hasAnyPrivilege(currentUser?.privList, [
+    "Admin",
+    "SuperAdmin",
+    "Developer",
+    "Security",
+  ]);
   const [guest, setGuest] = useState<GuestRecord | null>(null);
   const [flats, setFlats] = useState<PreFlat[]>([]);
   const [selectedFlat, setSelectedFlat] = useState<PreFlat | null>(null);
@@ -284,6 +290,12 @@ const GuestEdit: React.FC = () => {
     event.preventDefault();
     setError("");
 
+    if (isCreate && !canAddGuest) {
+      setError(
+        "Only Admin, SuperAdmin, Developer, and Security can add guests."
+      );
+      return;
+    }
     if (!values.gName.trim() || !values.gMobile.trim()) {
       setError("Guest name and mobile are required.");
       return;
@@ -611,7 +623,7 @@ const GuestEdit: React.FC = () => {
           <button
             type="submit"
             className="user-form-primary"
-            disabled={saving}
+            disabled={saving || (isCreate && !canAddGuest)}
           >
             {saving
               ? guestImage

@@ -10,6 +10,7 @@ import {
   type FlatRequest,
   type FlatResponse,
 } from "../api/authApi";
+import { useCanManageUsers } from "../utils/useUser";
 import "../styles/flatForm.css";
 
 interface FlatFormValues {
@@ -56,6 +57,7 @@ const getErrorMessage = (error: unknown): string => {
 const FlatEdit: React.FC = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const canManageUsers = useCanManageUsers();
   const [flat, setFlat] = useState<FlatResponse | null>(null);
   const [values, setValues] = useState<FlatFormValues>(emptyForm);
   const [owners, setOwners] = useState<FlatOwnerOption[]>([]);
@@ -150,6 +152,10 @@ const FlatEdit: React.FC = () => {
     event.preventDefault();
     setError("");
 
+    if (isCreate && !canManageUsers) {
+      setError("Only Admin, SuperAdmin, and Developer can add flats.");
+      return;
+    }
     const ownerName = values.ownerName.trim();
     const floorNumber = values.floorNumber.trim();
     const flatNumber = values.flatNumber.trim();
@@ -403,7 +409,11 @@ const FlatEdit: React.FC = () => {
           >
             Cancel
           </button>
-          <button type="submit" className="flat-form-primary" disabled={saving}>
+          <button
+            type="submit"
+            className="flat-form-primary"
+            disabled={saving || (isCreate && !canManageUsers)}
+          >
             {saving ? "Saving..." : isCreate ? "Add flat" : "Save changes"}
           </button>
         </div>

@@ -180,6 +180,10 @@ const UserEdit: React.FC = () => {
     event.preventDefault();
     setError("");
 
+    if (isCreate && !canManageUsers) {
+      setError("Only Admin, SuperAdmin, and Developer can add users.");
+      return;
+    }
     if (uploadingImage) {
       setError("Please wait for the image upload to finish.");
       return;
@@ -431,7 +435,11 @@ const UserEdit: React.FC = () => {
           >
             Cancel
           </button>
-          <button type="submit" className="user-form-primary" disabled={saving || uploadingImage}>
+          <button
+            type="submit"
+            className="user-form-primary"
+            disabled={saving || uploadingImage || (isCreate && !canManageUsers)}
+          >
             {uploadingImage ? "Uploading image..." : saving ? "Saving..." : isCreate ? "Add user" : "Save changes"}
           </button>
         </div>

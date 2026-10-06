@@ -161,6 +161,7 @@ const Flatlist: React.FC = () => {
           type="button"
           className="flat-form-primary flat-add-button"
           onClick={() => navigate("/flat-add")}
+          disabled={!canManageUsers}
         >
           + Add New Flat
         </button>

@@ -72,14 +72,24 @@ export const useUser = () => {
   return user;
 };
 
-export const useCanManageUsers = (): boolean => {
-  const user = useUser();
-  const managementRoles = new Set(["admin", "superadmin", "developer"]);
+const MANAGEMENT_ROLES = ["Admin", "SuperAdmin", "Developer"] as const;
 
-  return (user?.privList || "")
+export const hasAnyPrivilege = (
+  privList: string | null | undefined,
+  allowedRoles: readonly string[]
+): boolean => {
+  const roles = new Set(allowedRoles.map((role) => role.toLowerCase()));
+
+  return (privList || "")
     .split("|")
     .map((privilege) => privilege.trim().toLowerCase())
-    .some((privilege) => managementRoles.has(privilege));
+    .some((privilege) => roles.has(privilege));
+};
+
+export const useCanManageUsers = (): boolean => {
+  const user = useUser();
+
+  return hasAnyPrivilege(user?.privList, MANAGEMENT_ROLES);
 };
 
 export const GetAllUser= (uid:string) => {

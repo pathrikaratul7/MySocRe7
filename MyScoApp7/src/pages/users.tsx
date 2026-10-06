@@ -75,6 +75,7 @@ const Users: React.FC = () => {
           type="button"
           className="flat-form-primary flat-add-button"
           onClick={() => navigate("/user-add")}
+          disabled={!canManageUsers}
         >
           + Add New User
         </button>

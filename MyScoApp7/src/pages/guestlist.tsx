@@ -5,10 +5,18 @@ import UserImage from "./UserImage";
 import { FaEdit } from "react-icons/fa";
 import { FaDeleteLeft } from "react-icons/fa6";
 import Swal from "sweetalert2";
-import { useCanManageUsers } from "../utils/useUser";
+import { hasAnyPrivilege, useUser } from "../utils/useUser";
 const Guestlist: React.FC = () => {
   const navigate = useNavigate();
-  const canManageUsers = useCanManageUsers();
+  const currentUser = useUser();
+  const canManageUsers = hasAnyPrivilege(currentUser?.privList, [
+    "Admin",
+    "SuperAdmin",
+    "Developer",
+  ]);
+  const canAddGuests =
+    canManageUsers ||
+    hasAnyPrivilege(currentUser?.privList, ["Security"]);
   const glist = GetAllGuestList("");
 
   const [search, setSearch] = useState("");
@@ -74,6 +82,7 @@ const Guestlist: React.FC = () => {
           type="button"
           className="flat-form-primary flat-add-button"
           onClick={() => navigate("/guest-add")}
+          disabled={!canAddGuests}
         >
           + Add Guest
         </button>
